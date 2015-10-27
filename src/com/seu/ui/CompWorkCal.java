@@ -37,6 +37,9 @@ public class CompWorkCal extends Composite {
 		btnAddVersion.addMouseListener(new MouseAdapter() {
 			public void mouseDown(MouseEvent arg0) {
 				//若各参数输入完成，则计算演化成本
+				shellAddVersion mshellAddVersion = new shellAddVersion(getDisplay());
+				mshellAddVersion.open();
+				mshellAddVersion.layout();
 			}
 		});
 		btnAddVersion.setText("添加项目版本");
