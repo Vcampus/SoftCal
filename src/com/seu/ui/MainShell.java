@@ -23,8 +23,8 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 
 public class MainShell extends Shell {
-	CompArgCal compArgCal;
 	CompWorkCal compWorkCal;
+	CompArgsAdjust compArgsAdjust;
 	CompResShow compResShow;
 
 	/**
@@ -58,29 +58,29 @@ public class MainShell extends Shell {
 		//参数生成按钮代码和相关响应
 		Button btnArgsCal = new Button(this, SWT.NONE);
 		btnArgsCal.setBounds(0, 0, 224, 132);
-		btnArgsCal.setText("公式参数生成");
+		btnArgsCal.setText("演化成本估算(基于经验模型)");
 		btnArgsCal.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent arg0) {
 				compResShow.setVisible(false);
-				compArgCal.setVisible(true);
-				compWorkCal.setVisible(false);
-			}
-		});
-		
-		//演化工作量按钮代码和响应
-		Button btnWorkCal = new Button(this, SWT.NONE);
-		btnWorkCal.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent arg0) {
-				compResShow.setVisible(false);
-				compArgCal.setVisible(false);
+				compArgsAdjust.setVisible(false);
 				compWorkCal.setVisible(true);
 			}
 		});
 		
-		btnWorkCal.setBounds(0, 138, 224, 132);
-		btnWorkCal.setText("演化工作量估算");
+		//演化工作量按钮代码和响应
+		Button btnArgsAdjust = new Button(this, SWT.NONE);
+		btnArgsAdjust.setText("演化估算成本公式校准");
+		btnArgsAdjust.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent arg0) {
+				compResShow.setVisible(false);
+				compArgsAdjust.setVisible(true);
+				compWorkCal.setVisible(false);
+			}
+		});
+		
+		btnArgsAdjust.setBounds(0, 138, 224, 132);
 		
 		//结果展示按钮代码和响应
 		Button btnResShow = new Button(this, SWT.NONE);
@@ -88,7 +88,7 @@ public class MainShell extends Shell {
 			@Override
 			public void mouseDown(MouseEvent arg0) {
 				compResShow.setVisible(true);
-				compArgCal.setVisible(false);
+				compArgsAdjust.setVisible(false);
 				compWorkCal.setVisible(false);
 			}
 		});
@@ -101,11 +101,11 @@ public class MainShell extends Shell {
 		comp_Content.setBounds(259, 10, 645, 557);
 		
 		
-		compArgCal = new CompArgCal(comp_Content, SWT.NONE);
-		compArgCal.setBounds(0, 0, 645, 557);
-		
 		compWorkCal = new CompWorkCal(comp_Content, SWT.NONE);
 		compWorkCal.setBounds(0, 0, 645, 557);
+		
+		compArgsAdjust = new CompArgsAdjust(comp_Content, SWT.NONE);
+		compArgsAdjust.setBounds(0, 0, 645, 557);
 		
 		compResShow = new CompResShow(comp_Content, SWT.NONE);
 		compResShow.setBounds(0, 0, 645, 557);
