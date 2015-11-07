@@ -1,4 +1,4 @@
-package com.seu.ui;
+package com.seu.ui.res;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Button;

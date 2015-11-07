@@ -1,4 +1,4 @@
-package com.seu.ui;
+package com.seu.ui.main;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-public class shellAddVersion extends Shell {
+public class AddVersionShell extends Shell {
 	private Text textItemName;
 	private Text textRealCost;
 	private Text textlblExternalInputFile;
@@ -31,27 +31,27 @@ public class shellAddVersion extends Shell {
 	 * Launch the application.
 	 * @param args
 	 */
-	public static void main(String args[]) {
-		try {
-			Display display = Display.getDefault();
-			shellAddVersion shell = new shellAddVersion(display);
-			shell.open();
-			shell.layout();
-			while (!shell.isDisposed()) {
-				if (!display.readAndDispatch()) {
-					display.sleep();
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String args[]) {
+//		try {
+//			Display display = Display.getDefault();
+//			shellAddVersion shell = new shellAddVersion(display);
+//			shell.open();
+//			shell.layout();
+//			while (!shell.isDisposed()) {
+//				if (!display.readAndDispatch()) {
+//					display.sleep();
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	/**
 	 * Create the shell.
 	 * @param display
 	 */
-	public shellAddVersion(Display display) {
+	public AddVersionShell(Display display) {
 		super(display, SWT.SHELL_TRIM);
 		
 		TabFolder tabFolder = new TabFolder(this, SWT.NONE);

@@ -1,4 +1,4 @@
-package com.seu.ui;
+package com.seu.ui.cal;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -19,6 +19,8 @@ import org.eclipse.swt.custom.TableCursor;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.List;
 
+import com.seu.ui.main.AddVersionShell;
+
 public class CompWorkCal extends Composite {
 	private Table table;
 
@@ -37,7 +39,7 @@ public class CompWorkCal extends Composite {
 		btnAddVersion.addMouseListener(new MouseAdapter() {
 			public void mouseDown(MouseEvent arg0) {
 				//若各参数输入完成，则计算演化成本
-				shellAddVersion mshellAddVersion = new shellAddVersion(getDisplay());
+				AddVersionShell mshellAddVersion = new AddVersionShell(getDisplay());
 				mshellAddVersion.open();
 				mshellAddVersion.layout();
 			}

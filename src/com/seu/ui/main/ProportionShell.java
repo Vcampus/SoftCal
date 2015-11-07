@@ -1,4 +1,4 @@
-package com.seu.ui;
+package com.seu.ui.main;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
