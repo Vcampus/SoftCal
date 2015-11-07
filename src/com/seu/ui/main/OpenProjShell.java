@@ -13,6 +13,8 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 
 public class OpenProjShell extends Shell {
 	
@@ -46,26 +48,45 @@ public class OpenProjShell extends Shell {
 	
 	private void initLayout() {
 		// TODO 自动生成的方法存根
+		
+		
+		//用于展示已有项目的列表
 		list_proj = new List(this, SWT.BORDER);
+		
+		//绑定双击已有项目选中
+		list_proj.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDoubleClick(MouseEvent arg0) {
+				Proj sel_projlist_proj = listProjs.get(list_proj.getFocusIndex());
+				selectProj(sel_projlist_proj);
+			}
+		});
 		list_proj.setBounds(32, 20, 360, 190);
 		
+		
+		//加载已有项目
 		listProjs = projDaoImpl.findByParams("select * from proj_info ");
 		for(Proj proj:listProjs){
             list_proj.add(proj.getName());
         }
+		
+		
+		
+		
+		//确定按钮
 		Button btn_ok = new Button(this, SWT.NONE);
 		btn_ok.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				Proj sel_projlist_proj = listProjs.get(list_proj.getFocusIndex());
-				father.setProj(sel_projlist_proj);
-				father.refresh();
-				close();			
+				selectProj(sel_projlist_proj);
 			}
 		});
 		btn_ok.setBounds(237, 224, 80, 27);
 		btn_ok.setText("open");
 
+		
+		//取消按钮
 		Button btn_cancel = new Button(this, SWT.NONE);
 		btn_cancel.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -77,6 +98,12 @@ public class OpenProjShell extends Shell {
 		btn_cancel.setText("cancel");
 	}
 
+	
+	private void selectProj(Proj proj){
+		father.proj = proj;
+		father.refresh();
+		close();
+	}
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
