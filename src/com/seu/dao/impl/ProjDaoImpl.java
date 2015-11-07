@@ -70,7 +70,7 @@ public class ProjDaoImpl implements ProjDao{
 			PreparedStatement ppsm = conn.prepareStatement("insert into proj_info (name,description) values (?,?)");
 			ppsm.setString(1, proj.getName());
 			ppsm.setString(2, proj.getDescription());
-			ppsm.executeQuery();	
+			ppsm.execute();
 			ppsm.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

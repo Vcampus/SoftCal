@@ -24,6 +24,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
+import com.seu.bean.Proj;
 import com.seu.ui.adjust.CompArgsAdjust;
 import com.seu.ui.cal.CompWorkCal;
 import com.seu.ui.res.CompResShow;
@@ -32,6 +33,23 @@ public class MainShell extends Shell {
 	CompWorkCal compWorkCal;
 	CompArgsAdjust compArgsAdjust;
 	CompResShow compResShow;
+	Menu menu_1;
+	MenuItem mntmNewSubmenuFile;	
+	MenuItem mntmNewItem_open;
+	MenuItem mntmNewItem_save;
+	MenuItem mntmNewItem_new;	
+	MenuItem mntmNewItem_cal;
+	MenuItem mntmNewItem_adjust;
+	MenuItem mntmNewItem_res;
+	Proj proj ;
+
+	public Proj getProj() {
+		return proj;
+	}
+
+	public void setProj(Proj proj) {
+		this.proj = proj;
+	}
 
 	/**
 	 * Launch the application.
@@ -60,12 +78,13 @@ public class MainShell extends Shell {
 	public MainShell(Display display) {
 		super(display, SWT.SHELL_TRIM);
 		//初始布局加载
-		initLayout();
-		
-		//
+		initLayout();	
 		
 		//窗口创建
 		createContents();
+		
+		//窗口进行刷新
+		refresh();
 	}
 
 	/**
@@ -90,26 +109,38 @@ public class MainShell extends Shell {
 		compResShow = new CompResShow(comp_Content, SWT.NONE);
 		compResShow.setBounds(0, 0, 645, 557);
 		
+		//主菜单栏
 		Menu menu = new Menu(this, SWT.BAR);
 		setMenuBar(menu);
 		
-		MenuItem mntmNewSubmenu = new MenuItem(menu, SWT.CASCADE);
-		mntmNewSubmenu.setText("File");
+		//文件下拉菜单栏
+		mntmNewSubmenuFile = new MenuItem(menu, SWT.CASCADE);
+		mntmNewSubmenuFile.setText("File");
 		
-		Menu menu_1 = new Menu(mntmNewSubmenu);
-		mntmNewSubmenu.setMenu(menu_1);
+		menu_1 = new Menu(mntmNewSubmenuFile);
+		mntmNewSubmenuFile.setMenu(menu_1);
 		
-		MenuItem mntmNewItem_4 = new MenuItem(menu_1, SWT.NONE);
-		mntmNewItem_4.setText("open project");
+		mntmNewItem_open = new MenuItem(menu_1, SWT.NONE);
+		mntmNewItem_open.setText("open project");
 		
-		MenuItem mntmNewItem_5 = new MenuItem(menu_1, SWT.NONE);
-		mntmNewItem_5.setText("save project");
+		mntmNewItem_save = new MenuItem(menu_1, SWT.NONE);
+		mntmNewItem_save.setText("save project");
 		
-		MenuItem mntmNewItem_6 = new MenuItem(menu_1, SWT.NONE);
-		mntmNewItem_6.setText("new project");
+		mntmNewItem_new = new MenuItem(menu_1, SWT.NONE);
+		mntmNewItem_new.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				OpenProjShell openProjShell = new OpenProjShell(getDisplay(),MainShell.this);
+				openProjShell.open();
+				openProjShell.layout();
+			}
+		});
+		mntmNewItem_new.setText("new project");
 		
-		MenuItem mntmNewItem = new MenuItem(menu, SWT.NONE);
-		mntmNewItem.addSelectionListener(new SelectionAdapter() {
+		
+		//演化成本估算
+		mntmNewItem_cal = new MenuItem(menu, SWT.NONE);
+		mntmNewItem_cal.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				compResShow.setVisible(false);
@@ -117,10 +148,11 @@ public class MainShell extends Shell {
 				compWorkCal.setVisible(true);
 			}
 		});
-		mntmNewItem.setText("演化成本估算");
+		mntmNewItem_cal.setText("演化成本估算");
 		
-		MenuItem mntmNewItem_1 = new MenuItem(menu, SWT.NONE);
-		mntmNewItem_1.addSelectionListener(new SelectionAdapter() {
+		//公式校准
+		mntmNewItem_adjust = new MenuItem(menu, SWT.NONE);
+		mntmNewItem_adjust.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				compResShow.setVisible(false);
@@ -128,10 +160,12 @@ public class MainShell extends Shell {
 				compWorkCal.setVisible(false);
 			}
 		});
-		mntmNewItem_1.setText("公式校准");
+		mntmNewItem_adjust.setText("公式校准");
 		
-		MenuItem mntmNewItem_3 = new MenuItem(menu, SWT.NONE);
-		mntmNewItem_3.addSelectionListener(new SelectionAdapter() {
+		
+		//结果展示
+		mntmNewItem_res = new MenuItem(menu, SWT.NONE);
+		mntmNewItem_res.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				compResShow.setVisible(true);
@@ -139,7 +173,7 @@ public class MainShell extends Shell {
 				compWorkCal.setVisible(false);
 			}
 		});
-		mntmNewItem_3.setText("结果展示");
+		mntmNewItem_res.setText("结果展示");
 		
 	}
 	
@@ -147,7 +181,20 @@ public class MainShell extends Shell {
 		setText("软件成本估算");
 		setSize(450, 300);
 	}
-
+	
+	public void refresh(){
+		if(proj == null){
+			//如果没有任何工程被打开
+			setText("软件成本估算");
+			mntmNewItem_cal.setEnabled(false);
+			mntmNewItem_adjust.setEnabled(false);
+		}
+		if(proj != null){
+			setText(proj.getName());
+			mntmNewItem_cal.setEnabled(true);
+			mntmNewItem_adjust.setEnabled(true);
+		}
+	}
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
