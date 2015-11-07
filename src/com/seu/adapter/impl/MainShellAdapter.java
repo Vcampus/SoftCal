@@ -22,5 +22,4 @@ public class MainShellAdapter implements UiAdapter{
 		// TODO 自动生成的方法存根
 		return false;
 	}
-
 }

@@ -1,29 +1,20 @@
-package com.seu.ui.cal;
+package com.seu.ui.main;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.custom.TableCursor;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.wb.swt.SWTResourceManager;
 
-import com.seu.ui.main.VersionShell;
-
-public class CompWorkCal extends Composite {
+public class VersionShell extends Shell {
+	private Text textItemName;
+	private Text textRealCost;
 	private Text textlblExternalInputFile;
 	private Text textExternalInputData;
 	private Text textExternalOutputFile;
@@ -35,13 +26,34 @@ public class CompWorkCal extends Composite {
 	private Text textExternalInterfaceFileMemory;
 	private Text textExternalInterfaceFileData;
 	private Text textAdjustScale;
+
 	/**
-	 * Create the composite.
-	 * @param parent
-	 * @param style
+	 * Launch the application.
+	 * @param args
 	 */
-	public CompWorkCal(Composite parent, int style) {
-		super(parent, style);
+//	public static void main(String args[]) {
+//		try {
+//			Display display = Display.getDefault();
+//			shellAddVersion shell = new shellAddVersion(display);
+//			shell.open();
+//			shell.layout();
+//			while (!shell.isDisposed()) {
+//				if (!display.readAndDispatch()) {
+//					display.sleep();
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+
+	/**
+	 * Create the shell.
+	 * @param display
+	 */
+	public VersionShell(Display display) {
+		super(display, SWT.SHELL_TRIM);
+		
 		TabFolder tabFolder = new TabFolder(this, SWT.NONE);
 		tabFolder.setBounds(10, 57, 574, 407);
 
@@ -386,7 +398,32 @@ public class CompWorkCal extends Composite {
 		cbSITE.add("很高", 4);
 		cbSITE.add("极高", 5);
 		
+		Label lblItemName = new Label(this, SWT.NONE);
+		lblItemName.setBounds(58, 26, 48, 15);
+		lblItemName.setText("项目名称");
+		textItemName = new Text(this, SWT.BORDER);
+		textItemName.setBounds(109, 23, 120, 21);
 		
+		Label label = new Label(this, SWT.NONE);
+		label.setBounds(337, 26, 78, 15);
+		label.setText("实际开发成本");
+		
+		textRealCost = new Text(this, SWT.BORDER);
+		textRealCost.setBounds(421, 20, 120, 21);
+		
+		Button btnStore = new Button(this, SWT.NONE);
+		btnStore.setBounds(579, 20, 48, 21);
+		btnStore.setText("保存");
+		
+		createContents();
+	}
+
+	/**
+	 * Create contents of the shell.
+	 */
+	protected void createContents() {
+		setText("SWT Application");
+		setSize(655, 522);
 
 	}
 

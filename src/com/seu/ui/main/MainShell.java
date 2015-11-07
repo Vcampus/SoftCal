@@ -113,6 +113,8 @@ public class MainShell extends Shell {
 		setMinimumSize(new Point(943, 616));
 		setLayout(null);
 		
+		
+		//添加版本号
 		comp_Blank = new Composite(this, SWT.NONE);
 		comp_Blank.setSize(917, 517);
 		
@@ -142,10 +144,15 @@ public class MainShell extends Shell {
 		list_version.setLocation(10, 10);
 		list_version.setSize(302, 25);
 		
+		
+		//添加版本号
 		btn_addversion = new Button(comp_Content, SWT.NONE);
 		btn_addversion.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				AddVersionShell addVersionShell = new AddVersionShell(getDisplay(), proj,MainShell.this);
+				addVersionShell.open();
+				addVersionShell.layout();
 			}
 		});
 		btn_addversion.setLocation(400, 10);

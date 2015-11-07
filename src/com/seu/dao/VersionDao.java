@@ -6,6 +6,6 @@ import com.seu.bean.Version;;
 
 public interface VersionDao {
 	List<Version> findByParams(String sql,Object...params);
-	Version getByName(String name);
+	Version getByVesionProjID(int id,String version);
 	void Save(Version version);
 }
