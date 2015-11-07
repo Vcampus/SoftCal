@@ -95,6 +95,7 @@ public class MainShell extends Shell {
 		super(display, SWT.SHELL_TRIM);
 		//变量初始化
 		versionDaoImpl = new VersionDaoImpl();
+		
 		//初始布局加载
 		initLayout();	
 		
@@ -112,6 +113,9 @@ public class MainShell extends Shell {
 	private void initLayout(){
 		setMinimumSize(new Point(943, 616));
 		setLayout(null);
+		
+		compResShow = new CompResShow(this, SWT.NONE);
+		compResShow.setSize(761, 503);
 		
 		
 		//添加版本号
@@ -136,14 +140,6 @@ public class MainShell extends Shell {
 		compWorkCal.setLocation(0, 100);
 		compWorkCal.setSize(572, 486);
 		
-		compResShow = new CompResShow(comp_Content, SWT.NONE);
-		compResShow.setLocation(0, 100);
-		compResShow.setSize(761, 503);
-		
-		Combo list_version = new Combo(comp_Content, SWT.NONE);
-		list_version.setLocation(10, 10);
-		list_version.setSize(302, 25);
-		
 		
 		//添加版本号
 		btn_addversion = new Button(comp_Content, SWT.NONE);
@@ -157,7 +153,7 @@ public class MainShell extends Shell {
 		});
 		btn_addversion.setLocation(400, 10);
 		btn_addversion.setSize(80, 27);
-		btn_addversion.setText("+");
+		
 		
 		//主菜单栏
 		Menu menu = new Menu(this, SWT.BAR);
@@ -274,9 +270,14 @@ public class MainShell extends Shell {
 			mntmNewItem_adjust.setEnabled(true);
 			comp_Blank.setVisible(false);
 			comp_Content.setVisible(true);
-			compResShow.setVisible(true);
+			compResShow.setVisible(false);
 			compArgsAdjust.setVisible(false);
-			compWorkCal.setVisible(false);
+			compWorkCal.setVisible(true);
+			if(version != null){
+				btn_addversion.setText(version.getVersion());
+			}else {
+				btn_addversion.setText("select version");
+			}
 		}
 	}
 	@Override

@@ -2,6 +2,8 @@ package com.seu.ui.main;
 
 import java.util.ArrayList;
 
+import javax.security.auth.Refreshable;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -24,6 +26,7 @@ public class AddVersionShell extends Shell {
 	Proj proj;
 	VersionDaoImpl versionDaoImpl;
 	MainShell father;
+	java.util.List<Version> versions;
 	private Text text;
 	/**
 	 * Create the shell.
@@ -36,6 +39,7 @@ public class AddVersionShell extends Shell {
 		versionDaoImpl = new VersionDaoImpl();
 		this.father = father;
 		initLayout();
+		refresh();
 		createContents();
 	}
 	
@@ -45,20 +49,17 @@ public class AddVersionShell extends Shell {
 		list_version = new List(this, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		list_version.setBounds(10, 28, 393, 73);
 		
-		java.util.List<Version> versions = new ArrayList<Version>();
-		versions = versionDaoImpl.findByParams("select * from version_info where proj_id = ?", proj.getId());
-		if( versions!=null){
-			for(Version version:versions){
-				list_version.add(version.getProj_name()+"  "+version.getVersion());
-			}
-		}
+		
 		
 		Label label_list = new Label(this, SWT.NONE);
 		label_list.setBounds(10, 10, 61, 17);
 		label_list.setText("已有版本号");
 		
+		//监听新版本输入框，如果有内容，就默认是添加新版本
 		text = new Text(this, SWT.BORDER);
 		text.setBounds(10, 165, 393, 57);
+		
+		
 		
 		Label lable_new = new Label(this, SWT.NONE);
 		lable_new.setBounds(10, 135, 61, 17);
@@ -73,27 +74,32 @@ public class AddVersionShell extends Shell {
 				close();
 			}
 		});
-		btn_cancel.setBounds(323, 234, 80, 27);
+		btn_cancel.setBounds(443, 59, 43, 27);
 		btn_cancel.setText("Cancel");
 		
 		
 		//确认添加按钮
-		Button btn_ok = new Button(this, SWT.NONE);
-		btn_ok.addSelectionListener(new SelectionAdapter() {
+		Button btn_add = new Button(this, SWT.NONE);
+		btn_add.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				Version version = new Version(proj.getId(),proj.getName(),text.getText());
 				versionDaoImpl.Save(version);
-				version = versionDaoImpl.getByVesionProjID(proj.getId(), version.getVersion());
-				father.version = version;
-				father.refresh();
-				close();
-				
+				refresh();
 			}
 		});
-		btn_ok.setBounds(237, 234, 80, 27);
-		btn_ok.setText("OK");
+		btn_add.setBounds(443, 195, 51, 27);
+		btn_add.setText("Add");
 		
+		Button btnSelect = new Button(this, SWT.NONE);
+		btnSelect.setBounds(443, 28, 43, 27);
+		btnSelect.setText("Select");
+		btnSelect.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {	
+				selectVersion(versions.get(list_version.getFocusIndex()));
+			}
+		});
 	}
 
 	/**
@@ -101,8 +107,25 @@ public class AddVersionShell extends Shell {
 	 */
 	protected void createContents() {
 		setText(proj.getName()+"-版本添加");
-		setSize(450, 300);
+		setSize(542, 329);
 
+	}
+	
+	public void refresh(){
+		list_version.removeAll();
+		versions = new ArrayList<Version>();
+		versions = versionDaoImpl.findByParams("select * from version_info where proj_id = ?", proj.getId());
+		if( versions!=null){
+			for(Version version:versions){
+				list_version.add(version.getProj_name()+"  "+version.getVersion());
+			}
+		}
+	}
+	
+	public void selectVersion(Version version){
+		father.version = version;
+		father.refresh();
+		close();
 	}
 
 	@Override

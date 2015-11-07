@@ -58,7 +58,7 @@ public class VersionDaoImpl implements VersionDao{
 	@Override
 	public Version getByVesionProjID(int id,String version) {
 		// TODO 自动生成的方法存根
-		return findByParams("select * from version_info where proj_id = ? , version = ?",id,version).get(0);
+		return findByParams("select * from version_info where proj_id = ? and version = ?",id,version).get(0);
 	}
 
 	@Override
