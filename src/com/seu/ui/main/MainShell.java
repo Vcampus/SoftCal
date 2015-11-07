@@ -28,11 +28,13 @@ import com.seu.bean.Proj;
 import com.seu.ui.adjust.CompArgsAdjust;
 import com.seu.ui.cal.CompWorkCal;
 import com.seu.ui.res.CompResShow;
+import org.eclipse.swt.widgets.Label;
 
 public class MainShell extends Shell {
 	CompWorkCal compWorkCal;
 	CompArgsAdjust compArgsAdjust;
 	CompResShow compResShow;
+	Composite compBlank;
 	Menu menu_1;
 	MenuItem mntmNewSubmenuFile;	
 	MenuItem mntmNewItem_open;
@@ -42,6 +44,8 @@ public class MainShell extends Shell {
 	MenuItem mntmNewItem_adjust;
 	MenuItem mntmNewItem_res;
 	Proj proj ;
+	private MenuItem mntmClose;
+	private Label lable_blank_tip;
 
 	public Proj getProj() {
 		return proj;
@@ -99,6 +103,15 @@ public class MainShell extends Shell {
 		Composite comp_Content = new Composite(this, SWT.NONE);
 		comp_Content.setBounds(0, 0, 917, 557);
 		
+		compBlank = new Composite(comp_Content, SWT.NONE);
+		compBlank.setBounds(0, 0, 917, 547);
+		
+		lable_blank_tip = new Label(compBlank, SWT.NONE);
+		lable_blank_tip.setLocation(267, 250);
+		lable_blank_tip.setSize(416, 41);
+		lable_blank_tip.setAlignment(SWT.CENTER);
+		lable_blank_tip.setText("Empty Project Workspace");
+		
 		
 		compWorkCal = new CompWorkCal(comp_Content, SWT.NONE);
 		compWorkCal.setBounds(0, 0, 645, 557);
@@ -107,7 +120,7 @@ public class MainShell extends Shell {
 		compArgsAdjust.setBounds(0, 0, 645, 557);
 		
 		compResShow = new CompResShow(comp_Content, SWT.NONE);
-		compResShow.setBounds(0, 0, 645, 557);
+		compResShow.setBounds(0, 0, 907, 557);
 		
 		//主菜单栏
 		Menu menu = new Menu(this, SWT.BAR);
@@ -120,14 +133,23 @@ public class MainShell extends Shell {
 		menu_1 = new Menu(mntmNewSubmenuFile);
 		mntmNewSubmenuFile.setMenu(menu_1);
 		
-		mntmNewItem_open = new MenuItem(menu_1, SWT.NONE);
-		mntmNewItem_open.setText("open project");
-		
-		mntmNewItem_save = new MenuItem(menu_1, SWT.NONE);
-		mntmNewItem_save.setText("save project");
-		
+		//建立新工程
 		mntmNewItem_new = new MenuItem(menu_1, SWT.NONE);
 		mntmNewItem_new.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				NewProjShell newProjShell = new NewProjShell(getDisplay(),MainShell.this);
+				newProjShell.open();
+				newProjShell.layout();
+			}
+		});
+		mntmNewItem_new.setText("new project");
+		
+		
+		//打开已有工程
+		mntmNewItem_open = new MenuItem(menu_1, SWT.NONE);
+		mntmNewItem_open.setText("open project");
+		mntmNewItem_open.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				OpenProjShell openProjShell = new OpenProjShell(getDisplay(),MainShell.this);
@@ -135,7 +157,23 @@ public class MainShell extends Shell {
 				openProjShell.layout();
 			}
 		});
-		mntmNewItem_new.setText("new project");
+		
+		
+		//保存工程
+		mntmNewItem_save = new MenuItem(menu_1, SWT.NONE);
+		mntmNewItem_save.setText("save project");
+		
+		
+		//关闭工程
+		mntmClose = new MenuItem(menu_1, SWT.NONE);
+		mntmClose.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				proj = null;
+				refresh();
+			}
+		});
+		mntmClose.setText("close");
 		
 		
 		//演化成本估算
@@ -188,6 +226,10 @@ public class MainShell extends Shell {
 			setText("软件成本估算");
 			mntmNewItem_cal.setEnabled(false);
 			mntmNewItem_adjust.setEnabled(false);
+			
+			compResShow.setVisible(false);
+			compArgsAdjust.setVisible(false);
+			compWorkCal.setVisible(false);
 		}
 		if(proj != null){
 			setText(proj.getName());
