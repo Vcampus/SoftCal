@@ -65,8 +65,7 @@ public class OpenProjShell extends Shell {
 		});
 		btn_ok.setBounds(237, 224, 80, 27);
 		btn_ok.setText("open");
-		
-		
+
 		Button btn_cancel = new Button(this, SWT.NONE);
 		btn_cancel.addSelectionListener(new SelectionAdapter() {
 			@Override

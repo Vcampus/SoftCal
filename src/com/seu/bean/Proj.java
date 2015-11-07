@@ -23,7 +23,7 @@ public class Proj {
 		this.description = description;
 	}
 	
-	public Proj( String name, String description) {
+	public Proj(String name, String description) {
 		super();
 		this.name = name;
 		this.description = description;

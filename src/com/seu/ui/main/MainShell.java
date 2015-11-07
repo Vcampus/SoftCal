@@ -25,16 +25,23 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 import com.seu.bean.Proj;
+import com.seu.bean.Version;
+import com.seu.dao.impl.VersionDaoImpl;
 import com.seu.ui.adjust.CompArgsAdjust;
 import com.seu.ui.cal.CompWorkCal;
 import com.seu.ui.res.CompResShow;
+
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Combo;
 
 public class MainShell extends Shell {
+	Composite comp_Content;
+	Composite comp_Blank;
+	
 	CompWorkCal compWorkCal;
 	CompArgsAdjust compArgsAdjust;
 	CompResShow compResShow;
-	Composite compBlank;
+	
 	Menu menu_1;
 	MenuItem mntmNewSubmenuFile;	
 	MenuItem mntmNewItem_open;
@@ -43,9 +50,14 @@ public class MainShell extends Shell {
 	MenuItem mntmNewItem_cal;
 	MenuItem mntmNewItem_adjust;
 	MenuItem mntmNewItem_res;
+	
 	Proj proj ;
+	Version version;
+	private VersionDaoImpl versionDaoImpl;
+
 	private MenuItem mntmClose;
 	private Label lable_blank_tip;
+	private Button btn_addversion;
 
 	public Proj getProj() {
 		return proj;
@@ -81,6 +93,8 @@ public class MainShell extends Shell {
 	 */
 	public MainShell(Display display) {
 		super(display, SWT.SHELL_TRIM);
+		//变量初始化
+		versionDaoImpl = new VersionDaoImpl();
 		//初始布局加载
 		initLayout();	
 		
@@ -98,29 +112,45 @@ public class MainShell extends Shell {
 	private void initLayout(){
 		setMinimumSize(new Point(943, 616));
 		setLayout(null);
-			
-		//主界面布局
-		Composite comp_Content = new Composite(this, SWT.NONE);
-		comp_Content.setBounds(0, 0, 917, 557);
 		
-		compBlank = new Composite(comp_Content, SWT.NONE);
-		compBlank.setBounds(0, 0, 917, 547);
+		comp_Blank = new Composite(this, SWT.NONE);
+		comp_Blank.setSize(917, 517);
 		
-		lable_blank_tip = new Label(compBlank, SWT.NONE);
+		lable_blank_tip = new Label(comp_Blank, SWT.NONE);
 		lable_blank_tip.setLocation(267, 250);
 		lable_blank_tip.setSize(416, 41);
 		lable_blank_tip.setAlignment(SWT.CENTER);
 		lable_blank_tip.setText("Empty Project Workspace");
+			
+		//主界面布局
+		comp_Content = new Composite(this, SWT.NONE);
+		comp_Content.setBounds(0, 0, 917, 557);
+		
+		compArgsAdjust = new CompArgsAdjust(comp_Content, SWT.NONE);
+		compArgsAdjust.setBounds(0, 100, 612, 517);
 		
 		
 		compWorkCal = new CompWorkCal(comp_Content, SWT.NONE);
-		compWorkCal.setBounds(0, 0, 645, 557);
-		
-		compArgsAdjust = new CompArgsAdjust(comp_Content, SWT.NONE);
-		compArgsAdjust.setBounds(0, 0, 645, 557);
+		compWorkCal.setLocation(0, 100);
+		compWorkCal.setSize(572, 486);
 		
 		compResShow = new CompResShow(comp_Content, SWT.NONE);
-		compResShow.setBounds(0, 0, 907, 557);
+		compResShow.setLocation(0, 100);
+		compResShow.setSize(761, 503);
+		
+		Combo list_version = new Combo(comp_Content, SWT.NONE);
+		list_version.setLocation(10, 10);
+		list_version.setSize(302, 25);
+		
+		btn_addversion = new Button(comp_Content, SWT.NONE);
+		btn_addversion.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+			}
+		});
+		btn_addversion.setLocation(400, 10);
+		btn_addversion.setSize(80, 27);
+		btn_addversion.setText("+");
 		
 		//主菜单栏
 		Menu menu = new Menu(this, SWT.BAR);
@@ -215,6 +245,7 @@ public class MainShell extends Shell {
 		
 	}
 	
+	
 	protected void createContents() {
 		setText("软件成本估算");
 		setSize(450, 300);
@@ -227,14 +258,18 @@ public class MainShell extends Shell {
 			mntmNewItem_cal.setEnabled(false);
 			mntmNewItem_adjust.setEnabled(false);
 			
-			compResShow.setVisible(false);
-			compArgsAdjust.setVisible(false);
-			compWorkCal.setVisible(false);
+			comp_Blank.setVisible(true);
+			comp_Content.setVisible(false);
 		}
 		if(proj != null){
 			setText(proj.getName());
 			mntmNewItem_cal.setEnabled(true);
 			mntmNewItem_adjust.setEnabled(true);
+			comp_Blank.setVisible(false);
+			comp_Content.setVisible(true);
+			compResShow.setVisible(true);
+			compArgsAdjust.setVisible(false);
+			compWorkCal.setVisible(false);
 		}
 	}
 	@Override

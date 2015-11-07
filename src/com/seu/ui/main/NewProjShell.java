@@ -78,7 +78,6 @@ public class NewProjShell extends Shell {
 	protected void createContents() {
 		setText("New Project");
 		setSize(450, 300);
-
 	}
 	
 	private void Save(){
