@@ -62,6 +62,8 @@ public class MainShell extends Shell {
 		//初始布局加载
 		initLayout();
 		
+		//
+		
 		//窗口创建
 		createContents();
 	}
