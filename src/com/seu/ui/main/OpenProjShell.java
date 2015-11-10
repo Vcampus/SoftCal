@@ -82,7 +82,7 @@ public class OpenProjShell extends Shell {
 				selectProj(sel_projlist_proj);
 			}
 		});
-		btn_ok.setBounds(237, 224, 80, 27);
+		btn_ok.setBounds(245, 224, 80, 27);
 		btn_ok.setText("open");
 
 		
