@@ -112,29 +112,17 @@ public class MainShell extends Shell {
 	
 	private void initLayout(){
 		setMinimumSize(new Point(943, 616));
-		setLayout(new FormLayout());
+		setLayout(null);
 		
 		compResShow = new CompResShow(this, SWT.NONE);
-		FormLayout fl_compResShow = new FormLayout();
-		fl_compResShow.marginRight = 10;
-		fl_compResShow.marginLeft = 110;
-		compResShow.setLayout(fl_compResShow);
-		FormData fd_compResShow = new FormData();
-		fd_compResShow.bottom = new FormAttachment(0, 503);
-		fd_compResShow.right = new FormAttachment(90);
-		fd_compResShow.top = new FormAttachment(0);
-		fd_compResShow.left = new FormAttachment(10);
-		compResShow.setLayoutData(fd_compResShow);
+		compResShow.setLocation(0, 0);
+		compResShow.setSize(764, 505);
 		
 		
 		//添加版本号
 		comp_Blank = new Composite(this, SWT.NONE);
-		FormData fd_comp_Blank = new FormData();
-		fd_comp_Blank.bottom = new FormAttachment(0, 517);
-		fd_comp_Blank.right = new FormAttachment(0, 917);
-		fd_comp_Blank.top = new FormAttachment(0);
-		fd_comp_Blank.left = new FormAttachment(0);
-		comp_Blank.setLayoutData(fd_comp_Blank);
+		comp_Blank.setLocation(0, 0);
+		comp_Blank.setSize(917, 557);
 		
 		lable_blank_tip = new Label(comp_Blank, SWT.NONE);
 		lable_blank_tip.setLocation(267, 250);
@@ -144,39 +132,19 @@ public class MainShell extends Shell {
 			
 		//主界面布局
 		comp_Content = new Composite(this, SWT.NONE);
-		comp_Content.setLayout(new FormLayout());
-		FormData fd_comp_Content = new FormData();
-		fd_comp_Content.bottom = new FormAttachment(0, 557);
-		fd_comp_Content.right = new FormAttachment(0, 917);
-		fd_comp_Content.top = new FormAttachment(0);
-		fd_comp_Content.left = new FormAttachment(0);
-		comp_Content.setLayoutData(fd_comp_Content);
+		comp_Content.setBounds(0, 0, 917, 557);
 		
 		compArgsAdjust = new CompArgsAdjust(comp_Content, SWT.NONE);
-		FormData fd_compArgsAdjust = new FormData();
-		fd_compArgsAdjust.bottom = new FormAttachment(0, 617);
-		fd_compArgsAdjust.right = new FormAttachment(0, 753);
-		fd_compArgsAdjust.top = new FormAttachment(0, 100);
-		fd_compArgsAdjust.left = new FormAttachment(0);
-		compArgsAdjust.setLayoutData(fd_compArgsAdjust);
+		compArgsAdjust.setBounds(0, 100, 612, 517);
 		
 		
 		compWorkCal = new CompWorkCal(comp_Content, SWT.NONE);
-		FormData fd_compWorkCal = new FormData();
-		fd_compWorkCal.bottom = new FormAttachment(0, 586);
-		fd_compWorkCal.right = new FormAttachment(0, 572);
-		fd_compWorkCal.top = new FormAttachment(0, 100);
-		fd_compWorkCal.left = new FormAttachment(0);
-		compWorkCal.setLayoutData(fd_compWorkCal);
+		compWorkCal.setLocation(0, 100);
+		compWorkCal.setSize(572, 486);
 		
 		
 		//添加版本号
 		btn_addversion = new Button(comp_Content, SWT.NONE);
-		FormData fd_btn_addversion = new FormData();
-		fd_btn_addversion.right = new FormAttachment(0, 480);
-		fd_btn_addversion.top = new FormAttachment(0, 10);
-		fd_btn_addversion.left = new FormAttachment(0, 400);
-		btn_addversion.setLayoutData(fd_btn_addversion);
 		btn_addversion.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -185,6 +153,8 @@ public class MainShell extends Shell {
 				addVersionShell.layout();
 			}
 		});
+		btn_addversion.setLocation(400, 10);
+		btn_addversion.setSize(80, 27);
 		
 		
 		//主菜单栏
@@ -295,9 +265,6 @@ public class MainShell extends Shell {
 			
 			comp_Blank.setVisible(true);
 			comp_Content.setVisible(false);
-			compResShow.setVisible(false);
-			compArgsAdjust.setVisible(false);
-			compWorkCal.setVisible(false);
 		}
 		if(proj != null){
 			setText(proj.getName());

@@ -19,9 +19,6 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import com.seu.ui.input.EIndexEnterCP;
 import com.seu.ui.input.EMEnterCp;
 import com.seu.ui.input.SoftwareSizeEnterCp;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormAttachment;
 
 public class CompArgsAdjust extends Composite {
 	private Table tableHisGet;
@@ -35,15 +32,9 @@ public class CompArgsAdjust extends Composite {
 	 */
 	public CompArgsAdjust(Composite parent, int style) {
 		super(parent, style);
-		setLayout(new FormLayout());
 		
 		TabFolder tabFolder = new TabFolder(this, SWT.NONE);
-		FormData fd_tabFolder = new FormData();
-		fd_tabFolder.bottom = new FormAttachment(0, 464);
-		fd_tabFolder.right = new FormAttachment(90);
-		fd_tabFolder.top = new FormAttachment(0, 57);
-		fd_tabFolder.left = new FormAttachment(0, 10);
-		tabFolder.setLayoutData(fd_tabFolder);
+		tabFolder.setBounds(10, 57, 574, 407);
 
 		//软件规模页面
 		TabItem tabItem = new TabItem(tabFolder, SWT.NONE);

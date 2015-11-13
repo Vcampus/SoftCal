@@ -1,49 +1,43 @@
-package com.seu.ui.adjust;
+package com.seu.ui.cal;
 
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.custom.TableCursor;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.widgets.List;
 
 import com.seu.ui.input.EIndexEnterCP;
 import com.seu.ui.input.EMEnterCp;
 import com.seu.ui.input.SoftwareSizeEnterCp;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormAttachment;
+import com.seu.ui.main.VersionShell;
 
-public class CompArgsAdjust extends Composite {
-	private Table tableHisGet;
-	private Table tableAargs;
-	private Table tableABargs;
-
+public class CompWorkCal extends Composite {
 	/**
 	 * Create the composite.
 	 * @param parent
 	 * @param style
 	 */
-	public CompArgsAdjust(Composite parent, int style) {
+	public CompWorkCal(Composite parent, int style) {
 		super(parent, style);
-		setLayout(new FormLayout());
-		
 		TabFolder tabFolder = new TabFolder(this, SWT.NONE);
-		FormData fd_tabFolder = new FormData();
-		fd_tabFolder.bottom = new FormAttachment(0, 464);
-		fd_tabFolder.right = new FormAttachment(90);
-		fd_tabFolder.top = new FormAttachment(0, 57);
-		fd_tabFolder.left = new FormAttachment(0, 10);
-		tabFolder.setLayoutData(fd_tabFolder);
+		tabFolder.setBounds(10, 57, 574, 407);
+
+	
 
 		//软件规模页面
 		TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
