@@ -21,12 +21,16 @@ import org.eclipse.swt.custom.TableCursor;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.List;
 
+import com.seu.bean.Proj;
+import com.seu.bean.Version;
 import com.seu.ui.input.EIndexEnterCP;
 import com.seu.ui.input.EMEnterCp;
 import com.seu.ui.input.SoftwareSizeEnterCp;
 import com.seu.ui.main.VersionShell;
 
 public class CompWorkCal extends Composite {
+	Proj proj;
+	Version version;
 	/**
 	 * Create the composite.
 	 * @param parent

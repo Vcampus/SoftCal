@@ -16,14 +16,16 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import com.seu.adapter.UiAdapter;
 import com.seu.ui.input.EIndexEnterCP;
 import com.seu.ui.input.EMEnterCp;
 import com.seu.ui.input.SoftwareSizeEnterCp;
+
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormAttachment;
 
-public class CompArgsAdjust extends Composite {
+public class CompArgsAdjust extends Composite implements UiAdapter{
 	private Table tableHisGet;
 	private Table tableAargs;
 	private Table tableABargs;
@@ -66,6 +68,24 @@ public class CompArgsAdjust extends Composite {
 		
 		
 
+	}
+
+	@Override
+	public void load() {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	public void refresh() {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	public boolean save() {
+		// TODO 自动生成的方法存根
+		return false;
 	}
 
 	@Override

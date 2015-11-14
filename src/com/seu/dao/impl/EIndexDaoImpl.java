@@ -64,7 +64,7 @@ public class EIndexDaoImpl implements EIndexDao{
 		@Override
 		public EIndex getByProj_idAndVersion_id(int proj_id,int version_id) {
 			// TODO 自动生成的方法存根
-			return findByParams("select * from pm_info where proj_id = ? and version_id = ?",proj_id,version_id).get(0);
+			return findByParams("select * from e_info where proj_id = ? and version_id = ?",proj_id,version_id).get(0);
 		}
 		
 		@Override

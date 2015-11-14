@@ -25,7 +25,9 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 import com.seu.bean.Proj;
+import com.seu.bean.Size;
 import com.seu.bean.Version;
+import com.seu.dao.impl.SizeDaoImpl;
 import com.seu.dao.impl.VersionDaoImpl;
 import com.seu.ui.adjust.CompArgsAdjust;
 import com.seu.ui.cal.CompWorkCal;
@@ -72,19 +74,24 @@ public class MainShell extends Shell {
 	 * @param args
 	 */
 	public static void main(String args[]) {
-		try {
-			Display display = Display.getDefault();
-			MainShell shell = new MainShell(display);
-			shell.open();
-			shell.layout();
-			while (!shell.isDisposed()) {
-				if (!display.readAndDispatch()) {
-					display.sleep();
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			Display display = Display.getDefault();
+//			MainShell shell = new MainShell(display);
+//			shell.open();
+//			shell.layout();
+//			while (!shell.isDisposed()) {
+//				if (!display.readAndDispatch()) {
+//					display.sleep();
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+		Size size = new Size();
+		SizeDaoImpl sizeDaoImpl = new SizeDaoImpl();
+		size = sizeDaoImpl.getByProj_idAndVersion_id(1, 1);
+		size.setInLogicalData(1000);
+		sizeDaoImpl.Update(size);
 	}
 
 	/**

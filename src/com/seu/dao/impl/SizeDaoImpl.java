@@ -39,11 +39,11 @@ public class SizeDaoImpl implements SizeDao {
 				int su =rs.getInt("SU");
 				float unfm = rs.getFloat("UNFM");
 				int inlogicalfiles =rs.getInt("InLogicalFiles");
-				int exinterfacefile =rs.getInt("ExInterfaceFile");
+				int exinterfacefile =rs.getInt("ExInterfaceFiles");
 				int exinputfiles =rs.getInt("ExInputFiles");
 				int exinquiryfiles =rs.getInt("ExInquiryFiles");
-				int exoutputfiles =rs.getInt(" ExOutputFiles");
-				int inlogicaldata =rs.getInt("InLogicalData") ;
+				int exoutputfiles =rs.getInt("ExOutputFiles");
+				int inlogicaldata =rs.getInt("InLogicData") ;
 				int exinterfacedata =rs.getInt("ExInterfaceData");
 				int exinputdata =rs.getInt("ExInputData");
 				int exinquirydata =rs.getInt("ExInquiryData");
@@ -72,7 +72,7 @@ public class SizeDaoImpl implements SizeDao {
 	@Override
 	public Size getByProj_idAndVersion_id(int proj_id,int version_id) {
 		// TODO Auto-generated method stub
-		return findByParams("select * from pm_info where proj_id = ? and version_id = ?",proj_id,version_id).get(0);
+		return findByParams("select * from size_info where proj_id = ? and version_id = ?",proj_id,version_id).get(0);
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class SizeDaoImpl implements SizeDao {
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
 			PreparedStatement ppsm = conn.prepareStatement("insert into size_info (proj_id,version_id,UNFM,InLogicalFiles,"
-					+ "ExInterfaceFile,ExInputFiles,ExInquiryFiles,InOutputFiles,inLogicalData,ExInterfaceData,"
+					+ "ExInterfaceFiles,ExInputFiles,ExInquiryFiles,ExOutputFiles,inLogicaData,ExInterfaceData,"
 					+ "ExInputData,ExInquiryData,InOutputData) values (?,?,?,?,?,?,?,?,?,?,?,?)");
 			ppsm.setInt(1, size.getProj_id());
 			ppsm.setInt(2, size.getVersion_id());
@@ -112,5 +112,49 @@ public class SizeDaoImpl implements SizeDao {
 		}
 		
 	}
+
+	@Override
+	public boolean Update(Size size) {
+		// TODO 自动生成的方法存根
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
+
+			PreparedStatement ppsm = conn.prepareStatement("UPDATE size_info SET SU=?,UNFM=?,InLogicalFiles=?,"
+					+ "ExInterfaceFiles=?,ExInputFiles=?,ExInquiryFiles=?,ExOutputFiles=?,inLogicData=?,ExInterfaceData=?,"
+					+ "ExInputData=?,ExInquiryData=?,ExOutputData=?  WHERE proj_id=? AND version_id=?");
+			ppsm.setInt(1, size.getSU());
+			ppsm.setFloat(2, size.getUNFM());
+			ppsm.setInt(3, size.getInLogicalFiles());
+			ppsm.setInt(4, size.getExInterfaceFile());
+			ppsm.setInt(5, size.getExInputFiles());
+			ppsm.setInt(6, size.getExInquiryFiles());
+			ppsm.setInt(7, size.getExOutputFiles());
+			ppsm.setInt(8, size.getInLogicalData());
+			ppsm.setInt(9, size.getExInterfaceData());
+			ppsm.setInt(10, size.getExInputData());
+			ppsm.setInt(11, size.getExInquiryData());
+			ppsm.setInt(12, size.getExOutputData());
+			ppsm.setInt(13, size.getProj_id());
+			ppsm.setInt(14, size.getVersion_id());
+			System.out.println(ppsm.toString());
+			ppsm.executeUpdate();
+			ppsm.close();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
+	
 
 }
