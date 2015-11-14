@@ -186,7 +186,7 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 			} catch (SizeNotFoundException e) {
 				// TODO 自动生成的 catch 块
-				e.printStackTrace();
+				System.out.println("暂时无版本，请添加");
 			}
 		}
 	}
