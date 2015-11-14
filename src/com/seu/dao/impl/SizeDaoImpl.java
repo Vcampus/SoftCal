@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.seu.bean.Size;
 import com.seu.dao.SizeDao;
+import com.seu.exception.SizeNotFoundException;
 
 public class SizeDaoImpl implements SizeDao {
 
@@ -70,9 +71,15 @@ public class SizeDaoImpl implements SizeDao {
 	}
 
 	@Override
-	public Size getByProj_idAndVersion_id(int proj_id,int version_id) {
+	public Size getByProj_idAndVersion_id (int proj_id,int version_id) throws SizeNotFoundException{
 		// TODO Auto-generated method stub
-		return findByParams("select * from size_info where proj_id = ? and version_id = ?",proj_id,version_id).get(0);
+		try {
+			return findByParams("select * from size_info where proj_id = ? and version_id = ?",proj_id,version_id).get(0);
+		} catch (IndexOutOfBoundsException e) {
+			// TODO: handle exception
+			throw new SizeNotFoundException();
+		}
+		
 	}
 
 	@Override
@@ -97,7 +104,6 @@ public class SizeDaoImpl implements SizeDao {
 			ppsm.setInt(12, size.getExInputData());
 			ppsm.setInt(13, size.getExInquiryData());
 			ppsm.setInt(14, size.getExOutputData());
-			System.out.println(ppsm.toString());
 			ppsm.execute();
 			ppsm.close();
 		} catch (SQLException e) {

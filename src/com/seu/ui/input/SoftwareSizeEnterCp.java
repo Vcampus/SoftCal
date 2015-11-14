@@ -6,11 +6,21 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class SoftwareSizeEnterCp extends Composite {
+import com.seu.adapter.UiAdapter;
+import com.seu.bean.Proj;
+import com.seu.bean.Size;
+import com.seu.bean.Version;
+import com.seu.dao.impl.SizeDaoImpl;
+import com.seu.exception.SizeNotFoundException;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+
+public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 	private Text textlblExternalInputFile;
 	private Text textExternalInputData;
 	private Text textExternalOutputFile;
-	private Text text_3;
+	private Text textExternalOutputData;
 	private Text textExternalSearchFile;
 	private Text textExternalSearchData;
 	private Text textInsideLogicFileMemory;
@@ -18,6 +28,8 @@ public class SoftwareSizeEnterCp extends Composite {
 	private Text textExternalInterfaceFileMemory;
 	private Text textExternalInterfaceFileData;
 	private Text textAdjustScale;
+	Version version;
+	Size size;
 	/**
 	 * Create the composite.
 	 * @param parent
@@ -25,6 +37,16 @@ public class SoftwareSizeEnterCp extends Composite {
 	 */
 	public SoftwareSizeEnterCp(Composite parent, int style) {
 		super(parent, style);
+		initLayout();
+		load();
+	}
+
+	@Override
+	protected void checkSubclass() {
+		// Disable the check that prevents subclassing of SWT components
+	}
+	
+	public void initLayout(){
 		Label lblExternalInputFile = new Label(this, SWT.NONE);
 		lblExternalInputFile.setBounds(33, 32, 115, 21);
 		lblExternalInputFile.setText("外部输入文件类型数");
@@ -50,8 +72,8 @@ public class SoftwareSizeEnterCp extends Composite {
 		lblExternalOutputData.setText("外部输出数据类型数");
 		lblExternalOutputData.setBounds(302, 75, 123, 15);
 		
-		text_3 = new Text(this, SWT.BORDER);
-		text_3.setBounds(447, 75, 73, 21);
+		textExternalOutputData = new Text(this, SWT.BORDER);
+		textExternalOutputData.setBounds(447, 75, 73, 21);
 		
 		Label lblExternalSearchFile = new Label(this, SWT.NONE);
 		lblExternalSearchFile.setText("外部查询文件类型数");
@@ -126,11 +148,111 @@ public class SoftwareSizeEnterCp extends Composite {
 		lblAdjustScale.setText("修改规模");
 		textAdjustScale = new Text(this, SWT.BORDER);
 		textAdjustScale.setBounds(173, 311, 73, 21);
+		
+		Button btnSave = new Button(this, SWT.NONE);
+		btnSave.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if(save()){
+					System.out.println("保存成功");
+				}
+				else {
+					System.out.println("保存失败");
+				}
+			}
+		});
+		btnSave.setBounds(304, 313, 80, 27);
+		btnSave.setText("Save");
 	}
 
 	@Override
-	protected void checkSubclass() {
-		// Disable the check that prevents subclassing of SWT components
+	public void load() {
+		// TODO 自动生成的方法存根
+		System.out.println("经验显示容器加载");
+		if(version!=null){
+			SizeDaoImpl sizeDaoImpl = new SizeDaoImpl();
+			try {
+				size = sizeDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
+				textlblExternalInputFile.setText(size.getExInputFiles()+"");
+				textExternalInputData.setText(size.getExInputData()+"");
+				textExternalOutputFile.setText(size.getExOutputFiles()+"");
+				textExternalOutputData.setText(size.getExOutputData()+"");
+				textExternalSearchFile.setText(size.getExInquiryFiles()+"");
+				textExternalSearchData.setText(size.getExInquiryData()+"");
+				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+				textlInsideLogicFileData.setText(size.getInLogicalData()+"");
+				textInsideLogicFileMemory.setText(size.getInLogicalFiles()+"");
+				textExternalInterfaceFileData.setText(size.getExInterfaceData()+"");
+				textExternalInterfaceFileMemory.setText(size.getExInterfaceFile()+"");
+				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+			} catch (SizeNotFoundException e) {
+				// TODO 自动生成的 catch 块
+				e.printStackTrace();
+			}
+		}
 	}
 
+	@Override
+	public void refresh() {
+		// TODO 自动生成的方法存根
+		System.out.println("经验显示容器刷新");
+		load();
+	}
+
+	@Override
+	public boolean save() {
+		// TODO 自动生成的方法存根
+		if(version==null){
+			return false;
+		}	
+		SizeDaoImpl sizeDaoImpl = new SizeDaoImpl();
+		try {
+			try {
+				size = sizeDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
+				size.setExInputFiles(Integer.parseInt(textlblExternalInputFile.getText()));
+				size.setExInputData(Integer.parseInt(textExternalInputData.getText()));
+				size.setExOutputFiles(Integer.parseInt(textExternalOutputFile.getText()));
+				size.setExOutputData(Integer.parseInt(textExternalOutputData.getText()));
+				size.setExInquiryFiles(Integer.parseInt(textExternalSearchFile.getText()));
+				size.setExInquiryData(Integer.parseInt(textExternalSearchData.getText()));
+				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+				size.setInLogicalData(Integer.parseInt(textlInsideLogicFileData.getText()));
+				size.setInLogicalFiles(Integer.parseInt(textInsideLogicFileMemory.getText()));
+				size.setExInterfaceData(Integer.parseInt(textExternalInterfaceFileData.getText()));
+				size.setExInterfaceFile(Integer.parseInt(textExternalInterfaceFileMemory.getText()));
+				sizeDaoImpl.Update(size);
+				return true;
+			} catch (SizeNotFoundException e) {
+				// TODO: handle exception
+				size = new Size();
+				size.setProj_id(version.getProj_id());
+				size.setVersion_id(version.getId());
+				size.setExInputFiles(Integer.parseInt(textlblExternalInputFile.getText()));
+				size.setExInputData(Integer.parseInt(textExternalInputData.getText()));
+				size.setExOutputFiles(Integer.parseInt(textExternalOutputFile.getText()));
+				size.setExOutputData(Integer.parseInt(textExternalOutputData.getText()));
+				size.setExInquiryFiles(Integer.parseInt(textExternalSearchFile.getText()));
+				size.setExInquiryData(Integer.parseInt(textExternalSearchData.getText()));
+				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+				size.setInLogicalData(Integer.parseInt(textlInsideLogicFileData.getText()));
+				size.setInLogicalFiles(Integer.parseInt(textInsideLogicFileMemory.getText()));
+				size.setExInterfaceData(Integer.parseInt(textExternalInterfaceFileData.getText()));
+				size.setExInterfaceFile(Integer.parseInt(textExternalInterfaceFileMemory.getText()));
+				sizeDaoImpl.Save(size);
+				return true;
+			}
+		} catch (NumberFormatException e) {
+			// TODO: handle exception
+			return false;
+		}
+		
+	}
+
+	public Version getVersion() {
+		return version;
+	}
+
+	public void setVersion(Version version) {
+		this.version = version;
+	}
 }

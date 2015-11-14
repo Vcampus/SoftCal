@@ -74,27 +74,33 @@ public class MainShell extends Shell {
 	 * @param args
 	 */
 	public static void main(String args[]) {
+		try {
+			Display display = Display.getDefault();
+			MainShell shell = new MainShell(display);
+			shell.open();
+			shell.layout();
+			while (!shell.isDisposed()) {
+				if (!display.readAndDispatch()) {
+					display.sleep();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+//		Size size = new Size();
+//		SizeDaoImpl sizeDaoImpl = new SizeDaoImpl();
 //		try {
-//			Display display = Display.getDefault();
-//			MainShell shell = new MainShell(display);
-//			shell.open();
-//			shell.layout();
-//			while (!shell.isDisposed()) {
-//				if (!display.readAndDispatch()) {
-//					display.sleep();
-//				}
-//			}
+//			size = sizeDaoImpl.getByProj_idAndVersion_id(1, 9);
+//			size.setInLogicalData(1000);
+//			sizeDaoImpl.Update(size);
+//			size.setProj_id(2);
+//			size.setVersion_id(2);
+//			sizeDaoImpl.Save(size);
 //		} catch (Exception e) {
+//			// TODO: handle exception
 //			e.printStackTrace();
 //		}
-		Size size = new Size();
-		SizeDaoImpl sizeDaoImpl = new SizeDaoImpl();
-		size = sizeDaoImpl.getByProj_idAndVersion_id(1, 1);
-		size.setInLogicalData(1000);
-		sizeDaoImpl.Update(size);
-		size.setProj_id(2);
-		size.setVersion_id(2);
-		sizeDaoImpl.Save(size);
+		
 	}
 
 	/**
@@ -308,6 +314,7 @@ public class MainShell extends Shell {
 			compResShow.setVisible(false);
 			compArgsAdjust.setVisible(false);
 			compWorkCal.setVisible(false);
+			
 		}
 		if(proj != null){
 			setText(proj.getName());
@@ -320,6 +327,9 @@ public class MainShell extends Shell {
 			compWorkCal.setVisible(true);
 			if(version != null){
 				btn_addversion.setText(version.getVersion());
+				//compWorkCal里的数据刷新
+				compWorkCal.setVersion(version);
+				compWorkCal.refresh();
 			}else {
 				btn_addversion.setText("select version");
 			}

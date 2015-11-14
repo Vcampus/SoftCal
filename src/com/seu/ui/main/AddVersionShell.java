@@ -91,13 +91,19 @@ public class AddVersionShell extends Shell {
 		btn_add.setBounds(443, 195, 51, 27);
 		btn_add.setText("Add");
 		
+		
+		//选择按钮
 		Button btnSelect = new Button(this, SWT.NONE);
 		btnSelect.setBounds(443, 28, 43, 27);
 		btnSelect.setText("Select");
 		btnSelect.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {	
+			public void widgetSelected(SelectionEvent arg0) {
+				if(list_version.getFocusIndex()!=-1)
 				selectVersion(versions.get(list_version.getFocusIndex()));
+				else {
+					selectVersion(null);
+				}
 			}
 		});
 	}
