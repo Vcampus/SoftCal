@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.seu.bean.Version;
 import com.seu.dao.VersionDao;
+import com.seu.exception.VersionExistedException;
 
 public class VersionDaoImpl implements VersionDao{
 	static{
@@ -62,12 +63,14 @@ public class VersionDaoImpl implements VersionDao{
 	}
 
 	@Override
-	public void Save(Version version) {
+	public void Save(Version version) throws VersionExistedException{
 		// TODO 自动生成的方法存根
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
 			PreparedStatement ppsm = conn.prepareStatement("insert into version_info (proj_id,proj_name,version) values (?,?,?)");
+			if(!findByParams("select * from version_info where proj_id = ? and version = ?",version.getProj_id(),version.getVersion()).isEmpty())
+				throw new VersionExistedException();
 			ppsm.setInt(1, version.getProj_id());
 			ppsm.setString(2, version.getProj_name());
 			ppsm.setString(3, version.getVersion());

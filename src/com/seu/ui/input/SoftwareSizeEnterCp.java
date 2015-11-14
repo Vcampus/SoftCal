@@ -168,7 +168,6 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 	@Override
 	public void load() {
 		// TODO 自动生成的方法存根
-		System.out.println("经验显示容器加载");
 		if(version!=null){
 			SizeDaoImpl sizeDaoImpl = new SizeDaoImpl();
 			try {
@@ -195,7 +194,6 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 	@Override
 	public void refresh() {
 		// TODO 自动生成的方法存根
-		System.out.println("经验显示容器刷新");
 		load();
 	}
 

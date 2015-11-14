@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.seu.bean.Proj;
 import com.seu.bean.Version;
 import com.seu.dao.impl.VersionDaoImpl;
+import com.seu.exception.VersionExistedException;
 
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Label;
@@ -84,7 +85,12 @@ public class AddVersionShell extends Shell {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				Version version = new Version(proj.getId(),proj.getName(),text.getText());
-				versionDaoImpl.Save(version);
+				try {
+					versionDaoImpl.Save(version);
+				} catch (VersionExistedException e) {
+					// TODO: handle exception
+					System.out.println("版本已存在");
+				}
 				refresh();
 			}
 		});
