@@ -92,6 +92,9 @@ public class MainShell extends Shell {
 		size = sizeDaoImpl.getByProj_idAndVersion_id(1, 1);
 		size.setInLogicalData(1000);
 		sizeDaoImpl.Update(size);
+		size.setProj_id(2);
+		size.setVersion_id(2);
+		sizeDaoImpl.Save(size);
 	}
 
 	/**

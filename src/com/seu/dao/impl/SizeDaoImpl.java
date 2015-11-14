@@ -43,7 +43,7 @@ public class SizeDaoImpl implements SizeDao {
 				int exinputfiles =rs.getInt("ExInputFiles");
 				int exinquiryfiles =rs.getInt("ExInquiryFiles");
 				int exoutputfiles =rs.getInt("ExOutputFiles");
-				int inlogicaldata =rs.getInt("InLogicData") ;
+				int inlogicaldata =rs.getInt("InLogicalData") ;
 				int exinterfacedata =rs.getInt("ExInterfaceData");
 				int exinputdata =rs.getInt("ExInputData");
 				int exinquirydata =rs.getInt("ExInquiryData");
@@ -80,9 +80,9 @@ public class SizeDaoImpl implements SizeDao {
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
-			PreparedStatement ppsm = conn.prepareStatement("insert into size_info (proj_id,version_id,UNFM,InLogicalFiles,"
-					+ "ExInterfaceFiles,ExInputFiles,ExInquiryFiles,ExOutputFiles,inLogicaData,ExInterfaceData,"
-					+ "ExInputData,ExInquiryData,InOutputData) values (?,?,?,?,?,?,?,?,?,?,?,?)");
+			PreparedStatement ppsm = conn.prepareStatement("insert into size_info (proj_id,version_id,SU,UNFM,InLogicalFiles,"
+					+ "ExInterfaceFiles,ExInputFiles,ExInquiryFiles,ExOutputFiles,InLogicalData,ExInterfaceData,"
+					+ "ExInputData,ExInquiryData,ExOutputData) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			ppsm.setInt(1, size.getProj_id());
 			ppsm.setInt(2, size.getVersion_id());
 			ppsm.setInt(3, size.getSU());
@@ -97,6 +97,7 @@ public class SizeDaoImpl implements SizeDao {
 			ppsm.setInt(12, size.getExInputData());
 			ppsm.setInt(13, size.getExInquiryData());
 			ppsm.setInt(14, size.getExOutputData());
+			System.out.println(ppsm.toString());
 			ppsm.execute();
 			ppsm.close();
 		} catch (SQLException e) {
@@ -121,7 +122,7 @@ public class SizeDaoImpl implements SizeDao {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
 
 			PreparedStatement ppsm = conn.prepareStatement("UPDATE size_info SET SU=?,UNFM=?,InLogicalFiles=?,"
-					+ "ExInterfaceFiles=?,ExInputFiles=?,ExInquiryFiles=?,ExOutputFiles=?,inLogicData=?,ExInterfaceData=?,"
+					+ "ExInterfaceFiles=?,ExInputFiles=?,ExInquiryFiles=?,ExOutputFiles=?,inLogicalData=?,ExInterfaceData=?,"
 					+ "ExInputData=?,ExInquiryData=?,ExOutputData=?  WHERE proj_id=? AND version_id=?");
 			ppsm.setInt(1, size.getSU());
 			ppsm.setFloat(2, size.getUNFM());
