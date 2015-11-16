@@ -243,7 +243,6 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 			// TODO: handle exception
 			return false;
 		}
-		
 	}
 
 	public Version getVersion() {
