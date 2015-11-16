@@ -50,8 +50,11 @@ public class EMDaoImpl implements EMDao {
 				float docu =rs.getFloat("DOCU");
 				float stor =rs.getFloat("STOR");
 				float acap =rs.getFloat("ACAP");
+				System.out.println("sss"+acap);
 				float pcap =rs.getFloat("PCAP");
+				System.out.println("sss"+pcap);
 				float plex =rs.getFloat("PLEX");
+				System.out.println("sss"+plex);
 				float tool =rs.getFloat("TOOL");
 				float sced =rs.getFloat("SCED");
 				float inputEm=rs.getFloat("InputEm");
@@ -137,7 +140,7 @@ public class EMDaoImpl implements EMDao {
 
 			PreparedStatement ppsm = conn.prepareStatement("UPDATE em_info SET CPLX=?,TIME=?,PVOL=?,"
 					+ "PCON=?,APEX=?,LTEX=?,SITE=?,RELY=?,DOCU=?,"
-					+ "STOR=?,ACAP=?,PCAP=?,TOOL=?,SCED=?,InputEm=? WHERE proj_id=? AND version_id=?");
+					+ "STOR=?,ACAP=?,PCAP=?,TOOL=?,SCED=?,PLEX=?,InputEm=? WHERE proj_id=? AND version_id=?");
 			ppsm.setFloat(1,em.getCPLX());
 			ppsm.setFloat(2, em.getTIME());
 			ppsm.setFloat(3, em.getPVOL());
@@ -152,9 +155,10 @@ public class EMDaoImpl implements EMDao {
 			ppsm.setFloat(12, em.getPCAP());
 			ppsm.setFloat(13, em.getTOOL());
 			ppsm.setFloat(14, em.getSCED());
-			ppsm.setFloat(15, em.getInputEm());
-			ppsm.setInt(16, em.getProj_id());
-			ppsm.setInt(17, em.getVersion_id());
+			ppsm.setFloat(15, em.getPLEX());
+			ppsm.setFloat(16, em.getInputEm());
+			ppsm.setInt(17, em.getProj_id());
+			ppsm.setInt(18, em.getVersion_id());
 			System.out.println(ppsm.toString());
 			ppsm.executeUpdate();
 			ppsm.close();

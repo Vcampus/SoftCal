@@ -104,6 +104,12 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 		alist.add(vsAPEX);
 		alist.add(vsLTEX);
 		alist.add(vsSITE);
+//		for (int type=1;type<=14;type++){
+//			for(int i=0;i<alist.get(type-1).length;i++)
+//			{	
+//				System.out.println(type+"  "+alist.get(type-1)[i]);	
+//			}
+//		}
 		initLayot();
 		
 	}
@@ -141,7 +147,7 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 					cbRELY.select(getEmIndex(1, em.getRELY()));
 					cbDOCU.select(getEmIndex(2, em.getDOCU()));
 					cbSTOR.select(getEmIndex(3, em.getSTOR()));
-					cbDOCU.select(getEmIndex(4, em.getDOCU()));
+					cbACAP.select(getEmIndex(4, em.getACAP()));
 					cbPCAP.select(getEmIndex(5, em.getPCAP()));
 					cbPLEX.select(getEmIndex(6, em.getPLEX()));
 					cbTOOL.select(getEmIndex(7, em.getTOOL()));
@@ -171,7 +177,7 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 	@Override
 	public void save() throws EmMissingParamException,VersionNotSelectedException,InvalidInputException{
 		// TODO 自动生成的方法存根
-		System.out.println(cbRELY.getSelectionIndex());
+		System.out.println(cbPLEX.getSelectionIndex());
 		if(version==null){
 			throw new VersionNotSelectedException();
 		}	
@@ -235,7 +241,7 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 					em.setAPEX(getEmValue(12, cbAPEX.getSelectionIndex()));
 					em.setLTEX(getEmValue(13, cbLTEX.getSelectionIndex()));
 					em.setSITE(getEmValue(14, cbSITE.getSelectionIndex()));
-					em.setInputEm(0.0f);;
+					em.setInputEm(0.0f);
 				}
 				else {
 					em.setRELY(0);
@@ -282,8 +288,8 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 	
 	public int getEmIndex(int type,float value){
 		for(int i=0;i<alist.get(type-1).length;i++)
-		{
-			if(value==alist.get(type-1)[i])
+		{	
+			if(value == alist.get(type-1)[i])
 				return i;
 		}
 		return -1;
