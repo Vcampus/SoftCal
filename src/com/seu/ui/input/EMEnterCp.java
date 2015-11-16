@@ -101,7 +101,140 @@ public class EMEnterCp extends Composite implements UiAdapter{
 		alist.add(vsAPEX);
 		alist.add(vsLTEX);
 		alist.add(vsSITE);
+		initLayot();
 		
+	}
+
+	@Override
+	protected void checkSubclass() {
+		// Disable the check that prevents subclassing of SWT components
+	}
+	
+	
+	public Version getVersion() {
+		return version;
+	}
+
+	public void setVersion(Version version) {
+		this.version = version;
+	}
+
+
+	
+	@Override
+	public void load() {
+		// TODO 自动生成的方法存根
+		refresh();
+	}
+
+	@Override
+	public void refresh() {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	public boolean save() {
+		// TODO 自动生成的方法存根
+		System.out.println(cbRELY.getSelectionIndex());
+		if(version==null){
+			System.out.println("未选择版本");
+			return false;
+		}	
+		EMDaoImpl emDaoImpl=new EMDaoImpl();
+		
+		try {
+			try {
+				em = emDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
+				em.setRELY(getEmValue(1, cbRELY.getSelectionIndex()));
+				em.setDOCU(getEmValue(2, cbDOCU.getSelectionIndex()));
+				em.setSTOR(getEmValue(3, cbSTOR.getSelectionIndex()));
+				em.setDOCU(getEmValue(4, cbACAP.getSelectionIndex()));
+				em.setPCAP(getEmValue(5, cbPCAP.getSelectionIndex()));
+				em.setPLEX(getEmValue(6, cbPLEX.getSelectionIndex()));
+				em.setTOOL(getEmValue(7, cbTOOL.getSelectionIndex()));
+				em.setCPLX(getEmValue(8, cbCPLX.getSelectionIndex()));
+				em.setTIME(getEmValue(9, cbTIME.getSelectionIndex()));
+				em.setPVOL(getEmValue(10, cbPVOL.getSelectionIndex()));
+				em.setPCON(getEmValue(11, cbPCON.getSelectionIndex()));
+				em.setAPEX(getEmValue(12, cbAPEX.getSelectionIndex()));
+				em.setLTEX(getEmValue(13, cbLTEX.getSelectionIndex()));
+				em.setSITE(getEmValue(14, cbSITE.getSelectionIndex()));
+				em.setInputEm(Float.parseFloat(textEM.getText()));;
+				emDaoImpl.Update(em);
+				return true;
+			} catch (EmNotFoundException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+				
+				em = new EM();
+				em.setProj_id(version.getProj_id());
+				em.setVersion_id(version.getId());
+				em.setRELY(getEmValue(1, cbRELY.getSelectionIndex()));
+				System.out.println("sss"+cbLTEX.getSelectionIndex());
+				em.setDOCU(getEmValue(2, cbDOCU.getSelectionIndex()));
+				em.setSTOR(getEmValue(3, cbSTOR.getSelectionIndex()));
+				em.setDOCU(getEmValue(4, cbACAP.getSelectionIndex()));
+				em.setPCAP(getEmValue(5, cbPCAP.getSelectionIndex()));
+				em.setPLEX(getEmValue(6, cbPLEX.getSelectionIndex()));
+				em.setTOOL(getEmValue(7, cbTOOL.getSelectionIndex()));
+				em.setCPLX(getEmValue(8, cbCPLX.getSelectionIndex()));
+				em.setTIME(getEmValue(9, cbTIME.getSelectionIndex()));
+				em.setPVOL(getEmValue(10, cbPVOL.getSelectionIndex()));
+				em.setPCON(getEmValue(11, cbPCON.getSelectionIndex()));
+				em.setAPEX(getEmValue(12, cbAPEX.getSelectionIndex()));
+				em.setLTEX(getEmValue(13, cbLTEX.getSelectionIndex()));
+				em.setSITE(getEmValue(14, cbSITE.getSelectionIndex()));
+				em.setInputEm(Float.parseFloat(textEM.getText()));;
+				emDaoImpl.Save(em);
+				return true;
+			}
+		} catch (NumberFormatException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			System.out.println("存在数据输入格式不正确");
+			return false;
+		}
+	}
+	
+	public float getEmValue(int type,int index){
+		try {
+			return alist.get(type-1)[index];
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(type-1);
+			System.out.println(index);
+			return 0.0f;
+		}
+		
+	}
+	
+	public void setCbEnabled(){
+		Boolean enable;
+		if(textEM.getText().equals(""))
+		{	
+			enable=true;
+		}else {
+			enable=false;
+		}
+		cbRELY.setEnabled(enable);
+		cbDOCU.setEnabled(enable);
+		cbSTOR.setEnabled(enable);
+		cbACAP.setEnabled(enable);
+		cbPCAP.setEnabled(enable);
+		cbPLEX.setEnabled(enable);
+		cbTOOL.setEnabled(enable);
+		cbCPLX.setEnabled(enable);
+		cbTIME.setEnabled(enable);
+		cbPVOL.setEnabled(enable);
+		cbPCON.setEnabled(enable);
+		cbAPEX.setEnabled(enable);
+	    cbLTEX.setEnabled(enable);
+        cbSITE.setEnabled(enable);
+	}
+	
+	private void initLayot() {
+		// TODO 自动生成的方法存根
 		Label lblCalByPiont = new Label(this, SWT.NONE);
 		FormData lblCalByPiont_fd = new FormData();
 		lblCalByPiont_fd.top = new FormAttachment(2, 1);
@@ -375,131 +508,154 @@ public class EMEnterCp extends Composite implements UiAdapter{
 		btn_save.setLayoutData(fd_btn_save);
 		btn_save.setText("Save");
 		
-	}
-
-	@Override
-	protected void checkSubclass() {
-		// Disable the check that prevents subclassing of SWT components
-	}
-	
-	
-	public Version getVersion() {
-		return version;
-	}
-
-	public void setVersion(Version version) {
-		this.version = version;
-	}
-
-	@Override
-	public void load() {
-		// TODO 自动生成的方法存根
-		refresh();
-	}
-
-	@Override
-	public void refresh() {
-		// TODO 自动生成的方法存根
 		
-	}
-
-	@Override
-	public boolean save() {
-		// TODO 自动生成的方法存根
-		System.out.println(cbRELY.getSelectionIndex());
-		if(version==null){
-			System.out.println("未选择版本");
-			return false;
-		}	
-		EMDaoImpl emDaoImpl=new EMDaoImpl();
-		
-		try {
-			try {
-				em = emDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
-				em.setRELY(getEmValue(1, cbRELY.getSelectionIndex()));
-				em.setDOCU(getEmValue(2, cbDOCU.getSelectionIndex()));
-				em.setSTOR(getEmValue(3, cbSTOR.getSelectionIndex()));
-				em.setDOCU(getEmValue(4, cbACAP.getSelectionIndex()));
-				em.setPCAP(getEmValue(5, cbPCAP.getSelectionIndex()));
-				em.setPLEX(getEmValue(6, cbPLEX.getSelectionIndex()));
-				em.setTOOL(getEmValue(7, cbTOOL.getSelectionIndex()));
-				em.setCPLX(getEmValue(8, cbCPLX.getSelectionIndex()));
-				em.setTIME(getEmValue(9, cbTIME.getSelectionIndex()));
-				em.setPVOL(getEmValue(10, cbPVOL.getSelectionIndex()));
-				em.setPCON(getEmValue(11, cbPCON.getSelectionIndex()));
-				em.setAPEX(getEmValue(12, cbAPEX.getSelectionIndex()));
-				em.setLTEX(getEmValue(13, cbLTEX.getSelectionIndex()));
-				em.setSITE(getEmValue(14, cbSITE.getSelectionIndex()));
-				em.setInputEm(Float.parseFloat(textEM.getText()));;
-				emDaoImpl.Update(em);
-				return true;
-			} catch (EmNotFoundException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-				
-				em = new EM();
-				em.setProj_id(version.getProj_id());
-				em.setVersion_id(version.getId());
-				em.setRELY(getEmValue(1, cbRELY.getSelectionIndex()));
-				System.out.println("sss"+cbLTEX.getSelectionIndex());
-				em.setDOCU(getEmValue(2, cbDOCU.getSelectionIndex()));
-				em.setSTOR(getEmValue(3, cbSTOR.getSelectionIndex()));
-				em.setDOCU(getEmValue(4, cbACAP.getSelectionIndex()));
-				em.setPCAP(getEmValue(5, cbPCAP.getSelectionIndex()));
-				em.setPLEX(getEmValue(6, cbPLEX.getSelectionIndex()));
-				em.setTOOL(getEmValue(7, cbTOOL.getSelectionIndex()));
-				em.setCPLX(getEmValue(8, cbCPLX.getSelectionIndex()));
-				em.setTIME(getEmValue(9, cbTIME.getSelectionIndex()));
-				em.setPVOL(getEmValue(10, cbPVOL.getSelectionIndex()));
-				em.setPCON(getEmValue(11, cbPCON.getSelectionIndex()));
-				em.setAPEX(getEmValue(12, cbAPEX.getSelectionIndex()));
-				em.setLTEX(getEmValue(13, cbLTEX.getSelectionIndex()));
-				em.setSITE(getEmValue(14, cbSITE.getSelectionIndex()));
-				em.setInputEm(Float.parseFloat(textEM.getText()));;
-				emDaoImpl.Save(em);
-				return true;
-			}
-		} catch (NumberFormatException e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			System.out.println("存在数据输入格式不正确");
-			return false;
-		}
-	}
-	
-	public float getEmValue(int type,int index){
-		try {
-			return alist.get(type-1)[index];
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println(type-1);
-			System.out.println(index);
-			return 0.0f;
-		}
-		
-	}
-	
-	public void setCbEnabled(){
-		Boolean enable;
-		if(textEM.getText().equals(""))
-		{	
-			enable=true;
-		}else {
-			enable=false;
-		}
-		cbRELY.setEnabled(enable);
-		cbDOCU.setEnabled(enable);
-		cbSTOR.setEnabled(enable);
-		cbACAP.setEnabled(enable);
-		cbPCAP.setEnabled(enable);
-		cbPLEX.setEnabled(enable);
-		cbTOOL.setEnabled(enable);
-		cbCPLX.setEnabled(enable);
-		cbTIME.setEnabled(enable);
-		cbPVOL.setEnabled(enable);
-		cbPCON.setEnabled(enable);
-		cbAPEX.setEnabled(enable);
-	    cbLTEX.setEnabled(enable);
-        cbSITE.setEnabled(enable);
+		String sReturn = System.getProperty("line.separator");
+		lblRELY.setToolTipText("RELY (Reliability)） is the measure "
+				+ sReturn +"of the extent to which the software "
+				+sReturn + "must perform its intended function "
+				+ sReturn +"over a period of time. If the effect"
+				+ sReturn +"of a software failure is only slight"
+				+ sReturn +"inconvenience then RELY is very low."
+				+ sReturn +"If a failure would risk human life "
+				+ sReturn +"then RELY is very high.");
+		lblCPLX.setToolTipText("CPLX (Product Complexity) is divided"
+				+ sReturn +"into five areas: control operations,"
+				+sReturn + "computational operations, device-"
+				+ sReturn +"dependent operations, data management"
+				+ sReturn +"operations, and user interface "
+				+ sReturn +"management operations. Select the "
+				+ sReturn +"area or combination of areas that "
+				+ sReturn +"characterize the product or a "
+				+ sReturn +"sub-system of the product. The  "
+				+ sReturn +"complexity rating is the subjective "
+				+ sReturn +"weighted average of these areas. ");
+		lblTIME.setToolTipText("TIME (Execution Time Constraint) is a"
+				+ sReturn +"measure of the execution time "
+				+sReturn + "constraint imposed upon a software"
+				+ sReturn +"system. The rating is expressed in "
+				+ sReturn +"terms of the percentage of available"
+				+ sReturn +"execution time expected to be used by"
+				+ sReturn +"the system or subsystem consuming the"
+				+ sReturn +"execution time resource.");
+		lblPVOL.setToolTipText("PVOL(Platform Volatility) is used "
+				+ sReturn +"here to mean the complex of hardware"
+				+ sReturn +"and software");
+		lblPCON.setToolTipText("The rating scale for PCON (Personnel"
+				+ sReturn +"Continuity) is in terms of the "
+				+sReturn + "constraint imposed upon a software"
+				+ sReturn +"project’s annual personnel turnover:"
+				+ sReturn +"from 3%, very high continuity, to"
+				+ sReturn +"48%, very low continuity");
+		lblAPEX.setToolTipText("The rating for APEX (Applications "
+				+ sReturn +"Experience ,formerly labeled AEXP) is"
+				+sReturn + "dependent on the level of "
+				+ sReturn +"applications experience of the"
+				+ sReturn +"project team developing the software"
+				+ sReturn +"system or subsystem. A very low  "
+				+ sReturn +"rating is for application experience "
+				+ sReturn +"of less than 2 months. A very high "
+				+ sReturn +"rating is for experience of 6 years"
+				+ sReturn +"or more");
+		lblLTEX.setToolTipText("LTEX is a measure of the level of "
+				+ sReturn +"programming language and software "
+				+sReturn + "tool experience of the project team "
+				+ sReturn +"developing the software system or "
+				+ sReturn +"subsystem. Software development "
+				+ sReturn +"includes the use of tools that "
+				+ sReturn +"perform requirements and design "
+				+ sReturn +"representation and analysis, "
+				+ sReturn +"configuration management, document "
+				+ sReturn +"extraction, library management,"
+				+ sReturn +"program style and formatting, "
+				+ sReturn +"consistency checking, planning and "
+				+ sReturn +"control, etc.");
+		lblSITE.setToolTipText("Multisite Development (SITE) "
+				+ sReturn +"determining its cost driver rating "
+				+sReturn + "involves the assessment and"
+				+ sReturn +"judgement-based averaging of two"
+				+ sReturn +"factors: site collocation (from fully"
+				+ sReturn +"collocated to international "
+				+ sReturn +"distribution) and communication"
+				+ sReturn +"support (from surface mail and some "
+				+ sReturn +"phone access to full interactive "
+				+ sReturn +"multimedia).");
+		lblDOCU.setToolTipText("The rating scale for the DOCU  "
+				+ sReturn +"(Documentation) cost driver is "
+				+sReturn + "evaluated in terms of the suitability "
+				+ sReturn +"of the project’s documentation to "
+				+ sReturn +"its life-cycle needs. The rating "
+				+ sReturn +"scale goes from Very Low(many life-"
+				+ sReturn +"cycle needs uncovered) to Very High "
+				+ sReturn +"(very excessive for life-cycle "
+				+ sReturn +"needs)Attempting to save costs via "
+				+ sReturn +"Very Low or Low documentation levels "
+				+ sReturn +"will generally incur extra costs "
+				+ sReturn +"during the maintenance portion of the"
+				+ sReturn +"life-cycle. Poor or missing"
+				+ sReturn +"documentation will increase the "
+				+ sReturn +"Software Understanding (SU) "
+				+ sReturn +"increment.");
+		lblSTOR.setToolTipText("STOR rating represents the degree of"
+				+ sReturn +"main storage constraint imposed on a"
+				+sReturn + "software system or subsystem. Given"
+				+ sReturn +"the remarkable increase in available "
+				+ sReturn +"processor execution time and main "
+				+ sReturn +"storage, one can question whether "
+				+ sReturn +"these constraint variables are still"
+				+ sReturn +"relevant. However ,many applications"
+				+ sReturn +"continue to expand to consume  "
+				+ sReturn +"whatever resources are available---"
+				+ sReturn +"particularly with large and growing "
+				+ sReturn +"COTS products---making these cost "
+				+ sReturn +"drivers still relevant. The rating "
+				+ sReturn +"ranges from nominal (less than 50%), "
+				+ sReturn +"to extra high (95%).");
+		lblACAP .setToolTipText("Analysts are personnel who work on "
+				+ sReturn +"requirements, high-level design and "
+				+sReturn + "detailed design. The major attributes"
+				+ sReturn +"that should be considered in this  "
+				+ sReturn +"rating are analysis and design  "
+				+ sReturn +"ability, efficiency and thoroughness "
+				+ sReturn +"and the ability to communicate and "
+				+ sReturn +"cooperate. The rating should not"
+				+ sReturn +"consider the level of experience of  "
+				+ sReturn +"the analyst; that is rated with APEX"
+				+ sReturn +"LTEX, and PLEX. Analyst teams that "
+				+ sReturn +"fall in the fifteenth percentile are"
+				+ sReturn +"rated very low and those that fall in"
+				+ sReturn +"the ninetieth percentile are rated as"
+				+ sReturn +"very high.");
+		lblPCAP .setToolTipText("Evaluation should be based on the "
+				+ sReturn +"capability of the programmers as a "
+				+sReturn + "team rather than as individuals. "
+				+ sReturn +"Major factors which should be  "
+				+ sReturn +"considered in the rating are ability,"
+				+ sReturn +"efficiency and thoroughness, and the "
+				+ sReturn +"ability to communicate and cooperate."
+				+ sReturn +"The experience of the programmer "
+				+ sReturn +"should not be considered here; it is"
+				+ sReturn +"rated with APEX, LTEX, and PLEX. A "
+				+ sReturn +"very low rated programmer team is in "
+				+ sReturn +"the fifteenth percentile and a very "
+				+ sReturn +"high rated programmer team is in the"
+				+ sReturn +"ninetieth percentile.");
+		lblPLEX .setToolTipText("The Post-Architecture model broadens"
+				+ sReturn +"the productivity influence of "
+				+sReturn + "platform experience, PLEX (formerly "
+				+ sReturn +"labeled PEXP), by recognizing the "
+				+ sReturn +"importance of understanding the use "
+				+ sReturn +"of more powerful platforms, including"
+				+ sReturn +"more graphic user interface, "
+				+ sReturn +"database, networking, and distributed "
+				+ sReturn +"middleware capabilities");
+		lblTOOL .setToolTipText("The tool rating ranges from simple "
+				+ sReturn +"edit and code, very low, to "
+				+sReturn + "integrated life-cycle management "
+				+ sReturn +"tools, very high. An emerging "
+				+ sReturn +"extension of COCOMO II is in the "
+				+ sReturn +"process of elaborating the TOOL "
+				+ sReturn +"rating scale and breaking out the "
+				+ sReturn +"effects of TOOL capability, maturity, "
+				+ sReturn +"and integration");
 	}
 }

@@ -59,7 +59,119 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 	public SoftwareSizeEnterCp(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new FormLayout());
+		initLayout();
+	}
+	
+	public void setTextEditable(){
+		Boolean editable;
+		if(textSizeM.getText().equals(""))
+		{	
+			editable=true;
+		}else {
+			editable=false;
+		}
+		textlblExternalInputFile.setEditable(editable);
+		textExternalInputData.setEditable(editable);
+		textExternalOutputFile.setEditable(editable);
+		textExternalOutputData.setEditable(editable);
+		textExternalSearchFile.setEditable(editable);
+		textExternalSearchData.setEditable(editable);
+		textInsideLogicFileMemory.setEditable(editable);
+		textlInsideLogicFileData.setEditable(editable);
+		textExternalInterfaceFileMemory.setEditable(editable);
+		textExternalInterfaceFileData.setEditable(editable);
+		textAdjustScale.setEditable(editable);
+	}
+	@Override
+	public void load() {
+		// TODO 自动生成的方法存根
 		
+		if(version!=null){
+			SizeDaoImpl sizeDaoImpl = new SizeDaoImpl();
+			try {
+				size = sizeDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
+				textlblExternalInputFile.setText(size.getExInputFiles()+"");
+				textExternalInputData.setText(size.getExInputData()+"");
+				textExternalOutputFile.setText(size.getExOutputFiles()+"");
+				textExternalOutputData.setText(size.getExOutputData()+"");
+				textExternalSearchFile.setText(size.getExInquiryFiles()+"");
+				textExternalSearchData.setText(size.getExInquiryData()+"");
+				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+				textlInsideLogicFileData.setText(size.getInLogicalData()+"");
+				textInsideLogicFileMemory.setText(size.getInLogicalFiles()+"");
+				textExternalInterfaceFileData.setText(size.getExInterfaceData()+"");
+				textExternalInterfaceFileMemory.setText(size.getExInterfaceFile()+"");
+				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+				textSizeM.setText(size.getInputSize()+"");
+			} catch (SizeNotFoundException e) {
+				// TODO 自动生成的 catch 块
+				System.out.println("暂时无版本，请添加");
+			}
+		}
+	}
+
+	@Override
+	public void refresh() {
+		// TODO 自动生成的方法存根
+		load();
+	}
+
+	@Override
+	public boolean save() {
+		// TODO 自动生成的方法存根
+		if(version==null){
+			return false;
+		}	
+		SizeDaoImpl sizeDaoImpl = new SizeDaoImpl();
+		try {
+			try {
+				size = sizeDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
+				size.setExInputFiles(Integer.parseInt(textlblExternalInputFile.getText()));
+				size.setExInputData(Integer.parseInt(textExternalInputData.getText()));
+				size.setExOutputFiles(Integer.parseInt(textExternalOutputFile.getText()));
+				size.setExOutputData(Integer.parseInt(textExternalOutputData.getText()));
+				size.setExInquiryFiles(Integer.parseInt(textExternalSearchFile.getText()));
+				size.setExInquiryData(Integer.parseInt(textExternalSearchData.getText()));
+				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+				size.setInLogicalData(Integer.parseInt(textlInsideLogicFileData.getText()));
+				size.setInLogicalFiles(Integer.parseInt(textInsideLogicFileMemory.getText()));
+				size.setExInterfaceData(Integer.parseInt(textExternalInterfaceFileData.getText()));
+				size.setExInterfaceFile(Integer.parseInt(textExternalInterfaceFileMemory.getText()));
+				size.setInputSize(Integer.parseInt(textSizeM.getText()));
+				sizeDaoImpl.Update(size);
+				return true;
+			} catch (SizeNotFoundException e) {
+				// TODO: handle exception
+				size = new Size();
+				size.setProj_id(version.getProj_id());
+				size.setVersion_id(version.getId());
+				size.setExInputFiles(Integer.parseInt(textlblExternalInputFile.getText()));
+				size.setExInputData(Integer.parseInt(textExternalInputData.getText()));
+				size.setExOutputFiles(Integer.parseInt(textExternalOutputFile.getText()));
+				size.setExOutputData(Integer.parseInt(textExternalOutputData.getText()));
+				size.setExInquiryFiles(Integer.parseInt(textExternalSearchFile.getText()));
+				size.setExInquiryData(Integer.parseInt(textExternalSearchData.getText()));
+				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+				size.setInLogicalData(Integer.parseInt(textlInsideLogicFileData.getText()));
+				size.setInLogicalFiles(Integer.parseInt(textInsideLogicFileMemory.getText()));
+				size.setExInterfaceData(Integer.parseInt(textExternalInterfaceFileData.getText()));
+				size.setExInterfaceFile(Integer.parseInt(textExternalInterfaceFileMemory.getText()));
+				sizeDaoImpl.Save(size);
+				return true;
+			}
+		} catch (NumberFormatException e) {
+			// TODO: handle exception
+			System.out.println("存在数据输入格式不正确");
+			return false;
+		}
+	}
+
+	@Override
+	protected void checkSubclass() {
+		// Disable the check that prevents subclassing of SWT components
+	}
+	
+	public void initLayout(){
 		Label lblCalByPiont = new Label(this, SWT.NONE);
 		FormData lblCalByPiont_fd = new FormData();
 		lblCalByPiont_fd.top = new FormAttachment(2, 1);
@@ -287,114 +399,30 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 		btn_save.setText("Save");	
 		
 		setTextEditable();
-	}
-	
-	public void setTextEditable(){
-		Boolean editable;
-		if(textSizeM.getText().equals(""))
-		{	
-			editable=true;
-		}else {
-			editable=false;
-		}
-		textlblExternalInputFile.setEditable(editable);
-		textExternalInputData.setEditable(editable);
-		textExternalOutputFile.setEditable(editable);
-		textExternalOutputData.setEditable(editable);
-		textExternalSearchFile.setEditable(editable);
-		textExternalSearchData.setEditable(editable);
-		textInsideLogicFileMemory.setEditable(editable);
-		textlInsideLogicFileData.setEditable(editable);
-		textExternalInterfaceFileMemory.setEditable(editable);
-		textExternalInterfaceFileData.setEditable(editable);
-		textAdjustScale.setEditable(editable);
-	}
-	@Override
-	public void load() {
-		// TODO 自动生成的方法存根
 		
-		if(version!=null){
-			SizeDaoImpl sizeDaoImpl = new SizeDaoImpl();
-			try {
-				size = sizeDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
-				textlblExternalInputFile.setText(size.getExInputFiles()+"");
-				textExternalInputData.setText(size.getExInputData()+"");
-				textExternalOutputFile.setText(size.getExOutputFiles()+"");
-				textExternalOutputData.setText(size.getExOutputData()+"");
-				textExternalSearchFile.setText(size.getExInquiryFiles()+"");
-				textExternalSearchData.setText(size.getExInquiryData()+"");
-				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-				textlInsideLogicFileData.setText(size.getInLogicalData()+"");
-				textInsideLogicFileMemory.setText(size.getInLogicalFiles()+"");
-				textExternalInterfaceFileData.setText(size.getExInterfaceData()+"");
-				textExternalInterfaceFileMemory.setText(size.getExInterfaceFile()+"");
-				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-				textSizeM.setText(size.getInputSize()+"");
-			} catch (SizeNotFoundException e) {
-				// TODO 自动生成的 catch 块
-				System.out.println("暂时无版本，请添加");
-			}
-		}
-	}
-
-	@Override
-	public void refresh() {
-		// TODO 自动生成的方法存根
-		load();
-	}
-
-	@Override
-	public boolean save() {
-		// TODO 自动生成的方法存根
-		if(version==null){
-			return false;
-		}	
-		SizeDaoImpl sizeDaoImpl = new SizeDaoImpl();
-		try {
-			try {
-				size = sizeDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
-				size.setExInputFiles(Integer.parseInt(textlblExternalInputFile.getText()));
-				size.setExInputData(Integer.parseInt(textExternalInputData.getText()));
-				size.setExOutputFiles(Integer.parseInt(textExternalOutputFile.getText()));
-				size.setExOutputData(Integer.parseInt(textExternalOutputData.getText()));
-				size.setExInquiryFiles(Integer.parseInt(textExternalSearchFile.getText()));
-				size.setExInquiryData(Integer.parseInt(textExternalSearchData.getText()));
-				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-				size.setInLogicalData(Integer.parseInt(textlInsideLogicFileData.getText()));
-				size.setInLogicalFiles(Integer.parseInt(textInsideLogicFileMemory.getText()));
-				size.setExInterfaceData(Integer.parseInt(textExternalInterfaceFileData.getText()));
-				size.setExInterfaceFile(Integer.parseInt(textExternalInterfaceFileMemory.getText()));
-				size.setInputSize(Integer.parseInt(textSizeM.getText()));
-				sizeDaoImpl.Update(size);
-				return true;
-			} catch (SizeNotFoundException e) {
-				// TODO: handle exception
-				size = new Size();
-				size.setProj_id(version.getProj_id());
-				size.setVersion_id(version.getId());
-				size.setExInputFiles(Integer.parseInt(textlblExternalInputFile.getText()));
-				size.setExInputData(Integer.parseInt(textExternalInputData.getText()));
-				size.setExOutputFiles(Integer.parseInt(textExternalOutputFile.getText()));
-				size.setExOutputData(Integer.parseInt(textExternalOutputData.getText()));
-				size.setExInquiryFiles(Integer.parseInt(textExternalSearchFile.getText()));
-				size.setExInquiryData(Integer.parseInt(textExternalSearchData.getText()));
-				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-				size.setInLogicalData(Integer.parseInt(textlInsideLogicFileData.getText()));
-				size.setInLogicalFiles(Integer.parseInt(textInsideLogicFileMemory.getText()));
-				size.setExInterfaceData(Integer.parseInt(textExternalInterfaceFileData.getText()));
-				size.setExInterfaceFile(Integer.parseInt(textExternalInterfaceFileMemory.getText()));
-				sizeDaoImpl.Save(size);
-				return true;
-			}
-		} catch (NumberFormatException e) {
-			// TODO: handle exception
-			System.out.println("存在数据输入格式不正确");
-			return false;
-		}
-	}
-
-	@Override
-	protected void checkSubclass() {
-		// Disable the check that prevents subclassing of SWT components
+		//注释
+		String sReturn = System.getProperty("line.separator");
+		lblSoftKnowing.setToolTipText("Software Understanding increment"
+				+ sReturn +" (SU): If the software is rated very"
+				+sReturn + " high on structure, applications  "
+				+ sReturn +"clarity, and self-descriptiveness, "
+				+ sReturn +"the software understanding and "
+				+ sReturn +"interface-checking penalty is 10%. If "
+				+ sReturn +"the software is rated very low on "
+				+ sReturn +"these factors, the penalty is 50%. SU "
+				+ sReturn +"is determined by taking the  "
+				+ sReturn +"subjective average of the three  "
+				+ sReturn +"categories.");
+		lblProgramUnfamili.setToolTipText("The UNFM factor is applied "
+				+ sReturn +" multiplicatively to the software "
+				+sReturn + "understanding effort increment. If"
+				+ sReturn +"the programmer works with the "
+				+ sReturn +"software every day, the 0.0 "
+				+ sReturn +"multiplier for UNFM will add no "
+				+ sReturn +"software understanding increment. If"
+				+ sReturn +"the programmer has never seen the "
+				+ sReturn +"software before, the 1.0 multiplier "
+				+ sReturn +"will add the full software"
+				+ sReturn +"understanding effort increment.");
 	}
 }

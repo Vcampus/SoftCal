@@ -183,7 +183,7 @@ public class MainShell extends Shell {
 		
 		//文件下拉菜单栏
 		mntmNewSubmenuFile = new MenuItem(menu, SWT.CASCADE);
-		mntmNewSubmenuFile.setText("File");
+		mntmNewSubmenuFile.setText("Project");
 		
 		menu_1 = new Menu(mntmNewSubmenuFile);
 		mntmNewSubmenuFile.setMenu(menu_1);

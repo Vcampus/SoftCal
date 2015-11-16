@@ -21,6 +21,38 @@ public class EIndexEnterCP extends Composite implements UiAdapter{
 	private Label PRECLb;
 	private Version version;
 	private EIndex eindex;
+
+	private Label FLEXLb;
+	private Label RESLLb;
+	private Label TEAMLb;
+	private Label PMATLb;
+	private Composite combocomposite;
+	private Composite composite;
+	private Combo PRECCb;
+	private Combo FLEXCb;
+	private Combo RESLCb;
+	private Combo TEAMCb;
+	private Combo PMATCb;
+	private Label lblhorizontal1;
+	private Label lblhorizontal;
+	private Text textEIndex;
+	/**
+	 * Create the composite.
+	 * @param parent
+	 * @param style
+	 */
+	public EIndexEnterCP(Composite parent, int style) {
+		super(parent, style);
+		setLayout(new FormLayout());
+		initLayout();
+		
+	}
+
+	@Override
+	protected void checkSubclass() {
+		// Disable the check that prevents subclassing of SWT components
+	}
+	
 	public Version getVersion() {
 		return version;
 	}
@@ -46,30 +78,8 @@ public class EIndexEnterCP extends Composite implements UiAdapter{
 		// TODO 自动生成的方法存根
 		return false;
 	}
-
-	private Label FLEXLb;
-	private Label RESLLb;
-	private Label TEAMLb;
-	private Label PMATLb;
-	private Composite combocomposite;
-	private Composite composite;
-	private Combo PRECCb;
-	private Combo FLEXCb;
-	private Combo RESLCb;
-	private Combo TEAMCb;
-	private Combo PMATCb;
-	private Label lblhorizontal1;
-	private Label lblhorizontal;
-	private Text textEIndex;
-	/**
-	 * Create the composite.
-	 * @param parent
-	 * @param style
-	 */
-	public EIndexEnterCP(Composite parent, int style) {
-		super(parent, style);
-		setLayout(new FormLayout());
-		
+	
+	public void initLayout(){
 		Label lblCalByPiont = new Label(this, SWT.NONE);
 		FormData lblCalByPiont_fd = new FormData();
 		lblCalByPiont_fd.top = new FormAttachment(2, 1);
@@ -207,10 +217,36 @@ public class EIndexEnterCP extends Composite implements UiAdapter{
 		fd_textEIndex.left =new FormAttachment(lblEIndex,30);
 		textEIndex.setLayoutData(fd_textEIndex);
 		
-	}
-
-	@Override
-	protected void checkSubclass() {
-		// Disable the check that prevents subclassing of SWT components
+		//添加注释
+		String sReturn = System.getProperty("line.separator");
+		PRECLb.setToolTipText("PREC（Precedentedness）is used to"
+				+ sReturn +" describe the similarity between the"
+				+sReturn + " product and the previously developed "
+				+ sReturn +"projects. If they have high  similarity, "
+				+ sReturn +"theprecedentedness is high.");
+		FLEXLb.setToolTipText("FLEX（flexibility）is used to "
+				+ sReturn +" describe the flexibility of the e"
+				+sReturn + "software development, and evaluate  "
+				+ sReturn +"the strictness of the requirements  "
+				+ sReturn +"and the coherence of the external "
+				+ sReturn +"interfaces.");
+		RESLLb.setToolTipText("RESL (Risk Resolution)  examines the"
+				+ sReturn +" amount of project’s risk items and"
+				+sReturn + "the level of the risks. It also  "
+				+ sReturn +"identifies the percent of "
+				+ sReturn +"development schedule devoted to "
+				+ sReturn +"establishing architecture, when the "
+				+ sReturn +"general product objectives are  "
+				+ sReturn +"given.");
+		TEAMLb.setToolTipText("TEAM accounts for the sources of "
+				+ sReturn +"project turbulence and entropy "
+				+sReturn + "because of difficulties in "
+				+ sReturn +"synchronizing the project’s  "
+				+ sReturn +"stakeholders.");
+		PMATLb.setToolTipText("The procedure for determining PMAT "
+				+ sReturn +"(Process Maturity) is organized "
+				+sReturn + "around the Software Engineering "
+				+ sReturn +"Institute’s Capability Maturity "
+				+ sReturn +"Model (CMM)");
 	}
 }
