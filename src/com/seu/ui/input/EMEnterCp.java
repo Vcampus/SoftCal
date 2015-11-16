@@ -14,13 +14,17 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.seu.adapter.UiAdapter;
+import com.seu.adapter.UiEmAdapter;
 import com.seu.bean.EM;
 import com.seu.bean.Size;
 import com.seu.bean.Version;
 import com.seu.dao.impl.EMDaoImpl;
 import com.seu.dao.impl.SizeDaoImpl;
+import com.seu.exception.EmMissingParamException;
 import com.seu.exception.EmNotFoundException;
+import com.seu.exception.InvalidInputException;
 import com.seu.exception.SizeNotFoundException;
+import com.seu.exception.VersionNotSelectedException;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -28,7 +32,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.ModifyEvent;
 
-public class EMEnterCp extends Composite implements UiAdapter{
+public class EMEnterCp extends Composite implements UiEmAdapter{
 	private Label lblhorizontal;
 	private Label lblhorizontal1;
 	private Text textEM;
@@ -85,8 +89,7 @@ public class EMEnterCp extends Composite implements UiAdapter{
 	public EMEnterCp(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new FormLayout());
-		
-
+	
 		alist.add(vsRELY);
 		alist.add(vsDOCU);
 		alist.add(vsSTOR);
@@ -124,92 +127,169 @@ public class EMEnterCp extends Composite implements UiAdapter{
 	@Override
 	public void load() {
 		// TODO 自动生成的方法存根
-		refresh();
+		if(version!=null){
+			EMDaoImpl emDaoImpl = new EMDaoImpl();
+			try {
+				em = emDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
+				if(em.getInputEm()==0.0f)
+					textEM.setText("");
+				else {
+					textEM.setText(em.getInputEm()+"");
+				}
+				if(isCbEnabled())
+				{
+					cbRELY.select(getEmIndex(1, em.getRELY()));
+					cbDOCU.select(getEmIndex(2, em.getDOCU()));
+					cbSTOR.select(getEmIndex(3, em.getSTOR()));
+					cbDOCU.select(getEmIndex(4, em.getDOCU()));
+					cbPCAP.select(getEmIndex(5, em.getPCAP()));
+					cbPLEX.select(getEmIndex(6, em.getPLEX()));
+					cbTOOL.select(getEmIndex(7, em.getTOOL()));
+					cbCPLX.select(getEmIndex(8, em.getCPLX()));
+					cbTIME.select(getEmIndex(9, em.getTIME()));
+					cbPVOL.select(getEmIndex(10,em.getPVOL()));
+					cbPCON.select(getEmIndex(11,em.getPCON()));
+					cbAPEX.select(getEmIndex(12,em.getAPEX()));
+					cbLTEX.select(getEmIndex(13,em.getLTEX()));
+					cbSITE.select(getEmIndex(14,em.getSITE()));
+				}
+				
+				
+			} catch (EmNotFoundException e) {
+				// TODO 自动生成的 catch 块
+				System.out.println("暂时无版本，请添加");
+			}
+		}
 	}
 
 	@Override
 	public void refresh() {
 		// TODO 自动生成的方法存根
-		
+		load();
 	}
 
 	@Override
-	public boolean save() {
+	public void save() throws EmMissingParamException,VersionNotSelectedException,InvalidInputException{
 		// TODO 自动生成的方法存根
 		System.out.println(cbRELY.getSelectionIndex());
 		if(version==null){
-			System.out.println("未选择版本");
-			return false;
+			throw new VersionNotSelectedException();
 		}	
 		EMDaoImpl emDaoImpl=new EMDaoImpl();
-		
 		try {
 			try {
 				em = emDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
-				em.setRELY(getEmValue(1, cbRELY.getSelectionIndex()));
-				em.setDOCU(getEmValue(2, cbDOCU.getSelectionIndex()));
-				em.setSTOR(getEmValue(3, cbSTOR.getSelectionIndex()));
-				em.setDOCU(getEmValue(4, cbACAP.getSelectionIndex()));
-				em.setPCAP(getEmValue(5, cbPCAP.getSelectionIndex()));
-				em.setPLEX(getEmValue(6, cbPLEX.getSelectionIndex()));
-				em.setTOOL(getEmValue(7, cbTOOL.getSelectionIndex()));
-				em.setCPLX(getEmValue(8, cbCPLX.getSelectionIndex()));
-				em.setTIME(getEmValue(9, cbTIME.getSelectionIndex()));
-				em.setPVOL(getEmValue(10, cbPVOL.getSelectionIndex()));
-				em.setPCON(getEmValue(11, cbPCON.getSelectionIndex()));
-				em.setAPEX(getEmValue(12, cbAPEX.getSelectionIndex()));
-				em.setLTEX(getEmValue(13, cbLTEX.getSelectionIndex()));
-				em.setSITE(getEmValue(14, cbSITE.getSelectionIndex()));
-				em.setInputEm(Float.parseFloat(textEM.getText()));;
+				if(isCbEnabled()){
+					em.setRELY(getEmValue(1, cbRELY.getSelectionIndex()));
+					em.setDOCU(getEmValue(2, cbDOCU.getSelectionIndex()));
+					em.setSTOR(getEmValue(3, cbSTOR.getSelectionIndex()));
+					em.setACAP(getEmValue(4, cbACAP.getSelectionIndex()));
+					em.setPCAP(getEmValue(5, cbPCAP.getSelectionIndex()));
+					em.setPLEX(getEmValue(6, cbPLEX.getSelectionIndex()));
+					em.setTOOL(getEmValue(7, cbTOOL.getSelectionIndex()));
+					em.setCPLX(getEmValue(8, cbCPLX.getSelectionIndex()));
+					em.setTIME(getEmValue(9, cbTIME.getSelectionIndex()));
+					em.setPVOL(getEmValue(10, cbPVOL.getSelectionIndex()));
+					em.setPCON(getEmValue(11, cbPCON.getSelectionIndex()));
+					em.setAPEX(getEmValue(12, cbAPEX.getSelectionIndex()));
+					em.setLTEX(getEmValue(13, cbLTEX.getSelectionIndex()));
+					em.setSITE(getEmValue(14, cbSITE.getSelectionIndex()));
+					em.setInputEm(0.0f);;
+				}
+				else {
+					em.setRELY(0);
+					em.setDOCU(0);
+					em.setSTOR(0);
+					em.setDOCU(0);
+					em.setPCAP(0);
+					em.setPLEX(0);
+					em.setTOOL(0);
+					em.setCPLX(0);
+					em.setTIME(0);
+					em.setPVOL(0);
+					em.setPCON(0);
+					em.setAPEX(0);
+					em.setLTEX(0);
+					em.setSITE(0);
+					em.setInputEm(Float.parseFloat(textEM.getText()));;
+				}
 				emDaoImpl.Update(em);
-				return true;
 			} catch (EmNotFoundException e) {
 				// TODO: handle exception
 				e.printStackTrace();
-				
 				em = new EM();
 				em.setProj_id(version.getProj_id());
 				em.setVersion_id(version.getId());
-				em.setRELY(getEmValue(1, cbRELY.getSelectionIndex()));
-				System.out.println("sss"+cbLTEX.getSelectionIndex());
-				em.setDOCU(getEmValue(2, cbDOCU.getSelectionIndex()));
-				em.setSTOR(getEmValue(3, cbSTOR.getSelectionIndex()));
-				em.setDOCU(getEmValue(4, cbACAP.getSelectionIndex()));
-				em.setPCAP(getEmValue(5, cbPCAP.getSelectionIndex()));
-				em.setPLEX(getEmValue(6, cbPLEX.getSelectionIndex()));
-				em.setTOOL(getEmValue(7, cbTOOL.getSelectionIndex()));
-				em.setCPLX(getEmValue(8, cbCPLX.getSelectionIndex()));
-				em.setTIME(getEmValue(9, cbTIME.getSelectionIndex()));
-				em.setPVOL(getEmValue(10, cbPVOL.getSelectionIndex()));
-				em.setPCON(getEmValue(11, cbPCON.getSelectionIndex()));
-				em.setAPEX(getEmValue(12, cbAPEX.getSelectionIndex()));
-				em.setLTEX(getEmValue(13, cbLTEX.getSelectionIndex()));
-				em.setSITE(getEmValue(14, cbSITE.getSelectionIndex()));
-				em.setInputEm(Float.parseFloat(textEM.getText()));;
+				if(isCbEnabled()){
+					em.setRELY(getEmValue(1, cbRELY.getSelectionIndex()));
+					em.setDOCU(getEmValue(2, cbDOCU.getSelectionIndex()));
+					em.setSTOR(getEmValue(3, cbSTOR.getSelectionIndex()));
+					em.setACAP(getEmValue(4, cbACAP.getSelectionIndex()));
+					em.setPCAP(getEmValue(5, cbPCAP.getSelectionIndex()));
+					em.setPLEX(getEmValue(6, cbPLEX.getSelectionIndex()));
+					em.setTOOL(getEmValue(7, cbTOOL.getSelectionIndex()));
+					em.setCPLX(getEmValue(8, cbCPLX.getSelectionIndex()));
+					em.setTIME(getEmValue(9, cbTIME.getSelectionIndex()));
+					em.setPVOL(getEmValue(10, cbPVOL.getSelectionIndex()));
+					em.setPCON(getEmValue(11, cbPCON.getSelectionIndex()));
+					em.setAPEX(getEmValue(12, cbAPEX.getSelectionIndex()));
+					em.setLTEX(getEmValue(13, cbLTEX.getSelectionIndex()));
+					em.setSITE(getEmValue(14, cbSITE.getSelectionIndex()));
+					em.setInputEm(0.0f);;
+				}
+				else {
+					em.setRELY(0);
+					em.setDOCU(0);
+					em.setSTOR(0);
+					em.setDOCU(0);
+					em.setPCAP(0);
+					em.setPLEX(0);
+					em.setTOOL(0);
+					em.setCPLX(0);
+					em.setTIME(0);
+					em.setPVOL(0);
+					em.setPCON(0);
+					em.setAPEX(0);
+					em.setLTEX(0);
+					em.setSITE(0);
+					em.setInputEm(Float.parseFloat(textEM.getText()));
+				}
 				emDaoImpl.Save(em);
-				return true;
 			}
 		} catch (NumberFormatException e) {
+			// TODO: handle exception	
+				System.out.println("存在数据输入格式不正确");
+				throw new InvalidInputException();
+		} catch (EmMissingParamException e) {
 			// TODO: handle exception
-			e.printStackTrace();
-			System.out.println("存在数据输入格式不正确");
-			return false;
+			throw new EmMissingParamException();
 		}
 	}
 	
-	public float getEmValue(int type,int index){
+	public float getEmValue (int type,int index)throws EmMissingParamException{
 		try {
 			return alist.get(type-1)[index];
-		} catch (Exception e) {
+		} catch (IndexOutOfBoundsException e) {
 			// TODO: handle exception
-			System.out.println(type-1);
-			System.out.println(index);
-			return 0.0f;
-		}
+			if(isCbEnabled())
+			throw new EmMissingParamException();
+			else {
+				return 0.0f;
+			}
+		}	
 		
 	}
 	
-	public void setCbEnabled(){
+	public int getEmIndex(int type,float value){
+		for(int i=0;i<alist.get(type-1).length;i++)
+		{
+			if(value==alist.get(type-1)[i])
+				return i;
+		}
+		return -1;
+	}
+	
+	public boolean isCbEnabled(){
 		Boolean enable;
 		if(textEM.getText().equals(""))
 		{	
@@ -231,6 +311,7 @@ public class EMEnterCp extends Composite implements UiAdapter{
 		cbAPEX.setEnabled(enable);
 	    cbLTEX.setEnabled(enable);
         cbSITE.setEnabled(enable);
+        return enable;
 	}
 	
 	private void initLayot() {
@@ -314,7 +395,6 @@ public class EMEnterCp extends Composite implements UiAdapter{
 		cbRELY.add("标称",2 );
 		cbRELY.add("高", 3);
 		cbRELY.add("很高",4 );
-		cbRELY.setText("a");
 		
 		Label lblDOCU = new Label(composite, SWT.PUSH);
 		lblDOCU.setText("文档编制");
@@ -483,7 +563,7 @@ public class EMEnterCp extends Composite implements UiAdapter{
 		textEM = new Text(this, SWT.BORDER);
 		textEM.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent arg0) {
-				setCbEnabled();
+				isCbEnabled();
 			}
 		});
 		fd_lblEM.top = new FormAttachment(textEM, 3, SWT.TOP);
@@ -493,12 +573,27 @@ public class EMEnterCp extends Composite implements UiAdapter{
 		textEM.setLayoutData(fd_textEM);
 		
 		Button btn_save = new Button(this, SWT.NONE);
-		btn_save.addSelectionListener(new SelectionAdapter() {
+		btn_save.addSelectionListener(new SelectionAdapter(){
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if(save())System.out.println("保存成功");
-				else {
+				try {
+					save();
+					System.out.println("保存成功");
+				} catch (EmMissingParamException e) {
+					// TODO 自动生成的 catch 块
+					System.out.println("缺少参数");
 					System.out.println("保存失败");
+					e.printStackTrace();
+				} catch (VersionNotSelectedException e) {
+					// TODO 自动生成的 catch 块
+					System.out.println("未选择版本");
+					System.out.println("保存失败");
+					e.printStackTrace();
+				} catch (InvalidInputException e) {
+					// TODO 自动生成的 catch 块
+					System.out.println("输入不正确");
+					System.out.println("保存失败");
+					e.printStackTrace();
 				}
 			}
 		});

@@ -39,7 +39,7 @@ public class EMDaoImpl implements EMDao {
 				int id = rs.getInt("id");
 				int proj_id =rs.getInt("proj_id");
 				int version_id =rs.getInt("version_id");
-				float cpex =rs.getFloat("CPEX");
+				float cpex =rs.getFloat("CPLX");
 				float time =rs.getFloat("TIME");
 				float pvol =rs.getFloat("PVOL");
 				float pcon =rs.getFloat("PCON");
@@ -94,7 +94,7 @@ public class EMDaoImpl implements EMDao {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
 			PreparedStatement ppsm = conn.prepareStatement("insert into em_info (proj_id,version_id,CPLX, "
 					+ "TIME,PVOL ,PCON ,APEX ,LTEX ,SITE ,RELY ,DOCU ,STOR ,ACAP ,PCAP ,PLEX ,"
-					+ "TOOL ,SCED) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+					+ "TOOL ,SCED,InputEm) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			ppsm.setInt(1, em.getProj_id());
 			ppsm.setInt(2, em.getVersion_id());
 			ppsm.setFloat(3,em.getCPLX());
@@ -112,6 +112,7 @@ public class EMDaoImpl implements EMDao {
 			ppsm.setFloat(15,em.getPLEX());
 			ppsm.setFloat(16,em.getTOOL());
 			ppsm.setFloat(17,em.getSCED());
+			ppsm.setFloat(18,em.getInputEm());
 			ppsm.execute();
 			ppsm.close();
 		} catch (SQLException e) {

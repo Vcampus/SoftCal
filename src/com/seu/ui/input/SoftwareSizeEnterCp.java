@@ -12,10 +12,14 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.seu.adapter.UiAdapter;
+import com.seu.adapter.UiSizeAdapter;
 import com.seu.bean.Size;
 import com.seu.bean.Version;
 import com.seu.dao.impl.SizeDaoImpl;
+import com.seu.exception.InvalidInputException;
 import com.seu.exception.SizeNotFoundException;
+import com.seu.exception.VersionNotSelectedException;
+
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -24,7 +28,7 @@ import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.ModifyEvent;
 
-public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
+public class SoftwareSizeEnterCp extends Composite implements UiSizeAdapter{
 	private Text textlblExternalInputFile;
 	private Text textExternalInputData;
 	private Text textExternalOutputFile;
@@ -62,7 +66,7 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 		initLayout();
 	}
 	
-	public void setTextEditable(){
+	public boolean isTextEditable(){
 		Boolean editable;
 		if(textSizeM.getText().equals(""))
 		{	
@@ -81,6 +85,7 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 		textExternalInterfaceFileMemory.setEditable(editable);
 		textExternalInterfaceFileData.setEditable(editable);
 		textAdjustScale.setEditable(editable);
+		return editable;
 	}
 	@Override
 	public void load() {
@@ -90,19 +95,27 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 			SizeDaoImpl sizeDaoImpl = new SizeDaoImpl();
 			try {
 				size = sizeDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
-				textlblExternalInputFile.setText(size.getExInputFiles()+"");
-				textExternalInputData.setText(size.getExInputData()+"");
-				textExternalOutputFile.setText(size.getExOutputFiles()+"");
-				textExternalOutputData.setText(size.getExOutputData()+"");
-				textExternalSearchFile.setText(size.getExInquiryFiles()+"");
-				textExternalSearchData.setText(size.getExInquiryData()+"");
-				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-				textlInsideLogicFileData.setText(size.getInLogicalData()+"");
-				textInsideLogicFileMemory.setText(size.getInLogicalFiles()+"");
-				textExternalInterfaceFileData.setText(size.getExInterfaceData()+"");
-				textExternalInterfaceFileMemory.setText(size.getExInterfaceFile()+"");
-				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-				textSizeM.setText(size.getInputSize()+"");
+				if(size.getInputSize()==0)
+					textSizeM.setText("");
+				else {
+					textSizeM.setText(size.getInputSize()+"");
+				}
+				if(isTextEditable())
+				{
+					textlblExternalInputFile.setText(size.getExInputFiles()+"");
+					textExternalInputData.setText(size.getExInputData()+"");
+					textExternalOutputFile.setText(size.getExOutputFiles()+"");
+					textExternalOutputData.setText(size.getExOutputData()+"");
+					textExternalSearchFile.setText(size.getExInquiryFiles()+"");
+					textExternalSearchData.setText(size.getExInquiryData()+"");
+					//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+					textlInsideLogicFileData.setText(size.getInLogicalData()+"");
+					textInsideLogicFileMemory.setText(size.getInLogicalFiles()+"");
+					textExternalInterfaceFileData.setText(size.getExInterfaceData()+"");
+					textExternalInterfaceFileMemory.setText(size.getExInterfaceFile()+"");
+					//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+				}		
+				
 			} catch (SizeNotFoundException e) {
 				// TODO 自动生成的 catch 块
 				System.out.println("暂时无版本，请添加");
@@ -117,52 +130,83 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 	}
 
 	@Override
-	public boolean save() {
+	public void save() throws VersionNotSelectedException,InvalidInputException{
 		// TODO 自动生成的方法存根
 		if(version==null){
-			return false;
+			throw new VersionNotSelectedException();
 		}	
 		SizeDaoImpl sizeDaoImpl = new SizeDaoImpl();
 		try {
 			try {
 				size = sizeDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
-				size.setExInputFiles(Integer.parseInt(textlblExternalInputFile.getText()));
-				size.setExInputData(Integer.parseInt(textExternalInputData.getText()));
-				size.setExOutputFiles(Integer.parseInt(textExternalOutputFile.getText()));
-				size.setExOutputData(Integer.parseInt(textExternalOutputData.getText()));
-				size.setExInquiryFiles(Integer.parseInt(textExternalSearchFile.getText()));
-				size.setExInquiryData(Integer.parseInt(textExternalSearchData.getText()));
-				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-				size.setInLogicalData(Integer.parseInt(textlInsideLogicFileData.getText()));
-				size.setInLogicalFiles(Integer.parseInt(textInsideLogicFileMemory.getText()));
-				size.setExInterfaceData(Integer.parseInt(textExternalInterfaceFileData.getText()));
-				size.setExInterfaceFile(Integer.parseInt(textExternalInterfaceFileMemory.getText()));
-				size.setInputSize(Integer.parseInt(textSizeM.getText()));
+				if(isTextEditable())
+				{
+					size.setExInputFiles(Integer.parseInt(textlblExternalInputFile.getText()));
+					size.setExInputData(Integer.parseInt(textExternalInputData.getText()));
+					size.setExOutputFiles(Integer.parseInt(textExternalOutputFile.getText()));
+					size.setExOutputData(Integer.parseInt(textExternalOutputData.getText()));
+					size.setExInquiryFiles(Integer.parseInt(textExternalSearchFile.getText()));
+					size.setExInquiryData(Integer.parseInt(textExternalSearchData.getText()));
+					//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+					size.setInLogicalData(Integer.parseInt(textlInsideLogicFileData.getText()));
+					size.setInLogicalFiles(Integer.parseInt(textInsideLogicFileMemory.getText()));
+					size.setExInterfaceData(Integer.parseInt(textExternalInterfaceFileData.getText()));
+					size.setExInterfaceFile(Integer.parseInt(textExternalInterfaceFileMemory.getText()));
+					size.setInputSize(0);
+				}else {
+					size.setExInputFiles(0);
+					size.setExInputData(0);
+					size.setExOutputFiles(0);
+					size.setExOutputData(0);
+					size.setExInquiryFiles(0);
+					size.setExInquiryData(0);
+					//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+					size.setInLogicalData(0);
+					size.setInLogicalFiles(0);
+					size.setExInterfaceData(0);
+					size.setExInterfaceFile(0);
+					size.setInputSize(Integer.parseInt(textSizeM.getText()));
+				}
 				sizeDaoImpl.Update(size);
-				return true;
 			} catch (SizeNotFoundException e) {
 				// TODO: handle exception
 				size = new Size();
 				size.setProj_id(version.getProj_id());
 				size.setVersion_id(version.getId());
-				size.setExInputFiles(Integer.parseInt(textlblExternalInputFile.getText()));
-				size.setExInputData(Integer.parseInt(textExternalInputData.getText()));
-				size.setExOutputFiles(Integer.parseInt(textExternalOutputFile.getText()));
-				size.setExOutputData(Integer.parseInt(textExternalOutputData.getText()));
-				size.setExInquiryFiles(Integer.parseInt(textExternalSearchFile.getText()));
-				size.setExInquiryData(Integer.parseInt(textExternalSearchData.getText()));
-				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-				size.setInLogicalData(Integer.parseInt(textlInsideLogicFileData.getText()));
-				size.setInLogicalFiles(Integer.parseInt(textInsideLogicFileMemory.getText()));
-				size.setExInterfaceData(Integer.parseInt(textExternalInterfaceFileData.getText()));
-				size.setExInterfaceFile(Integer.parseInt(textExternalInterfaceFileMemory.getText()));
+				if(isTextEditable())
+				{
+					size.setExInputFiles(Integer.parseInt(textlblExternalInputFile.getText()));
+					size.setExInputData(Integer.parseInt(textExternalInputData.getText()));
+					size.setExOutputFiles(Integer.parseInt(textExternalOutputFile.getText()));
+					size.setExOutputData(Integer.parseInt(textExternalOutputData.getText()));
+					size.setExInquiryFiles(Integer.parseInt(textExternalSearchFile.getText()));
+					size.setExInquiryData(Integer.parseInt(textExternalSearchData.getText()));
+					//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+					size.setInLogicalData(Integer.parseInt(textlInsideLogicFileData.getText()));
+					size.setInLogicalFiles(Integer.parseInt(textInsideLogicFileMemory.getText()));
+					size.setExInterfaceData(Integer.parseInt(textExternalInterfaceFileData.getText()));
+					size.setExInterfaceFile(Integer.parseInt(textExternalInterfaceFileMemory.getText()));
+					size.setInputSize(0);
+				}else {
+					size.setExInputFiles(0);
+					size.setExInputData(0);
+					size.setExOutputFiles(0);
+					size.setExOutputData(0);
+					size.setExInquiryFiles(0);
+					size.setExInquiryData(0);
+					//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+					size.setInLogicalData(0);
+					size.setInLogicalFiles(0);
+					size.setExInterfaceData(0);
+					size.setExInterfaceFile(0);
+					size.setInputSize(Integer.parseInt(textSizeM.getText()));
+				}
 				sizeDaoImpl.Save(size);
-				return true;
 			}
 		} catch (NumberFormatException e) {
 			// TODO: handle exception
 			System.out.println("存在数据输入格式不正确");
-			return false;
+			throw new InvalidInputException();
 		}
 	}
 
@@ -370,7 +414,7 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 		textSizeM.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent arg0) {		
 				Boolean editable=true;
-				setTextEditable();
+				isTextEditable();
 			}
 		});
 
@@ -384,10 +428,18 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 		btn_save.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if(save()){
+				try {
+					save();
 					System.out.println("保存成功");
-				}
-				else {
+				} catch (VersionNotSelectedException e) {
+					// TODO 自动生成的 catch 块
+					e.printStackTrace();
+					System.out.println("未选择版本");
+					System.out.println("保存失败");
+				} catch (InvalidInputException e) {
+					// TODO 自动生成的 catch 块
+					e.printStackTrace();
+					System.out.println("输入不正确");
 					System.out.println("保存失败");
 				}
 			}
@@ -398,7 +450,7 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 		btn_save.setLayoutData(fd_btn_save);
 		btn_save.setText("Save");	
 		
-		setTextEditable();
+		isTextEditable();
 		
 		//注释
 		String sReturn = System.getProperty("line.separator");

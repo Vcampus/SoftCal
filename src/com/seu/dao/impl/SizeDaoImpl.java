@@ -121,6 +121,7 @@ public class SizeDaoImpl implements SizeDao {
 		}
 		
 	}
+	
 
 	@Override
 	public boolean Update(Size size) {

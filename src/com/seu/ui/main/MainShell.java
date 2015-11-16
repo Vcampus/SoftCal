@@ -32,7 +32,6 @@ public class MainShell extends Shell {
 	Menu menu_1;
 	MenuItem mntmNewSubmenuFile;	
 	MenuItem mntmNewItem_open;
-	MenuItem mntmNewItem_save;
 	MenuItem mntmNewItem_new;	
 	MenuItem mntmNewItem_cal;
 	MenuItem mntmNewItem_adjust;
@@ -41,10 +40,9 @@ public class MainShell extends Shell {
 	Proj proj ;
 	Version version;
 	private VersionDaoImpl versionDaoImpl;
-
-	private MenuItem mntmClose;
 	private Label lable_blank_tip;
-	private Button btn_addversion;
+	private Button btn_version;
+	private Button btn_project;
 
 	public Proj getProj() {
 		return proj;
@@ -72,6 +70,8 @@ public class MainShell extends Shell {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		 
 	}
 
 	/**
@@ -160,8 +160,9 @@ public class MainShell extends Shell {
 		
 		
 		//添加版本号
-		btn_addversion = new Button(comp_Content, SWT.NONE);
-		btn_addversion.addSelectionListener(new SelectionAdapter() {
+		btn_version = new Button(comp_Content, SWT.NONE);
+		btn_version.setText("Version");
+		btn_version.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				AddVersionShell addVersionShell = new AddVersionShell(getDisplay(), proj,MainShell.this);
@@ -169,12 +170,29 @@ public class MainShell extends Shell {
 				addVersionShell.layout();
 			}
 		});
-		FormData btn_addversionfd = new FormData();
-		btn_addversionfd.top = new FormAttachment( 2, 5);
-		btn_addversionfd.left = new FormAttachment(70, 10);
-		btn_addversionfd.bottom = new FormAttachment(compArgsAdjust,-5);
-		btn_addversionfd.right = new FormAttachment(85, -5);
-		btn_addversion.setLayoutData(btn_addversionfd);
+		FormData fd_btn_version = new FormData();
+		fd_btn_version.top = new FormAttachment( 2, 5);
+		fd_btn_version.left = new FormAttachment(70, 10);
+		fd_btn_version.bottom = new FormAttachment(compArgsAdjust,-5);
+		fd_btn_version.right = new FormAttachment(85, -5);
+		btn_version.setLayoutData(fd_btn_version);
+		
+		
+		btn_project = new Button(comp_Content, SWT.NONE);
+		FormData fd_btn_project = new FormData();
+		fd_btn_project.top = new FormAttachment(2, 5);
+		fd_btn_project.right = new FormAttachment(30);
+		fd_btn_project.left = new FormAttachment(15, 10);
+		btn_project.setLayoutData(fd_btn_project);
+		btn_project.setText("Project");
+		btn_project.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				OpenProjShell openProjShell = new OpenProjShell(getDisplay(), MainShell.this);
+				openProjShell.open();
+				openProjShell.layout();
+			}
+		});
 		
 		
 		//主菜单栏
@@ -198,12 +216,12 @@ public class MainShell extends Shell {
 				newProjShell.layout();
 			}
 		});
-		mntmNewItem_new.setText("new project");
+		mntmNewItem_new.setText("New Project");
 		
 		
 		//打开已有工程
 		mntmNewItem_open = new MenuItem(menu_1, SWT.NONE);
-		mntmNewItem_open.setText("open project");
+		mntmNewItem_open.setText("Open Project");
 		mntmNewItem_open.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -212,23 +230,6 @@ public class MainShell extends Shell {
 				openProjShell.layout();
 			}
 		});
-		
-		
-		//保存工程
-		mntmNewItem_save = new MenuItem(menu_1, SWT.NONE);
-		mntmNewItem_save.setText("save project");
-		
-		
-		//关闭工程
-		mntmClose = new MenuItem(menu_1, SWT.NONE);
-		mntmClose.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				proj = null;
-				refresh();
-			}
-		});
-		mntmClose.setText("close");
 		
 		
 		//演化成本估算
@@ -296,9 +297,9 @@ public class MainShell extends Shell {
 			compArgsAdjust.setVisible(false);
 			compWorkCal.setVisible(true);
 			if(version != null){
-				btn_addversion.setText(version.getVersion());
+				btn_version.setText(version.getVersion());
 			}else {
-				btn_addversion.setText("select version");
+				btn_version.setText("select version");
 			}
 		}
 		if(proj == null){
@@ -324,12 +325,12 @@ public class MainShell extends Shell {
 			compArgsAdjust.setVisible(false);
 			compWorkCal.setVisible(true);
 			if(version != null){
-				btn_addversion.setText(version.getVersion());
+				btn_version.setText(version.getVersion());
 				//compWorkCal里的数据刷新
 				compWorkCal.setVersion(version);
 				compWorkCal.refresh();
 			}else {
-				btn_addversion.setText("select version");
+				btn_version.setText("select version");
 			}
 		}
 	}
