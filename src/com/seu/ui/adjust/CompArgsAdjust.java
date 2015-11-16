@@ -14,18 +14,16 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import com.seu.adapter.UiAdapter;
 import com.seu.ui.input.EIndexEnterCP;
 import com.seu.ui.input.EMEnterCp;
 import com.seu.ui.input.SoftwareSizeEnterCp;
 
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormAttachment;
-
-public class CompArgsAdjust extends Composite implements UiAdapter{
+public class CompArgsAdjust extends Composite {
 	private Table tableHisGet;
 	private Table tableAargs;
 	private Table tableABargs;
@@ -37,15 +35,15 @@ public class CompArgsAdjust extends Composite implements UiAdapter{
 	 */
 	public CompArgsAdjust(Composite parent, int style) {
 		super(parent, style);
-		setLayout(new FormLayout());
 		
+		setLayout(new FormLayout());
 		TabFolder tabFolder = new TabFolder(this, SWT.NONE);
-		FormData fd_tabFolder = new FormData();
-		fd_tabFolder.bottom = new FormAttachment(0, 464);
-		fd_tabFolder.right = new FormAttachment(90);
-		fd_tabFolder.top = new FormAttachment(0, 57);
-		fd_tabFolder.left = new FormAttachment(0, 10);
-		tabFolder.setLayoutData(fd_tabFolder);
+		FormData tbdata = new FormData();
+		tbdata.top = new FormAttachment( 0, 10);
+		tbdata.left = new FormAttachment(0, 10);
+		tbdata.bottom = new FormAttachment(100,-5);
+		tbdata.right = new FormAttachment(100, -2);
+		tabFolder.setLayoutData(tbdata);
 
 		//软件规模页面
 		TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
@@ -68,24 +66,6 @@ public class CompArgsAdjust extends Composite implements UiAdapter{
 		
 		
 
-	}
-
-	@Override
-	public void load() {
-		// TODO 自动生成的方法存根
-		
-	}
-
-	@Override
-	public void refresh() {
-		// TODO 自动生成的方法存根
-		
-	}
-
-	@Override
-	public boolean save() {
-		// TODO 自动生成的方法存根
-		return false;
 	}
 
 	@Override

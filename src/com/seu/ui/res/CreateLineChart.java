@@ -2,13 +2,9 @@ package com.seu.ui.res;
 
 import java.awt.Color;  
 import java.awt.Font;  
-import java.io.FileOutputStream;  
-import java.io.IOException;
-import java.util.List;
 import java.util.Random;  
   
 import org.jfree.chart.ChartFactory;  
-import org.jfree.chart.ChartUtilities;  
 import org.jfree.chart.JFreeChart;  
 import org.jfree.chart.axis.CategoryAxis;  
 import org.jfree.chart.axis.CategoryLabelPositions;  
@@ -19,8 +15,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;  
 import org.jfree.chart.title.TextTitle;  
 import org.jfree.data.category.DefaultCategoryDataset;
-
-import com.sun.org.apache.xml.internal.utils.FastStringBuffer;  
+ 
   
 /** 
  *  
