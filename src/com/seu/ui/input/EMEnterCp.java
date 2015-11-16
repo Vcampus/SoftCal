@@ -177,7 +177,6 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 	@Override
 	public void save() throws EmMissingParamException,VersionNotSelectedException,InvalidInputException{
 		// TODO 自动生成的方法存根
-		System.out.println(cbPLEX.getSelectionIndex());
 		if(version==null){
 			throw new VersionNotSelectedException();
 		}	

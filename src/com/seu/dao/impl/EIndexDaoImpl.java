@@ -85,7 +85,9 @@ public class EIndexDaoImpl implements EIndexDao{
 				PreparedStatement ppsm = conn.prepareStatement("UPDATE e_info SET PREC=?,FLEX=?,RESL=?,"
 						+ "TEAM=?,PMAT=?,InputE=? WHERE proj_id=? AND version_id=?");
 				ppsm.setFloat(1,eIndex.getPREC());
+				System.out.println(eIndex.getPREC());
 				ppsm.setFloat(2,eIndex.getFLEX());
+				System.out.println(eIndex.getFLEX());
 				ppsm.setFloat(3, eIndex.getRESL());
 				ppsm.setFloat(4, eIndex.getTEAM());
 				ppsm.setFloat(5, eIndex.getPMAT());

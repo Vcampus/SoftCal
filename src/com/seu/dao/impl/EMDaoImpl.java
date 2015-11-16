@@ -50,11 +50,8 @@ public class EMDaoImpl implements EMDao {
 				float docu =rs.getFloat("DOCU");
 				float stor =rs.getFloat("STOR");
 				float acap =rs.getFloat("ACAP");
-				System.out.println("sss"+acap);
 				float pcap =rs.getFloat("PCAP");
-				System.out.println("sss"+pcap);
 				float plex =rs.getFloat("PLEX");
-				System.out.println("sss"+plex);
 				float tool =rs.getFloat("TOOL");
 				float sced =rs.getFloat("SCED");
 				float inputEm=rs.getFloat("InputEm");

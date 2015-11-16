@@ -1,5 +1,7 @@
 package com.seu.ui.input;
 
+import java.util.ArrayList;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -13,10 +15,26 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
 
 import com.seu.adapter.UiAdapter;
+import com.seu.adapter.UiEindexAdapter;
 import com.seu.bean.EIndex;
+import com.seu.bean.EM;
 import com.seu.bean.Version;
+import com.seu.dao.impl.EIndexDaoImpl;
+import com.seu.dao.impl.EMDaoImpl;
+import com.seu.exception.EindexMissingParamException;
+import com.seu.exception.EindexNotFoundException;
+import com.seu.exception.EmMissingParamException;
+import com.seu.exception.EmNotFoundException;
+import com.seu.exception.InvalidInputException;
+import com.seu.exception.VersionNotSelectedException;
 
-public class EIndexEnterCP extends Composite implements UiAdapter{
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.ModifyEvent;
+
+public class EIndexEnterCP extends Composite implements UiEindexAdapter{
 	
 	private Label PRECLb;
 	private Version version;
@@ -36,6 +54,18 @@ public class EIndexEnterCP extends Composite implements UiAdapter{
 	private Label lblhorizontal1;
 	private Label lblhorizontal;
 	private Text textEIndex;
+	private final int PREC=1;
+	private final int FLEX=2;
+	private final int RESL=3;
+	private final int TEAM=4;
+	private final int PMAT=5;
+	private final float vsPREC[]={6.20f,4.96f,3.72f,2.48f,2.14f,0.00f};
+	private final float	vsFLEX[]={5.07f,4.05f,3.04f,2.03f,1.01f,0.00f};
+	private final float	vsRESL[]={7.07f,5.65f,4.24f,2.83f,1.41f,0.00f};
+	private final float	vsTEAM[]={5.48f,4.38f,3.29f,2.19f,1.10f,0.00f};
+	private final float vsPMAT[]={7.80f,6.24f,4.68f,3.12f,1.56f,0.00f};
+	ArrayList<float[]>alist = new ArrayList<float[]>();
+	private Button btn_save;
 	/**
 	 * Create the composite.
 	 * @param parent
@@ -44,6 +74,11 @@ public class EIndexEnterCP extends Composite implements UiAdapter{
 	public EIndexEnterCP(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new FormLayout());
+		alist.add(vsPREC);
+		alist.add(vsFLEX);
+		alist.add(vsRESL);
+		alist.add(vsTEAM);
+		alist.add(vsPMAT);
 		initLayout();
 		
 	}
@@ -64,19 +99,140 @@ public class EIndexEnterCP extends Composite implements UiAdapter{
 	@Override
 	public void load() {
 		// TODO 自动生成的方法存根
-		refresh();
+		if(version!=null){
+			EIndexDaoImpl eIndexDaoImpl = new EIndexDaoImpl();
+			try {
+				eindex = eIndexDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
+				if(eindex.getInputE()==0.0f)
+					textEIndex.setText("");
+				else {
+					textEIndex.setText(eindex.getInputE()+"");
+				}
+				if(isCbEnabled())
+				{
+					PRECCb.select(getEindexIndex(1, eindex.getPREC()));
+					FLEXCb.select(getEindexIndex(2, eindex.getFLEX()));
+					RESLCb.select(getEindexIndex(3, eindex.getRESL()));
+					TEAMCb.select(getEindexIndex(4, eindex.getTEAM()));
+					PMATCb.select(getEindexIndex(5, eindex.getPMAT()));
+				}
+				
+				
+			} catch (EindexNotFoundException e) {
+				// TODO 自动生成的 catch 块
+				System.out.println("暂时无版本，请添加");
+			}
+		}
 	}
 
 	@Override
 	public void refresh() {
 		// TODO 自动生成的方法存根
-		
+		load();
 	}
 
 	@Override
-	public boolean save() {
+	public void save()throws VersionNotSelectedException,InvalidInputException,EindexMissingParamException{
 		// TODO 自动生成的方法存根
-		return false;
+		if(version==null){
+			throw new VersionNotSelectedException();
+		}	
+		EIndexDaoImpl eIndexDaoImpl = new EIndexDaoImpl();
+		try {
+			try {
+				eindex = eIndexDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
+				if(isCbEnabled()){
+					eindex.setPREC(getEindexValue(1, PRECCb.getSelectionIndex()));
+					System.out.println("SS"+PRECCb.getSelectionIndex());
+					System.out.println("SS"+getEindexValue(1, PRECCb.getSelectionIndex()));
+					eindex.setFLEX(getEindexValue(2, FLEXCb.getSelectionIndex()));
+					eindex.setRESL(getEindexValue(3, RESLCb.getSelectionIndex()));
+					eindex.setTEAM(getEindexValue(4, TEAMCb.getSelectionIndex()));
+					eindex.setPMAT(getEindexValue(5, PMATCb.getSelectionIndex()));
+					eindex.setInputE(0);
+				}
+				else {
+					eindex.setPREC(0);
+					eindex.setFLEX(0);
+					eindex.setRESL(0);
+					eindex.setTEAM(0);
+					eindex.setPMAT(0);
+					eindex.setInputE(Float.parseFloat(textEIndex.getText()));
+				}
+				eIndexDaoImpl.Update(eindex);
+			} catch (EindexNotFoundException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+				eindex = new EIndex();
+				eindex.setProj_id(version.getProj_id());
+				eindex.setVersion_id(version.getId());
+				if(isCbEnabled()){
+					eindex.setPREC(getEindexValue(1, PRECCb.getSelectionIndex()));
+					eindex.setFLEX(getEindexValue(2, FLEXCb.getSelectionIndex()));
+					eindex.setRESL(getEindexValue(3, RESLCb.getSelectionIndex()));
+					eindex.setTEAM(getEindexValue(4, TEAMCb.getSelectionIndex()));
+					eindex.setPMAT(getEindexValue(5, PMATCb.getSelectionIndex()));
+					eindex.setInputE(0);
+				}
+				else {
+					eindex.setPREC(0);
+					eindex.setFLEX(0);
+					eindex.setRESL(0);
+					eindex.setTEAM(0);
+					eindex.setPMAT(0);
+					eindex.setInputE(Float.parseFloat(textEIndex.getText()));
+				}
+				eIndexDaoImpl.Save(eindex);
+			}
+		} catch (NumberFormatException e) {
+			// TODO: handle exception	
+				System.out.println("存在数据输入格式不正确");
+				throw new InvalidInputException();
+		} catch (EindexMissingParamException e) {
+			// TODO: handle exception
+			throw new EindexMissingParamException();
+		}
+	}
+	
+	public float getEindexValue (int type,int index)throws EindexMissingParamException{
+		try {
+			System.out.println("LIST"+alist.get(type-1)[index]);
+			return alist.get(type-1)[index];
+		} catch (IndexOutOfBoundsException e) {
+			// TODO: handle exception
+			if(isCbEnabled())
+			throw new EindexMissingParamException();
+			else {
+				System.out.println('s');
+				return 0.0f;
+			}
+		}	
+		
+	}
+	
+	public int getEindexIndex(int type,float value){
+		for(int i=0;i<alist.get(type-1).length;i++)
+		{	
+			if(value == alist.get(type-1)[i])
+				return i;
+		}
+		return -1;
+	}
+	
+	public boolean isCbEnabled(){
+		Boolean enable;
+		if(textEIndex.getText().equals(""))
+		{	
+			enable=true;
+		}else {
+			enable=false;
+		}
+		PRECCb.setEnabled(enable);
+		FLEXCb.setEnabled(enable);
+		RESLCb.setEnabled(enable);
+		TEAMCb.setEnabled(enable);
+		PMATCb.setEnabled(enable);
+        return enable;
 	}
 	
 	public void initLayout(){
@@ -211,6 +367,11 @@ public class EIndexEnterCP extends Composite implements UiAdapter{
 		lblEIndex.setText("指数E");
 		
 		textEIndex = new Text(this, SWT.BORDER);
+		textEIndex.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0) {
+				isCbEnabled();
+			}
+		});
 		fd_lblEIndex.top = new FormAttachment(textEIndex, 3, SWT.TOP);
 		FormData fd_textEIndex = new FormData();
 		fd_textEIndex.bottom = new FormAttachment(100, -10);
@@ -248,5 +409,36 @@ public class EIndexEnterCP extends Composite implements UiAdapter{
 				+sReturn + "around the Software Engineering "
 				+ sReturn +"Institute’s Capability Maturity "
 				+ sReturn +"Model (CMM)");
+		
+		btn_save = new Button(this, SWT.NONE);
+		btn_save.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				try {
+					save();
+					System.out.println("保存成功");
+				} catch (VersionNotSelectedException e) {
+					// TODO 自动生成的 catch 块
+					System.out.println("未选择版本");
+					System.out.println("保存失败");
+					e.printStackTrace();
+				} catch (InvalidInputException e) {
+					// TODO 自动生成的 catch 块
+					System.out.println("错误的输入");
+					System.out.println("保存失败");
+					e.printStackTrace();
+				} catch (EindexMissingParamException e) {
+					// TODO 自动生成的 catch 块
+					System.out.println("参数缺失");
+					System.out.println("保存失败");
+					e.printStackTrace();
+				}
+			}
+		});
+		FormData fd_btn_save = new FormData();
+		fd_btn_save.bottom = new FormAttachment(lblEIndex, 0, SWT.BOTTOM);
+		fd_btn_save.right = new FormAttachment(100, -88);
+		btn_save.setLayoutData(fd_btn_save);
+		btn_save.setText("Save");
 	}
 }
