@@ -12,9 +12,41 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
 
-public class EIndexEnterCP extends Composite {
+import com.seu.adapter.UiAdapter;
+import com.seu.bean.EIndex;
+import com.seu.bean.Version;
+
+public class EIndexEnterCP extends Composite implements UiAdapter{
 	
 	private Label PRECLb;
+	private Version version;
+	private EIndex eindex;
+	public Version getVersion() {
+		return version;
+	}
+
+	public void setVersion(Version version) {
+		this.version = version;
+	}
+
+	@Override
+	public void load() {
+		// TODO 自动生成的方法存根
+		refresh();
+	}
+
+	@Override
+	public void refresh() {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	public boolean save() {
+		// TODO 自动生成的方法存根
+		return false;
+	}
+
 	private Label FLEXLb;
 	private Label RESLLb;
 	private Label TEAMLb;

@@ -34,6 +34,10 @@ public class CompWorkCal extends Composite implements UiAdapter{
 		// TODO 自动生成的方法存根
 		cpSize.setVersion(version);
 		cpSize.refresh();
+		cpEm.setVersion(version);
+		cpEm.refresh();
+		cpE.setVersion(version);
+		cpE.refresh();
 	}
 
 	@Override

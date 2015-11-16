@@ -19,9 +19,10 @@ public class EM {
 	private float PLEX;
 	private float TOOL;
 	private float SCED;
+	private float InputEm;
 
 	public EM(int id, int proj_id,int version_id, float cPLX, float tIME, float pVOL, float pCON, float aPEX, float lTEX, float sITE,
-			float rELY, float dOCU, float sTOR, float aCAP, float pCAP, float pLEX, float tOOL, float sCED) {
+			float rELY, float dOCU, float sTOR, float aCAP, float pCAP, float pLEX, float tOOL, float sCED,float inputEm) {
 		super();
 		this.id = id;
 		this.proj_id = proj_id;
@@ -41,10 +42,11 @@ public class EM {
 		PLEX = pLEX;
 		TOOL = tOOL;
 		SCED = sCED;
+		InputEm = inputEm;
 	}
 	
 	public EM(int proj_id,int version_id, float cPLX, float tIME, float pVOL, float pCON, float aPEX, float lTEX, float sITE,
-			float rELY, float dOCU, float sTOR, float aCAP, float pCAP, float pLEX, float tOOL, float sCED) {
+			float rELY, float dOCU, float sTOR, float aCAP, float pCAP, float pLEX, float tOOL, float sCED,float inputEm) {
 		super();
 		this.proj_id = proj_id;
 		this.version_id =version_id;
@@ -63,8 +65,17 @@ public class EM {
 		PLEX = pLEX;
 		TOOL = tOOL;
 		SCED = sCED;
+		InputEm = inputEm;
 	}
 	
+	public float getInputEm() {
+		return InputEm;
+	}
+
+	public void setInputEm(float inputEm) {
+		InputEm = inputEm;
+	}
+
 	public int getId() {
 		return id;
 	}

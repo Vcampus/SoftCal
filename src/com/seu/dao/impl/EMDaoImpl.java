@@ -10,8 +10,11 @@ import java.util.List;
 
 import com.seu.bean.EM;
 import com.seu.dao.EMDao;
+import com.seu.exception.EmNotFoundException;
 
 public class EMDaoImpl implements EMDao {
+	
+
 	static{
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -51,7 +54,8 @@ public class EMDaoImpl implements EMDao {
 				float plex =rs.getFloat("PLEX");
 				float tool =rs.getFloat("TOOL");
 				float sced =rs.getFloat("SCED");
-				EM em = new EM(id,proj_id,version_id,cpex,time,pvol,pcon,apex,ltex,site,rely,docu,stor,acap,pcap,plex,tool,sced);
+				float inputEm=rs.getFloat("InputEm");
+				EM em = new EM(id,proj_id,version_id,cpex,time,pvol,pcon,apex,ltex,site,rely,docu,stor,acap,pcap,plex,tool,sced,inputEm);
 				list.add(em);
 			}
 			ppsm.close();
@@ -71,9 +75,15 @@ public class EMDaoImpl implements EMDao {
 	}
 
 	@Override
-	public EM getByProj_idAndVersion_id(int proj_id,int version_id) {
+	public EM getByProj_idAndVersion_id(int proj_id,int version_id) throws EmNotFoundException{
 		// TODO 自动生成的方法存根
-		return findByParams("select * from em_info where proj_id = ? and version_id = ?",proj_id,version_id).get(0);
+		try {
+			return findByParams("select * from em_info where proj_id = ? and version_id = ?",proj_id,version_id).get(0);
+		} catch (IndexOutOfBoundsException e) {
+			// TODO: handle exception
+			throw new EmNotFoundException();
+		}
+		
 	}
 	
 	@Override
@@ -115,6 +125,51 @@ public class EMDaoImpl implements EMDao {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	@Override
+	public boolean Update(EM em) {
+		// TODO 自动生成的方法存根
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
+
+			PreparedStatement ppsm = conn.prepareStatement("UPDATE em_info SET CPLX=?,TIME=?,PVOL=?,"
+					+ "PCON=?,APEX=?,LTEX=?,SITE=?,RELY=?,DOCU=?,"
+					+ "STOR=?,ACAP=?,PCAP=?,TOOL=?,SCED=?,InputEm=? WHERE proj_id=? AND version_id=?");
+			ppsm.setFloat(1,em.getCPLX());
+			ppsm.setFloat(2, em.getTIME());
+			ppsm.setFloat(3, em.getPVOL());
+			ppsm.setFloat(4, em.getPCON());
+			ppsm.setFloat(5, em.getAPEX());
+			ppsm.setFloat(6, em.getLTEX());
+			ppsm.setFloat(7, em.getSITE());
+			ppsm.setFloat(8, em.getRELY());
+			ppsm.setFloat(9, em.getDOCU());
+			ppsm.setFloat(10, em.getSTOR());
+			ppsm.setFloat(11, em.getACAP());
+			ppsm.setFloat(12, em.getPCAP());
+			ppsm.setFloat(13, em.getTOOL());
+			ppsm.setFloat(14, em.getSCED());
+			ppsm.setFloat(15, em.getInputEm());
+			ppsm.setInt(16, em.getProj_id());
+			ppsm.setInt(17, em.getVersion_id());
+			System.out.println(ppsm.toString());
+			ppsm.executeUpdate();
+			ppsm.close();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 		
 }

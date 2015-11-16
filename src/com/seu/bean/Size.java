@@ -16,10 +16,11 @@ public class Size {
 	private int ExInputData;
 	private int ExInquiryData;
 	private int ExOutputData;
+	private int InputSize;
 	
 	public Size(int id, int proj_id,int version_id, int sU, float uNFM, int inLogicalFiles, int exInterfaceFile, int exInputFiles,
 			int exInquiryFiles, int exOutputFiles, int inLogicalData, int exInterfaceData, int exInputData,
-			int exInquiryData, int exOutputData) {
+			int exInquiryData, int exOutputData,int inputSize) {
 		super();
 		this.id = id;
 		this.proj_id = proj_id;
@@ -36,11 +37,12 @@ public class Size {
 		ExInputData = exInputData;
 		ExInquiryData = exInquiryData;
 		ExOutputData = exOutputData;
+		InputSize = inputSize;
 	}
 	
 	public Size(int proj_id,int version_id, int sU, float uNFM, int inLogicalFiles, int exInterfaceFile, int exInputFiles,
 			int exInquiryFiles, int exOutputFiles, int inLogicalData, int exInterfaceData, int exInputData,
-			int exInquiryData, int exOutputData) {
+			int exInquiryData, int exOutputData,int inputSize) {
 		super();
 		this.proj_id = proj_id;
 		this.version_id =version_id;
@@ -56,8 +58,17 @@ public class Size {
 		ExInputData = exInputData;
 		ExInquiryData = exInquiryData;
 		ExOutputData = exOutputData;
+		InputSize = inputSize;
 	}
 	
+	public int getInputSize() {
+		return InputSize;
+	}
+
+	public void setInputSize(int inputSize) {
+		InputSize = inputSize;
+	}
+
 	public Size(){
 		
 	}

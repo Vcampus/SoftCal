@@ -19,6 +19,10 @@ import com.seu.exception.SizeNotFoundException;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.ModifyEvent;
 
 public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 	private Text textlblExternalInputFile;
@@ -251,6 +255,13 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 		lblSizeM.setText("SizeM");
 		
 		textSizeM = new Text(this, SWT.BORDER);
+		textSizeM.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0) {		
+				Boolean editable=true;
+				setTextEditable();
+			}
+		});
+
 		fd_lblSizeM.top = new FormAttachment(textSizeM, 3, SWT.TOP);
 		FormData fd_textSizeM = new FormData();
 		fd_textSizeM.bottom = new FormAttachment(100, -10);
@@ -273,14 +284,35 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 		fd_btn_save.right = new FormAttachment(composite_3);
 		fd_btn_save.bottom = new FormAttachment(100, -9);
 		btn_save.setLayoutData(fd_btn_save);
-		btn_save.setText("Save");
-
+		btn_save.setText("Save");	
 		
+		setTextEditable();
 	}
-
+	
+	public void setTextEditable(){
+		Boolean editable;
+		if(textSizeM.getText().equals(""))
+		{	
+			editable=true;
+		}else {
+			editable=false;
+		}
+		textlblExternalInputFile.setEditable(editable);
+		textExternalInputData.setEditable(editable);
+		textExternalOutputFile.setEditable(editable);
+		textExternalOutputData.setEditable(editable);
+		textExternalSearchFile.setEditable(editable);
+		textExternalSearchData.setEditable(editable);
+		textInsideLogicFileMemory.setEditable(editable);
+		textlInsideLogicFileData.setEditable(editable);
+		textExternalInterfaceFileMemory.setEditable(editable);
+		textExternalInterfaceFileData.setEditable(editable);
+		textAdjustScale.setEditable(editable);
+	}
 	@Override
 	public void load() {
 		// TODO 自动生成的方法存根
+		
 		if(version!=null){
 			SizeDaoImpl sizeDaoImpl = new SizeDaoImpl();
 			try {
@@ -297,6 +329,7 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 				textExternalInterfaceFileData.setText(size.getExInterfaceData()+"");
 				textExternalInterfaceFileMemory.setText(size.getExInterfaceFile()+"");
 				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+				textSizeM.setText(size.getInputSize()+"");
 			} catch (SizeNotFoundException e) {
 				// TODO 自动生成的 catch 块
 				System.out.println("暂时无版本，请添加");
@@ -331,6 +364,7 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 				size.setInLogicalFiles(Integer.parseInt(textInsideLogicFileMemory.getText()));
 				size.setExInterfaceData(Integer.parseInt(textExternalInterfaceFileData.getText()));
 				size.setExInterfaceFile(Integer.parseInt(textExternalInterfaceFileMemory.getText()));
+				size.setInputSize(Integer.parseInt(textSizeM.getText()));
 				sizeDaoImpl.Update(size);
 				return true;
 			} catch (SizeNotFoundException e) {
@@ -354,6 +388,7 @@ public class SoftwareSizeEnterCp extends Composite implements UiAdapter{
 			}
 		} catch (NumberFormatException e) {
 			// TODO: handle exception
+			System.out.println("存在数据输入格式不正确");
 			return false;
 		}
 	}

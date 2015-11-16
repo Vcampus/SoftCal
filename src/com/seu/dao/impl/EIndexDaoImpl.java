@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.seu.bean.EIndex;
 import com.seu.dao.EIndexDao;
+import com.seu.exception.EindexNotFoundException;
 
 public class EIndexDaoImpl implements EIndexDao{
 	static{
@@ -42,7 +43,8 @@ public class EIndexDaoImpl implements EIndexDao{
 					float resl =rs.getFloat("RESL");
 					float team =rs.getFloat("TEAM");
 					float pmat =rs.getFloat("PMAT");
-					EIndex eindex= new EIndex(id,proj_id,version_id,prec,flex,resl,team,pmat);
+					float inputE = rs.getFloat("InputE");
+					EIndex eindex= new EIndex(id,proj_id,version_id,prec,flex,resl,team,pmat,inputE);
 					list.add(eindex);
 				}
 				ppsm.close();
@@ -62,11 +64,51 @@ public class EIndexDaoImpl implements EIndexDao{
 		}
 
 		@Override
-		public EIndex getByProj_idAndVersion_id(int proj_id,int version_id) {
+		public EIndex getByProj_idAndVersion_id(int proj_id,int version_id) throws EindexNotFoundException{
 			// TODO 自动生成的方法存根
-			return findByParams("select * from e_info where proj_id = ? and version_id = ?",proj_id,version_id).get(0);
+			try {
+				return findByParams("select * from e_info where proj_id = ? and version_id = ?",proj_id,version_id).get(0);
+			} catch (IndexOutOfBoundsException e) {
+				// TODO: handle exception
+				throw new EindexNotFoundException();
+			}
+			
 		}
 		
+		@Override
+		public boolean Update(EIndex eIndex) {
+			// TODO 自动生成的方法存根
+			Connection conn = null;
+			try {
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
+
+				PreparedStatement ppsm = conn.prepareStatement("UPDATE e_info SET PREC=?,FLEX=?,RESL=?,"
+						+ "TEAM=?,PMAT=?,InputE=? WHERE proj_id=? AND version_id=?");
+				ppsm.setFloat(1,eIndex.getPREC());
+				ppsm.setFloat(2,eIndex.getFLEX());
+				ppsm.setFloat(3, eIndex.getRESL());
+				ppsm.setFloat(4, eIndex.getTEAM());
+				ppsm.setFloat(5, eIndex.getPMAT());
+				ppsm.setFloat(6, eIndex.getInputE());
+				ppsm.setFloat(7, eIndex.getProj_id());
+				ppsm.setFloat(8, eIndex.getVersion_id());
+				ppsm.executeUpdate();
+				ppsm.close();
+				return true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			return false;
+		}
+
 		@Override
 		public void Save(EIndex eindex) {
 			// TODO 自动生成的方法存根

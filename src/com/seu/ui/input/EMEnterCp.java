@@ -1,5 +1,7 @@
 package com.seu.ui.input;
 
+import java.util.ArrayList;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -11,11 +13,71 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public class EMEnterCp extends Composite {
+import com.seu.adapter.UiAdapter;
+import com.seu.bean.EM;
+import com.seu.bean.Size;
+import com.seu.bean.Version;
+import com.seu.dao.impl.EMDaoImpl;
+import com.seu.dao.impl.SizeDaoImpl;
+import com.seu.exception.EmNotFoundException;
+import com.seu.exception.SizeNotFoundException;
+
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.ModifyEvent;
+
+public class EMEnterCp extends Composite implements UiAdapter{
 	private Label lblhorizontal;
 	private Label lblhorizontal1;
 	private Text textEM;
-	/**
+	private Version version;
+	private EM em;
+	private Combo cbRELY ;
+	private Combo cbDOCU ;
+	private Combo cbSTOR ;
+	private Combo cbACAP ;
+	private Combo cbPCAP ;
+	private Combo cbPLEX ;
+	private Combo cbTOOL ;
+	private Combo cbCPLX ;
+	private Combo cbTIME ;
+	private Combo cbPVOL ;
+	private Combo cbPCON ;
+	private Combo cbAPEX ;
+	private Combo cbLTEX ;
+	private Combo cbSITE ; 
+	private final int	RELY =1;
+	private final int	DOCU =2;
+	private final int	STOR =3;
+	private final int	ACAP =4;
+	private final int	PCAP =5;
+	private final int	PLEX =6;
+	private final int	TOOL =7;
+	private final int	CPLX =8;
+	private final int	TIME =9;
+	private final int	PVOL =10;
+	private final int	PCON =11;
+	private final int	APEX =12;
+	private final int	LTEX =13;
+	private final int	SITE =14;
+	private final float	vsRELY[] ={1.23f,1.1f,1.0f,0.99f,1.07f};
+	private final float	vsDOCU[] ={0.81f,0.91f,1.0f,1.11f,1.23f};
+	private final float	vsSTOR[] ={1.00f,1.05f,1.17f,1.46f};
+	private final float	vsACAP[] ={1.42f,1.19f,1.00f,0.85f,0.71f};
+	private final float	vsPCAP[] ={1.34f,1.15f,1.00f,0.88f,0.76f};
+	private final float	vsPLEX[] ={1.19f,1.09f,1.00f,0.91f,0.85f};
+	private final float	vsTOOL[] ={1.17f,1.09f,1.00f,0.90f,0.78f};
+	private final float	vsCPLX[] ={0.73f,0.87f,1.00f,1.17f,1.34f,1.74f};
+	private final float	vsTIME[] ={1.0f,1.11f,1.29f,1.63f};
+	private final float	vsPVOL[] ={0.87f,1.00f,1.15f,1.30f};
+	private final float	vsPCON[] ={1.29f,1.12f,1.00f,0.90f,0.81f};
+	private final float	vsAPEX[] ={1.22f,1.10f,1.00f,0.88f,0.81f};
+	private final float	vsLTEX[] ={1.20f,1.09f,1.00f,0.91f,0.84f};
+	private final float	vsSITE[] ={1.22f,1.09f,1.00f,0.93f,0.86f,0.80f};
+	ArrayList<float[]> alist=new ArrayList<float[]>();
+/**
 	 * Create the composite.
 	 * @param parent
 	 * @param style
@@ -23,6 +85,22 @@ public class EMEnterCp extends Composite {
 	public EMEnterCp(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new FormLayout());
+		
+
+		alist.add(vsRELY);
+		alist.add(vsDOCU);
+		alist.add(vsSTOR);
+		alist.add(vsACAP);
+		alist.add(vsPCAP);
+		alist.add(vsPLEX);
+		alist.add(vsTOOL);
+		alist.add(vsCPLX);
+		alist.add(vsTIME);
+		alist.add(vsPVOL);
+		alist.add(vsPCON);
+		alist.add(vsAPEX);
+		alist.add(vsLTEX);
+		alist.add(vsSITE);
 		
 		Label lblCalByPiont = new Label(this, SWT.NONE);
 		FormData lblCalByPiont_fd = new FormData();
@@ -95,18 +173,20 @@ public class EMEnterCp extends Composite {
 		Label lblRELY = new Label(composite, SWT.PUSH);
 		lblRELY.setText("软件可靠性");
 		lblRELY.setLayoutData(new GridData(GridData.FILL_BOTH));
-		Combo cbRELY = new Combo(composite_1, SWT.PUSH);
+		cbRELY = new Combo(composite_1, SWT.PUSH);
+		cbRELY.setToolTipText("");
 		cbRELY.setLayoutData(new GridData(GridData.FILL_BOTH));
 		cbRELY.add("很低",0 );
 		cbRELY.add("低", 1);
 		cbRELY.add("标称",2 );
 		cbRELY.add("高", 3);
 		cbRELY.add("很高",4 );
+		cbRELY.setText("a");
 		
 		Label lblDOCU = new Label(composite, SWT.PUSH);
 		lblDOCU.setText("文档编制");
 		lblDOCU.setLayoutData(new GridData(GridData.FILL_BOTH));
-		Combo cbDOCU = new Combo(composite_1, SWT.PUSH);
+		cbDOCU = new Combo(composite_1, SWT.PUSH);
 		cbDOCU.setLayoutData(new GridData(GridData.FILL_BOTH));
 		cbDOCU.add("很低",0);
 		cbDOCU.add("低",1);
@@ -117,7 +197,7 @@ public class EMEnterCp extends Composite {
 		Label lblSTOR = new Label(composite, SWT.PUSH);
 		lblSTOR.setText("主存储约束");
 		lblSTOR.setLayoutData(new GridData(GridData.FILL_BOTH));
-		Combo cbSTOR = new Combo(composite_1, SWT.PUSH);
+		cbSTOR = new Combo(composite_1, SWT.PUSH);
 		cbSTOR.setLayoutData(new GridData(GridData.FILL_BOTH));
 		cbSTOR.add("标称",0);
 		cbSTOR.add("高",1);
@@ -127,7 +207,7 @@ public class EMEnterCp extends Composite {
 		Label lblACAP = new Label(composite, SWT.PUSH);
 		lblACAP.setText("分析员能力");
 		lblACAP.setLayoutData(new GridData(GridData.FILL_BOTH));
-		Combo cbACAP = new Combo(composite_1, SWT.PUSH);
+		cbACAP = new Combo(composite_1, SWT.PUSH);
 		cbACAP.setLayoutData(new GridData(GridData.FILL_BOTH));
 		cbACAP.add("很低",0 );
 		cbACAP.add("低",1 );
@@ -138,7 +218,7 @@ public class EMEnterCp extends Composite {
 		Label lblPCAP = new Label(composite, SWT.PUSH);
 		lblPCAP.setText("程序员能力");
 		lblPCAP.setLayoutData(new GridData(GridData.FILL_BOTH));
-		Combo cbPCAP = new Combo(composite_1, SWT.PUSH);
+		cbPCAP = new Combo(composite_1, SWT.PUSH);
 		cbPCAP.setLayoutData(new GridData(GridData.FILL_BOTH));
 		cbPCAP.add("很低",0);
 		cbPCAP.add("低", 1);
@@ -149,7 +229,7 @@ public class EMEnterCp extends Composite {
 		Label lblPLEX = new Label(composite, SWT.PUSH);
 		lblPLEX.setText("平台经验");
 		lblPLEX.setLayoutData(new GridData(GridData.FILL_BOTH));
-		Combo cbPLEX = new Combo(composite_1, SWT.PUSH);
+		cbPLEX = new Combo(composite_1, SWT.PUSH);
 		cbPLEX.setLayoutData(new GridData(GridData.FILL_BOTH));
 		cbPLEX.add("很低",0);
 		cbPLEX.add("低", 1);
@@ -160,7 +240,7 @@ public class EMEnterCp extends Composite {
 		Label lblTOOL = new Label(composite, SWT.PUSH);
 		lblTOOL.setText("软件工具使用");
 		lblTOOL.setLayoutData(new GridData(GridData.FILL_BOTH));
-		Combo cbTOOL = new Combo(composite_1, SWT.PUSH);
+		cbTOOL = new Combo(composite_1, SWT.PUSH);
 		cbTOOL.setLayoutData(new GridData(GridData.FILL_BOTH));
 		cbTOOL.add("很低",0);
 		cbTOOL.add("低", 1);
@@ -171,7 +251,7 @@ public class EMEnterCp extends Composite {
 		Label lblCPLX = new Label(composite_2, SWT.PUSH);
 		lblCPLX.setText("产品复杂性");
 		lblCPLX.setLayoutData(new GridData(GridData.FILL_BOTH));
-		Combo cbCPLX = new Combo(composite_3, SWT.PUSH);
+		cbCPLX = new Combo(composite_3, SWT.PUSH);
 		cbCPLX.setLayoutData(new GridData(GridData.FILL_BOTH));
 		cbCPLX.add("很低",0);
 		cbCPLX.add("低", 1);
@@ -182,7 +262,7 @@ public class EMEnterCp extends Composite {
 		Label lblTIME = new Label(composite_2, SWT.PUSH);
 		lblTIME.setText("执行时间约束");
 		lblTIME.setLayoutData(new GridData(GridData.FILL_BOTH));
-		Combo cbTIME = new Combo(composite_3, SWT.PUSH);
+		cbTIME = new Combo(composite_3, SWT.PUSH);
 		cbTIME.setLayoutData(new GridData(GridData.FILL_BOTH));
 		cbTIME.add("标称",0);
 		cbTIME.add("高",1);
@@ -192,7 +272,7 @@ public class EMEnterCp extends Composite {
 		Label lblPVOL = new Label(composite_2, SWT.PUSH);
 		lblPVOL.setText("平台易变性");
 		lblPVOL.setLayoutData(new GridData(GridData.FILL_BOTH));
-		Combo cbPVOL = new Combo(composite_3, SWT.PUSH);
+		cbPVOL = new Combo(composite_3, SWT.PUSH);
 		cbPVOL.setLayoutData(new GridData(GridData.FILL_BOTH));
 		cbPVOL.add("标称",0);
 		cbPVOL.add("高",1);
@@ -202,7 +282,7 @@ public class EMEnterCp extends Composite {
 		Label lblPCON = new Label(composite_2, SWT.PUSH);
 		lblPCON.setText("人员连续性");
 		lblPCON.setLayoutData(new GridData(GridData.FILL_BOTH));
-		Combo cbPCON = new Combo(composite_3, SWT.PUSH);
+		cbPCON = new Combo(composite_3, SWT.PUSH);
 		cbPCON.setLayoutData(new GridData(GridData.FILL_BOTH));
 		cbPCON.add("很低",0);
 		cbPCON.add("低", 1);
@@ -213,7 +293,7 @@ public class EMEnterCp extends Composite {
 		Label lblAPEX = new Label(composite_2, SWT.PUSH);
 		lblAPEX.setText("应用经验");
 		lblAPEX.setLayoutData(new GridData(GridData.FILL_BOTH));
-		Combo cbAPEX = new Combo(composite_3, SWT.PUSH);
+		cbAPEX = new Combo(composite_3, SWT.PUSH);
 		cbAPEX.setLayoutData(new GridData(GridData.FILL_BOTH));
 		cbAPEX.add("很低",0);
 		cbAPEX.add("低", 1);
@@ -224,7 +304,7 @@ public class EMEnterCp extends Composite {
 		Label lblLTEX = new Label(composite_2, SWT.PUSH);
 		lblLTEX.setText("语言和工具经验");
 		lblLTEX.setLayoutData(new GridData(GridData.FILL_BOTH));
-		Combo cbLTEX = new Combo(composite_3, SWT.PUSH);
+		cbLTEX = new Combo(composite_3, SWT.PUSH);
 		cbLTEX.setLayoutData(new GridData(GridData.FILL_BOTH));
 		cbLTEX.add("很低",0);
 		cbLTEX.add("低", 1);
@@ -235,7 +315,7 @@ public class EMEnterCp extends Composite {
 		Label lblSITE = new Label(composite_2, SWT.PUSH);
 		lblSITE.setText("多点开发");
 		lblSITE.setLayoutData(new GridData(GridData.FILL_BOTH));
-		Combo cbSITE = new Combo(composite_3, SWT.PUSH);
+		cbSITE = new Combo(composite_3, SWT.PUSH);
 		cbSITE.setLayoutData(new GridData(GridData.FILL_BOTH));
 		cbSITE.add("很低",0);
 		cbSITE.add("低", 1);
@@ -268,12 +348,32 @@ public class EMEnterCp extends Composite {
 		lblEM.setText("EM");
 		
 		textEM = new Text(this, SWT.BORDER);
+		textEM.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0) {
+				setCbEnabled();
+			}
+		});
 		fd_lblEM.top = new FormAttachment(textEM, 3, SWT.TOP);
 		FormData fd_textEM = new FormData();
 		fd_textEM.bottom = new FormAttachment(100, -10);
 		fd_textEM.left =new FormAttachment(lblEM,30);
 		textEM.setLayoutData(fd_textEM);
 		
+		Button btn_save = new Button(this, SWT.NONE);
+		btn_save.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if(save())System.out.println("保存成功");
+				else {
+					System.out.println("保存失败");
+				}
+			}
+		});
+		FormData fd_btn_save = new FormData();
+		fd_btn_save.bottom = new FormAttachment(lblEM, 0, SWT.BOTTOM);
+		fd_btn_save.right = new FormAttachment(composite_3, 0, SWT.RIGHT);
+		btn_save.setLayoutData(fd_btn_save);
+		btn_save.setText("Save");
 		
 	}
 
@@ -281,5 +381,125 @@ public class EMEnterCp extends Composite {
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
 	}
+	
+	
+	public Version getVersion() {
+		return version;
+	}
 
+	public void setVersion(Version version) {
+		this.version = version;
+	}
+
+	@Override
+	public void load() {
+		// TODO 自动生成的方法存根
+		refresh();
+	}
+
+	@Override
+	public void refresh() {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	public boolean save() {
+		// TODO 自动生成的方法存根
+		System.out.println(cbRELY.getSelectionIndex());
+		if(version==null){
+			System.out.println("未选择版本");
+			return false;
+		}	
+		EMDaoImpl emDaoImpl=new EMDaoImpl();
+		
+		try {
+			try {
+				em = emDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
+				em.setRELY(getEmValue(1, cbRELY.getSelectionIndex()));
+				em.setDOCU(getEmValue(2, cbDOCU.getSelectionIndex()));
+				em.setSTOR(getEmValue(3, cbSTOR.getSelectionIndex()));
+				em.setDOCU(getEmValue(4, cbACAP.getSelectionIndex()));
+				em.setPCAP(getEmValue(5, cbPCAP.getSelectionIndex()));
+				em.setPLEX(getEmValue(6, cbPLEX.getSelectionIndex()));
+				em.setTOOL(getEmValue(7, cbTOOL.getSelectionIndex()));
+				em.setCPLX(getEmValue(8, cbCPLX.getSelectionIndex()));
+				em.setTIME(getEmValue(9, cbTIME.getSelectionIndex()));
+				em.setPVOL(getEmValue(10, cbPVOL.getSelectionIndex()));
+				em.setPCON(getEmValue(11, cbPCON.getSelectionIndex()));
+				em.setAPEX(getEmValue(12, cbAPEX.getSelectionIndex()));
+				em.setLTEX(getEmValue(13, cbLTEX.getSelectionIndex()));
+				em.setSITE(getEmValue(14, cbSITE.getSelectionIndex()));
+				em.setInputEm(Float.parseFloat(textEM.getText()));;
+				emDaoImpl.Update(em);
+				return true;
+			} catch (EmNotFoundException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+				
+				em = new EM();
+				em.setProj_id(version.getProj_id());
+				em.setVersion_id(version.getId());
+				em.setRELY(getEmValue(1, cbRELY.getSelectionIndex()));
+				System.out.println("sss"+cbLTEX.getSelectionIndex());
+				em.setDOCU(getEmValue(2, cbDOCU.getSelectionIndex()));
+				em.setSTOR(getEmValue(3, cbSTOR.getSelectionIndex()));
+				em.setDOCU(getEmValue(4, cbACAP.getSelectionIndex()));
+				em.setPCAP(getEmValue(5, cbPCAP.getSelectionIndex()));
+				em.setPLEX(getEmValue(6, cbPLEX.getSelectionIndex()));
+				em.setTOOL(getEmValue(7, cbTOOL.getSelectionIndex()));
+				em.setCPLX(getEmValue(8, cbCPLX.getSelectionIndex()));
+				em.setTIME(getEmValue(9, cbTIME.getSelectionIndex()));
+				em.setPVOL(getEmValue(10, cbPVOL.getSelectionIndex()));
+				em.setPCON(getEmValue(11, cbPCON.getSelectionIndex()));
+				em.setAPEX(getEmValue(12, cbAPEX.getSelectionIndex()));
+				em.setLTEX(getEmValue(13, cbLTEX.getSelectionIndex()));
+				em.setSITE(getEmValue(14, cbSITE.getSelectionIndex()));
+				em.setInputEm(Float.parseFloat(textEM.getText()));;
+				emDaoImpl.Save(em);
+				return true;
+			}
+		} catch (NumberFormatException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			System.out.println("存在数据输入格式不正确");
+			return false;
+		}
+	}
+	
+	public float getEmValue(int type,int index){
+		try {
+			return alist.get(type-1)[index];
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(type-1);
+			System.out.println(index);
+			return 0.0f;
+		}
+		
+	}
+	
+	public void setCbEnabled(){
+		Boolean enable;
+		if(textEM.getText().equals(""))
+		{	
+			enable=true;
+		}else {
+			enable=false;
+		}
+		cbRELY.setEnabled(enable);
+		cbDOCU.setEnabled(enable);
+		cbSTOR.setEnabled(enable);
+		cbACAP.setEnabled(enable);
+		cbPCAP.setEnabled(enable);
+		cbPLEX.setEnabled(enable);
+		cbTOOL.setEnabled(enable);
+		cbCPLX.setEnabled(enable);
+		cbTIME.setEnabled(enable);
+		cbPVOL.setEnabled(enable);
+		cbPCON.setEnabled(enable);
+		cbAPEX.setEnabled(enable);
+	    cbLTEX.setEnabled(enable);
+        cbSITE.setEnabled(enable);
+	}
 }

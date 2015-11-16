@@ -49,9 +49,10 @@ public class SizeDaoImpl implements SizeDao {
 				int exinputdata =rs.getInt("ExInputData");
 				int exinquirydata =rs.getInt("ExInquiryData");
 				int exoutputdata =rs.getInt("ExOutputData");
+				int inputSize = rs.getInt("InputSize");
 				Size size = new Size(id,proj_id,version_id,su,unfm,inlogicalfiles,exinterfacefile,exinputfiles,
 						exinquiryfiles,exoutputfiles,inlogicaldata,exinterfacedata,exinputdata,
-						exinquirydata,exoutputdata);
+						exinquirydata,exoutputdata,inputSize);
 				list.add(size);
 			}
 			ppsm.close();
@@ -89,7 +90,7 @@ public class SizeDaoImpl implements SizeDao {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
 			PreparedStatement ppsm = conn.prepareStatement("insert into size_info (proj_id,version_id,SU,UNFM,InLogicalFiles,"
 					+ "ExInterfaceFiles,ExInputFiles,ExInquiryFiles,ExOutputFiles,InLogicalData,ExInterfaceData,"
-					+ "ExInputData,ExInquiryData,ExOutputData) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+					+ "ExInputData,ExInquiryData,ExOutputData,InputSize) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			ppsm.setInt(1, size.getProj_id());
 			ppsm.setInt(2, size.getVersion_id());
 			ppsm.setInt(3, size.getSU());
@@ -104,6 +105,7 @@ public class SizeDaoImpl implements SizeDao {
 			ppsm.setInt(12, size.getExInputData());
 			ppsm.setInt(13, size.getExInquiryData());
 			ppsm.setInt(14, size.getExOutputData());
+			ppsm.setInt(15, size.getInputSize());
 			ppsm.execute();
 			ppsm.close();
 		} catch (SQLException e) {
@@ -129,7 +131,7 @@ public class SizeDaoImpl implements SizeDao {
 
 			PreparedStatement ppsm = conn.prepareStatement("UPDATE size_info SET SU=?,UNFM=?,InLogicalFiles=?,"
 					+ "ExInterfaceFiles=?,ExInputFiles=?,ExInquiryFiles=?,ExOutputFiles=?,inLogicalData=?,ExInterfaceData=?,"
-					+ "ExInputData=?,ExInquiryData=?,ExOutputData=?  WHERE proj_id=? AND version_id=?");
+					+ "ExInputData=?,ExInquiryData=?,ExOutputData=?,InputSize=? WHERE proj_id=? AND version_id=?");
 			ppsm.setInt(1, size.getSU());
 			ppsm.setFloat(2, size.getUNFM());
 			ppsm.setInt(3, size.getInLogicalFiles());
@@ -142,8 +144,9 @@ public class SizeDaoImpl implements SizeDao {
 			ppsm.setInt(10, size.getExInputData());
 			ppsm.setInt(11, size.getExInquiryData());
 			ppsm.setInt(12, size.getExOutputData());
-			ppsm.setInt(13, size.getProj_id());
-			ppsm.setInt(14, size.getVersion_id());
+			ppsm.setInt(13, size.getInputSize());
+			ppsm.setInt(14, size.getProj_id());
+			ppsm.setInt(15, size.getVersion_id());
 			System.out.println(ppsm.toString());
 			ppsm.executeUpdate();
 			ppsm.close();
