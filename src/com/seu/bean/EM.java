@@ -20,6 +20,15 @@ public class EM {
 	private float TOOL;
 	private float SCED;
 	private float InputEm;
+	private int type;
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
 
 	public EM(int id, int proj_id,int version_id, float cPLX, float tIME, float pVOL, float pCON, float aPEX, float lTEX, float sITE,
 			float rELY, float dOCU, float sTOR, float aCAP, float pCAP, float pLEX, float tOOL, float sCED,float inputEm) {

@@ -1,4 +1,4 @@
-package com.seu.ui.input;
+package com.seu.ui.cal.input;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
@@ -28,7 +28,7 @@ import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.ModifyEvent;
 
-public class SoftwareSizeEnterCp extends Composite implements UiSizeAdapter{
+public class CalSoftwareSizeEnterCp extends Composite implements UiSizeAdapter{
 	private Text textlblExternalInputFile;
 	private Text textExternalInputData;
 	private Text textExternalOutputFile;
@@ -60,10 +60,11 @@ public class SoftwareSizeEnterCp extends Composite implements UiSizeAdapter{
 	 * @param style
 	 */
 	
-	public SoftwareSizeEnterCp(Composite parent, int style) {
+	public CalSoftwareSizeEnterCp(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new FormLayout());
 		initLayout();
+		refresh();
 	}
 	
 	public boolean isTextEditable(){
@@ -94,7 +95,7 @@ public class SoftwareSizeEnterCp extends Composite implements UiSizeAdapter{
 		if(version!=null){
 			SizeDaoImpl sizeDaoImpl = new SizeDaoImpl();
 			try {
-				size = sizeDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
+				size = sizeDaoImpl.getByProj_idAndVersion_idAndType(version.getProj_id(), version.getId(),0);
 				if(size.getInputSize()==0)
 					textSizeM.setText("");
 				else {
@@ -138,7 +139,7 @@ public class SoftwareSizeEnterCp extends Composite implements UiSizeAdapter{
 		SizeDaoImpl sizeDaoImpl = new SizeDaoImpl();
 		try {
 			try {
-				size = sizeDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
+				size = sizeDaoImpl.getByProj_idAndVersion_idAndType(version.getProj_id(), version.getId(),0);
 				if(isTextEditable())
 				{
 					size.setExInputFiles(Integer.parseInt(textlblExternalInputFile.getText()));
@@ -173,6 +174,7 @@ public class SoftwareSizeEnterCp extends Composite implements UiSizeAdapter{
 				size = new Size();
 				size.setProj_id(version.getProj_id());
 				size.setVersion_id(version.getId());
+				size.setType(0);
 				if(isTextEditable())
 				{
 					size.setExInputFiles(Integer.parseInt(textlblExternalInputFile.getText()));

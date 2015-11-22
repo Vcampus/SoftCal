@@ -82,6 +82,19 @@ public class SizeDaoImpl implements SizeDao {
 		}
 		
 	}
+	
+	
+	@Override
+	public Size getByProj_idAndVersion_idAndType(int proj_id, int version_id,int type)
+			throws SizeNotFoundException {
+		// TODO 自动生成的方法存根
+		try {
+			return findByParams("select * from size_info where proj_id = ? and version_id = ? and type =?",proj_id,version_id,type).get(0);
+		} catch (IndexOutOfBoundsException e) {
+			// TODO: handle exception
+			throw new SizeNotFoundException();
+		}
+	}
 
 	@Override
 	public void Save(Size size) {
@@ -165,6 +178,8 @@ public class SizeDaoImpl implements SizeDao {
 		}
 		return false;
 	}
+
+	
 	
 	
 

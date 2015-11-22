@@ -1,4 +1,4 @@
-package com.seu.ui.input;
+package com.seu.ui.adjust.input;
 
 import java.util.ArrayList;
 
@@ -32,7 +32,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.ModifyEvent;
 
-public class EMEnterCp extends Composite implements UiEmAdapter{
+public class AdjEMEnterCp extends Composite implements UiEmAdapter{
 	private Label lblhorizontal;
 	private Label lblhorizontal1;
 	private Text textEM;
@@ -52,6 +52,7 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 	private Combo cbAPEX ;
 	private Combo cbLTEX ;
 	private Combo cbSITE ; 
+	private Combo cbSCED;
 	private final int	RELY =1;
 	private final int	DOCU =2;
 	private final int	STOR =3;
@@ -66,6 +67,7 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 	private final int	APEX =12;
 	private final int	LTEX =13;
 	private final int	SITE =14;
+	private final int   SCED =15;
 	private final float	vsRELY[] ={1.23f,1.1f,1.0f,0.99f,1.07f};
 	private final float	vsDOCU[] ={0.81f,0.91f,1.0f,1.11f,1.23f};
 	private final float	vsSTOR[] ={1.00f,1.05f,1.17f,1.46f};
@@ -80,13 +82,14 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 	private final float	vsAPEX[] ={1.22f,1.10f,1.00f,0.88f,0.81f};
 	private final float	vsLTEX[] ={1.20f,1.09f,1.00f,0.91f,0.84f};
 	private final float	vsSITE[] ={1.22f,1.09f,1.00f,0.93f,0.86f,0.80f};
+	private final float vsSCED[] ={1.43f,1.14f,1.00f,1.00f,1.00f};
 	ArrayList<float[]> alist=new ArrayList<float[]>();
 /**
 	 * Create the composite.
 	 * @param parent
 	 * @param style
 	 */
-	public EMEnterCp(Composite parent, int style) {
+	public AdjEMEnterCp(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new FormLayout());
 	
@@ -104,6 +107,7 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 		alist.add(vsAPEX);
 		alist.add(vsLTEX);
 		alist.add(vsSITE);
+		alist.add(vsSCED);
 //		for (int type=1;type<=14;type++){
 //			for(int i=0;i<alist.get(type-1).length;i++)
 //			{	
@@ -136,7 +140,7 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 		if(version!=null){
 			EMDaoImpl emDaoImpl = new EMDaoImpl();
 			try {
-				em = emDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
+				em = emDaoImpl.getByProj_idAndVersion_idAndType(version.getProj_id(), version.getId(),1);
 				if(em.getInputEm()==0.0f)
 					textEM.setText("");
 				else {
@@ -158,12 +162,13 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 					cbAPEX.select(getEmIndex(12,em.getAPEX()));
 					cbLTEX.select(getEmIndex(13,em.getLTEX()));
 					cbSITE.select(getEmIndex(14,em.getSITE()));
+					cbSCED.select(getEmIndex(15, em.getSCED()));
 				}
 				
 				
 			} catch (EmNotFoundException e) {
 				// TODO 自动生成的 catch 块
-				System.out.println("暂时无版本，请添加");
+				System.out.println("暂时无em版本，请添加");
 			}
 		}
 	}
@@ -183,7 +188,7 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 		EMDaoImpl emDaoImpl=new EMDaoImpl();
 		try {
 			try {
-				em = emDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
+				em = emDaoImpl.getByProj_idAndVersion_idAndType(version.getProj_id(), version.getId(),1);
 				if(isCbEnabled()){
 					em.setRELY(getEmValue(1, cbRELY.getSelectionIndex()));
 					em.setDOCU(getEmValue(2, cbDOCU.getSelectionIndex()));
@@ -199,6 +204,7 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 					em.setAPEX(getEmValue(12, cbAPEX.getSelectionIndex()));
 					em.setLTEX(getEmValue(13, cbLTEX.getSelectionIndex()));
 					em.setSITE(getEmValue(14, cbSITE.getSelectionIndex()));
+					em.setSCED(getEmValue(15, cbSCED.getSelectionIndex()));
 					em.setInputEm(0.0f);;
 				}
 				else {
@@ -216,6 +222,7 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 					em.setAPEX(0);
 					em.setLTEX(0);
 					em.setSITE(0);
+					em.setSCED(0);
 					em.setInputEm(Float.parseFloat(textEM.getText()));;
 				}
 				emDaoImpl.Update(em);
@@ -225,6 +232,7 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 				em = new EM();
 				em.setProj_id(version.getProj_id());
 				em.setVersion_id(version.getId());
+				em.setType(1);
 				if(isCbEnabled()){
 					em.setRELY(getEmValue(1, cbRELY.getSelectionIndex()));
 					em.setDOCU(getEmValue(2, cbDOCU.getSelectionIndex()));
@@ -240,6 +248,7 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 					em.setAPEX(getEmValue(12, cbAPEX.getSelectionIndex()));
 					em.setLTEX(getEmValue(13, cbLTEX.getSelectionIndex()));
 					em.setSITE(getEmValue(14, cbSITE.getSelectionIndex()));
+					em.setSCED(getEmValue(15, cbSCED.getSelectionIndex()));
 					em.setInputEm(0.0f);
 				}
 				else {
@@ -257,6 +266,7 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 					em.setAPEX(0);
 					em.setLTEX(0);
 					em.setSITE(0);
+					em.setSCED(0);
 					em.setInputEm(Float.parseFloat(textEM.getText()));
 				}
 				emDaoImpl.Save(em);
@@ -316,6 +326,7 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 		cbAPEX.setEnabled(enable);
 	    cbLTEX.setEnabled(enable);
         cbSITE.setEnabled(enable);
+        cbSCED.setEnabled(enable);
         return enable;
 	}
 	
@@ -371,7 +382,7 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 		FormData cp_2_fd = new FormData();
 		cp_2_fd.top = new FormAttachment( 10, 5);
 		cp_2_fd.left = new FormAttachment(composite_1, 15);
-		cp_2_fd.bottom = new FormAttachment(80,-5);
+		cp_2_fd.bottom = new FormAttachment(72,-5);
 		cp_2_fd.right = new FormAttachment(70, -2);
 		composite_2.setLayoutData(cp_2_fd);
 		
@@ -385,7 +396,7 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 		cp_3_fd.left = new FormAttachment(composite_2, 0);
 		cp_3_fd.right = new FormAttachment(90, -10);
 		cp_3_fd.top = new FormAttachment(10, 10);
-		cp_3_fd.bottom = new FormAttachment(80,-5);
+		cp_3_fd.bottom = new FormAttachment(72,-5);
 		composite_3.setLayoutData(cp_3_fd);
 		
 		
@@ -542,6 +553,17 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 		cbSITE.add("很高", 4);
 		cbSITE.add("极高", 5);
 		
+		Label lblSCED = new Label(composite, SWT.PUSH);
+		lblSCED.setText("发展计划");
+		lblSCED.setLayoutData(new GridData(GridData.FILL_BOTH));
+		cbSCED = new Combo(composite_1, SWT.PUSH);
+		cbSCED.setLayoutData(new GridData(GridData.FILL_BOTH));
+		cbSCED.add("很低",0);
+		cbSCED.add("低", 1);
+		cbSCED.add("标称",2);
+		cbSCED.add("高", 3);
+		cbSCED.add("很高", 4);
+		
 		Label lblEnterE = new Label(this, SWT.NONE);
 		FormData lblEnterE_fd = new FormData();
 		lblEnterE_fd.top = new FormAttachment(composite, 10);
@@ -562,20 +584,16 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 		Label lblEM = new Label(this, SWT.NONE);
 		FormData fd_lblEM = new FormData();
 		fd_lblEM.left = new FormAttachment(10,10);
+		fd_lblEM.top = new FormAttachment(lblhorizontal1, 10);
 		lblEM.setLayoutData(fd_lblEM);
 		lblEM.setText("EM");
-		
 		textEM = new Text(this, SWT.BORDER);
 		textEM.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent arg0) {
 				isCbEnabled();
 			}
 		});
-		fd_lblEM.top = new FormAttachment(textEM, 3, SWT.TOP);
-		FormData fd_textEM = new FormData();
-		fd_textEM.bottom = new FormAttachment(100, -10);
-		fd_textEM.left =new FormAttachment(lblEM,30);
-		textEM.setLayoutData(fd_textEM);
+
 		
 		Button btn_save = new Button(this, SWT.NONE);
 		btn_save.addSelectionListener(new SelectionAdapter(){
@@ -607,6 +625,20 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 		fd_btn_save.right = new FormAttachment(composite_3, 0, SWT.RIGHT);
 		btn_save.setLayoutData(fd_btn_save);
 		btn_save.setText("Save");
+		
+		//该按钮用来载入经验模型估算的数据
+		Button btn_load = new Button(this, SWT.NONE);
+		btn_load.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+			}
+		});
+		
+		FormData btn_load_fd = new FormData();
+		btn_load_fd.top = new FormAttachment(lblhorizontal1, 10);
+		btn_load_fd.right = new FormAttachment(btn_save, -29);
+		btn_load.setLayoutData(btn_load_fd);
+		btn_load.setText("载入估算值");
 		
 		
 		String sReturn = System.getProperty("line.separator");
@@ -757,5 +789,36 @@ public class EMEnterCp extends Composite implements UiEmAdapter{
 				+ sReturn +"rating scale and breaking out the "
 				+ sReturn +"effects of TOOL capability, maturity, "
 				+ sReturn +"and integration");
+		lblSCED .setToolTipText("This rating measures the schedule "
+				+ sReturn +"constraint imposed on the project "
+				+ sReturn + "team developing the software. The "
+				+ sReturn +"ratings are defined in terms of the "
+				+ sReturn +"percentage of schedule stretch-out or"
+				+ sReturn +"acceleration with respect to a "
+				+ sReturn +"nominal schedule for a project "
+				+ sReturn +"requiring a given amount of "
+				+ sReturn +"effort.Accelerated schedules tend to "
+				+ sReturn + "produce more effort in the earlier"
+				+ sReturn +"phases to eliminate risks andrefine "
+				+ sReturn +"the architecture, more effort in the"
+				+ sReturn +"later phases to accomplish more "
+				+ sReturn +"testing anddocumentation in parallel"
+				+ sReturn +"Schedule compression of 75% is rated "
+				+ sReturn +"very low. A schedule stretch-out of "
+				+ sReturn +"160% is rated very high. Stretch-outs"
+				+ sReturn +"do not add or decrease effort.Their "
+				+ sReturn +"savings because of smaller team size"
+				+ sReturn +"are generally balanced by the need to "
+				+ sReturn + "carry projectadministrative functions"
+				+ sReturn +"over a longer period of time. SCED is"
+				+ sReturn +"the only cost driver that is used to"
+				+ sReturn +"describe the effect of schedule "
+				+ sReturn +"compression /expansion for the whole"
+				+ sReturn +"project. The scale factors are also "
+				+ sReturn +"used to describe the whole "
+				+ sReturn +"project.All of the other cost drivers"
+				+ sReturn +"are used to describe each module in a"
+				+ sReturn +"multiple module project.");
+		
 	}
 }

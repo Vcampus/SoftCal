@@ -1,4 +1,4 @@
-package com.seu.ui.input;
+package com.seu.ui.cal.input;
 
 import java.util.ArrayList;
 
@@ -34,7 +34,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.ModifyEvent;
 
-public class EIndexEnterCP extends Composite implements UiEindexAdapter{
+public class CalEIndexEnterCP extends Composite implements UiEindexAdapter{
 	
 	private Label PRECLb;
 	private Version version;
@@ -71,7 +71,7 @@ public class EIndexEnterCP extends Composite implements UiEindexAdapter{
 	 * @param parent
 	 * @param style
 	 */
-	public EIndexEnterCP(Composite parent, int style) {
+	public CalEIndexEnterCP(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new FormLayout());
 		alist.add(vsPREC);
@@ -102,7 +102,7 @@ public class EIndexEnterCP extends Composite implements UiEindexAdapter{
 		if(version!=null){
 			EIndexDaoImpl eIndexDaoImpl = new EIndexDaoImpl();
 			try {
-				eindex = eIndexDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
+				eindex = eIndexDaoImpl.getByProj_idAndVersion_idAndType(version.getProj_id(), version.getId(),0);
 				if(eindex.getInputE()==0.0f)
 					textEIndex.setText("");
 				else {
@@ -120,7 +120,7 @@ public class EIndexEnterCP extends Composite implements UiEindexAdapter{
 				
 			} catch (EindexNotFoundException e) {
 				// TODO 自动生成的 catch 块
-				System.out.println("暂时无版本，请添加");
+				System.out.println("暂时无eindex版本，请添加");
 			}
 		}
 	}
@@ -140,7 +140,7 @@ public class EIndexEnterCP extends Composite implements UiEindexAdapter{
 		EIndexDaoImpl eIndexDaoImpl = new EIndexDaoImpl();
 		try {
 			try {
-				eindex = eIndexDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
+				eindex = eIndexDaoImpl.getByProj_idAndVersion_idAndType(version.getProj_id(), version.getId(),0);
 				if(isCbEnabled()){
 					eindex.setPREC(getEindexValue(1, PRECCb.getSelectionIndex()));
 					System.out.println("SS"+PRECCb.getSelectionIndex());
@@ -162,10 +162,10 @@ public class EIndexEnterCP extends Composite implements UiEindexAdapter{
 				eIndexDaoImpl.Update(eindex);
 			} catch (EindexNotFoundException e) {
 				// TODO: handle exception
-				e.printStackTrace();
 				eindex = new EIndex();
 				eindex.setProj_id(version.getProj_id());
 				eindex.setVersion_id(version.getId());
+				eindex.setType(0);
 				if(isCbEnabled()){
 					eindex.setPREC(getEindexValue(1, PRECCb.getSelectionIndex()));
 					eindex.setFLEX(getEindexValue(2, FLEXCb.getSelectionIndex()));

@@ -30,7 +30,6 @@ public class Version {
 		this.version = version;
 	}
 	
-	
 	public Version(int id, int proj_id, String proj_name, String version) {
 		super();
 		this.id = id;

@@ -11,16 +11,16 @@ import org.eclipse.swt.widgets.TabItem;
 import com.seu.adapter.UiAdapter;
 import com.seu.bean.Version;
 import com.seu.exception.VersionExistedException;
-import com.seu.ui.input.EIndexEnterCP;
-import com.seu.ui.input.EMEnterCp;
-import com.seu.ui.input.SoftwareSizeEnterCp;
+import com.seu.ui.cal.input.CalEIndexEnterCP;
+import com.seu.ui.cal.input.CalEMEnterCp;
+import com.seu.ui.cal.input.CalSoftwareSizeEnterCp;
 
 
 public class CompWorkCal extends Composite implements UiAdapter{
 	Version version;
-	SoftwareSizeEnterCp cpSize;
-	EIndexEnterCP cpE;
-	EMEnterCp cpEm;
+	CalSoftwareSizeEnterCp cpSize;
+	CalEIndexEnterCP cpE;
+	CalEMEnterCp cpEm;
 	
 	
 	@Override
@@ -74,20 +74,20 @@ public class CompWorkCal extends Composite implements UiAdapter{
 		//软件规模页面
 		TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
 		tabItem.setText("软件规模SizeM");
-		cpSize = new SoftwareSizeEnterCp(tabFolder, SWT.NONE);
+		cpSize = new CalSoftwareSizeEnterCp(tabFolder, SWT.NONE);
 		tabItem.setControl(cpSize);
 		
 		
 		//指数E页面
 		TabItem tabfolderEIndex = new TabItem(tabFolder, SWT.NONE);
 		tabfolderEIndex.setText("指数E");
-		cpE= new EIndexEnterCP(tabFolder, SWT.NONE);
+		cpE= new CalEIndexEnterCP(tabFolder, SWT.NONE);
 		tabfolderEIndex.setControl(cpE);
 		
 		//工作量常数页面
 		TabItem tbtmem = new TabItem(tabFolder, SWT.NONE);
 		tbtmem.setText("工作量乘数EM");
-		cpEm = new EMEnterCp(tabFolder, SWT.NONE);
+		cpEm = new CalEMEnterCp(tabFolder, SWT.NONE);
 		tbtmem.setControl(cpEm);
 		
 		

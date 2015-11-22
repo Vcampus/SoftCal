@@ -75,6 +75,18 @@ public class EMDaoImpl implements EMDao {
 	}
 
 	@Override
+	public EM getByProj_idAndVersion_idAndType(int proj_id, int version_id,
+			int type) throws EmNotFoundException {
+		// TODO 自动生成的方法存根
+		try {
+			return findByParams("select * from em_info where proj_id = ? and version_id = ? and type = ?",proj_id,version_id,type).get(0);
+		} catch (IndexOutOfBoundsException e) {
+			// TODO: handle exception
+			throw new EmNotFoundException();
+		}
+	}
+
+	@Override
 	public EM getByProj_idAndVersion_id(int proj_id,int version_id) throws EmNotFoundException{
 		// TODO 自动生成的方法存根
 		try {

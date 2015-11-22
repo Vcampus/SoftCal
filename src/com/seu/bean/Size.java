@@ -17,7 +17,17 @@ public class Size {
 	private int ExInquiryData;
 	private int ExOutputData;
 	private int InputSize;
+	private	int type;
 	
+	
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
 	public Size(int id, int proj_id,int version_id, int sU, float uNFM, int inLogicalFiles, int exInterfaceFile, int exInputFiles,
 			int exInquiryFiles, int exOutputFiles, int inLogicalData, int exInterfaceData, int exInputData,
 			int exInquiryData, int exOutputData,int inputSize) {

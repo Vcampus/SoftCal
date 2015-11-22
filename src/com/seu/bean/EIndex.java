@@ -10,6 +10,7 @@ public class EIndex {
 	private float TEAM;
 	private float PMAT;
 	private float InputE;
+	private int type;
 
 	public EIndex(int id, int proj_id,int version_id, float pREC, float fLEX, float rESL, float tEAM, float pMAT,float inputE) {
 		super();
@@ -44,6 +45,31 @@ public class EIndex {
 		InputE = inputE;
 	}
 	
+	
+	
+	public EIndex(int id, int proj_id, int version_id, float pREC, float fLEX,
+			float rESL, float tEAM, float pMAT, float inputE, int type) {
+		super();
+		this.id = id;
+		this.proj_id = proj_id;
+		this.version_id = version_id;
+		PREC = pREC;
+		FLEX = fLEX;
+		RESL = rESL;
+		TEAM = tEAM;
+		PMAT = pMAT;
+		InputE = inputE;
+		this.type = type;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
 	public int getId() {
 		return id;
 	}

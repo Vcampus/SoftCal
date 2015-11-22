@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.seu.bean.PM;
 import com.seu.dao.PMDao;
+import com.seu.exception.PmNotFoundException;
 
 public class PMDaoImpl implements PMDao{
 	static{
@@ -58,9 +59,14 @@ public class PMDaoImpl implements PMDao{
 	}
 
 	@Override
-	public PM getByProj_idAndVersion_id(int proj_id,int version_id) {
+	public PM getByProj_idAndVersion_id(int proj_id,int version_id) throws PmNotFoundException{
 		// TODO 自动生成的方法存根
-		return findByParams("select * from pm_info where proj_id = ? and version_id = ?",proj_id,version_id).get(0);
+		try {
+			return findByParams("select * from pm_info where proj_id = ? and version_id = ?",proj_id,version_id).get(0);
+		} catch (IndexOutOfBoundsException e) {
+			// TODO: handle exception
+			throw new PmNotFoundException();
+		}
 	}
 
 	@Override
@@ -69,13 +75,114 @@ public class PMDaoImpl implements PMDao{
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
-			PreparedStatement ppsm = conn.prepareStatement("insert into version_info (proj_id,proj_name,version) values (?,?,?)");
+			PreparedStatement ppsm = conn.prepareStatement("insert into version_info (proj_id,version_id) values (?,?)");
 			ppsm.setInt(1, pm.getProj_id());
 			ppsm.setInt(2, pm.getVersion_id()); 
-			ppsm.setFloat(3, pm.getPM_exp());
-			ppsm.setFloat(4, pm.getPM_real());
-			ppsm.setFloat(5, pm.getPM_adj());
 			ppsm.execute();
+			ppsm.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void updateExp(PM pm) {
+		// TODO 自动生成的方法存根
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
+			PreparedStatement ppsm = conn.prepareStatement("UPDATE pm_info SET  PM_exp=? WHERE proj_id=? AND version_id=?");
+			ppsm.setFloat(1, pm.getPM_exp());
+			ppsm.setFloat(2, pm.getProj_id());
+			ppsm.setFloat(3, pm.getVersion_id());
+			System.out.println(ppsm.toString());
+			ppsm.executeUpdate();
+			ppsm.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void updateReal(PM pm) {
+		// TODO 自动生成的方法存根
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
+			PreparedStatement ppsm = conn.prepareStatement("UPDATE pm_info SET  PM_real=? WHERE proj_id=? AND version_id=?");
+			ppsm.setFloat(1, pm.getPM_real());
+			ppsm.setFloat(2, pm.getProj_id());
+			ppsm.setFloat(3, pm.getVersion_id());
+			System.out.println(ppsm.toString());
+			ppsm.executeUpdate();
+			ppsm.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void updateAdjA(PM pm) {
+		// TODO 自动生成的方法存根
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
+			PreparedStatement ppsm = conn.prepareStatement("UPDATE pm_info SET  PM_adjA=? WHERE proj_id=? AND version_id=?");
+			ppsm.setFloat(1, pm.getPM_adjA());
+			ppsm.setFloat(2, pm.getProj_id());
+			ppsm.setFloat(3, pm.getVersion_id());
+			System.out.println(ppsm.toString());
+			ppsm.executeUpdate();
+			ppsm.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void updateAdjAB(PM pm) {
+		// TODO 自动生成的方法存根
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
+			PreparedStatement ppsm = conn.prepareStatement("UPDATE pm_info SET  PM_adjAB=? WHERE proj_id=? AND version_id=?");
+			ppsm.setFloat(1, pm.getPM_adjAB());
+			ppsm.setFloat(2, pm.getProj_id());
+			ppsm.setFloat(3, pm.getVersion_id());
+			System.out.println(ppsm.toString());
+			ppsm.executeUpdate();
 			ppsm.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

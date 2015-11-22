@@ -76,6 +76,17 @@ public class EIndexDaoImpl implements EIndexDao{
 		}
 		
 		@Override
+		public EIndex getByProj_idAndVersion_idAndType(int proj_id,int version_id,int type)throws EindexNotFoundException {
+			// TODO 自动生成的方法存根
+			try {
+				return findByParams("select * from e_info where proj_id = ? and version_id = ? and type = ? ",proj_id,version_id,type).get(0);
+			} catch (IndexOutOfBoundsException e) {
+				// TODO: handle exception
+				throw new EindexNotFoundException();
+			}
+		}
+
+		@Override
 		public boolean Update(EIndex eIndex) {
 			// TODO 自动生成的方法存根
 			Connection conn = null;
@@ -83,7 +94,7 @@ public class EIndexDaoImpl implements EIndexDao{
 				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
 
 				PreparedStatement ppsm = conn.prepareStatement("UPDATE e_info SET PREC=?,FLEX=?,RESL=?,"
-						+ "TEAM=?,PMAT=?,InputE=? WHERE proj_id=? AND version_id=?");
+						+ "TEAM=?,PMAT=?,InputE=? WHERE proj_id=? AND version_id=? AND type=?");
 				ppsm.setFloat(1,eIndex.getPREC());
 				System.out.println(eIndex.getPREC());
 				ppsm.setFloat(2,eIndex.getFLEX());
@@ -94,6 +105,7 @@ public class EIndexDaoImpl implements EIndexDao{
 				ppsm.setFloat(6, eIndex.getInputE());
 				ppsm.setFloat(7, eIndex.getProj_id());
 				ppsm.setFloat(8, eIndex.getVersion_id());
+				ppsm.setInt(9, eIndex.getType());
 				ppsm.executeUpdate();
 				ppsm.close();
 				return true;
@@ -118,7 +130,7 @@ public class EIndexDaoImpl implements EIndexDao{
 			try {
 				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
 				PreparedStatement ppsm = conn.prepareStatement("insert into e_info (proj_id,version_id,PREC,"
-						+ "FLEX,RESL,TEAM,PMAT) values (?,?,?,?,?,?,?)");
+						+ "FLEX,RESL,TEAM,PMAT,type) values (?,?,?,?,?,?,?,?)");
 				ppsm.setInt(1, eindex.getProj_id());
 				ppsm.setInt(2, eindex.getVersion_id());
 				ppsm.setFloat(3, eindex.getPREC());
@@ -126,6 +138,7 @@ public class EIndexDaoImpl implements EIndexDao{
 				ppsm.setFloat(5, eindex.getRESL());
 				ppsm.setFloat(6, eindex.getTEAM());
 				ppsm.setFloat(7, eindex.getPMAT());
+				ppsm.setInt(8, eindex.getType());
 				ppsm.execute();
 				ppsm.close();
 			} catch (SQLException e) {

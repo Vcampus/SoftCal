@@ -6,15 +6,21 @@ public class PM {
 	private int version_id;
 	private float PM_exp;
 	private float PM_real;
-	private float PM_adj;
+	private float PM_adjA;
+	private float PM_adjAB;
 	
+	public PM() {
+		super();
+		// TODO 自动生成的构造函数存根
+	}
+
 	public PM(int proj_id, int version_id, float pM_exp, float pM_real, float pM_adj) {
 		super();
 		this.proj_id = proj_id;
 		this.version_id = version_id;
 		PM_exp = pM_exp;
 		PM_real = pM_real;
-		PM_adj = pM_adj;
+		PM_adjA = pM_adj;
 	}
 	public PM(int id, int proj_id, int version_id, float pM_exp, float pM_real, float pM_adj) {
 		super();
@@ -23,7 +29,7 @@ public class PM {
 		this.version_id = version_id;
 		PM_exp = pM_exp;
 		PM_real = pM_real;
-		PM_adj = pM_adj;
+		PM_adjA = pM_adj;
 	}
 	public int getId() {
 		return id;
@@ -55,11 +61,19 @@ public class PM {
 	public void setPM_real(float pM_real) {
 		PM_real = pM_real;
 	}
-	public float getPM_adj() {
-		return PM_adj;
+	
+	public float getPM_adjA() {
+		return PM_adjA;
 	}
-	public void setPM_adj(float pM_adj) {
-		PM_adj = pM_adj;
+	
+	public void setPM_adjA(float pM_adjA) {
+		PM_adjA = pM_adjA;
+	}
+	public float getPM_adjAB() {
+		return PM_adjAB;
+	}
+	public void setPM_adjAB(float pM_adjAB) {
+		PM_adjAB = pM_adjAB;
 	}
 	
 	

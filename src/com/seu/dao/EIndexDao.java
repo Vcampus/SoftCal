@@ -8,6 +8,7 @@ import com.seu.exception.EindexNotFoundException;
 public interface EIndexDao {
 	List<EIndex> findByParams(String sql,Object...params);
 	EIndex getByProj_idAndVersion_id(int proj_id,int verison_id)throws EindexNotFoundException;
+	EIndex getByProj_idAndVersion_idAndType(int proj_id,int verison_id,int type)throws EindexNotFoundException;
 	void Save(EIndex eindex);
 	boolean Update(EIndex eIndex);
 }

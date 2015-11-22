@@ -19,11 +19,43 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import com.seu.ui.input.EIndexEnterCP;
-import com.seu.ui.input.EMEnterCp;
-import com.seu.ui.input.SoftwareSizeEnterCp;
+import com.seu.adapter.UiAdapter;
+import com.seu.bean.Version;
+import com.seu.ui.adjust.input.AdjEIndexEnterCP;
+import com.seu.ui.adjust.input.AdjEMEnterCp;
+import com.seu.ui.adjust.input.AdjSizeAndPMCp;
 
-public class CompArgsAdjust extends Composite {
+public class CompArgsAdjust extends Composite implements UiAdapter{
+	
+	AdjSizeAndPMCp cpSize ;
+	AdjEIndexEnterCP cpE;
+	AdjEMEnterCp cpEm;
+	Version version;
+	@Override
+	public void load() {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	
+
+	@Override
+	public void refresh() {
+		// TODO 自动生成的方法存根
+		cpSize.setVersion(version);
+		cpSize.refresh();
+		cpEm.setVersion(version);
+		cpEm.refresh();
+		cpE.setVersion(version);
+		cpE.refresh();
+	}
+
+	@Override
+	public boolean save() {
+		// TODO 自动生成的方法存根
+		return false;
+	}
+
 	private Table tableHisGet;
 	private Table tableAargs;
 	private Table tableABargs;
@@ -48,28 +80,34 @@ public class CompArgsAdjust extends Composite {
 		//软件规模页面
 		TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
 		tabItem.setText("软件规模SizeM");
-		SoftwareSizeEnterCp cpSize = new SoftwareSizeEnterCp(tabFolder, SWT.NONE);
+		cpSize = new AdjSizeAndPMCp(tabFolder, SWT.NONE);
 		tabItem.setControl(cpSize);
 		
 		
 		//指数E页面
 		TabItem tabfolderEIndex = new TabItem(tabFolder, SWT.NONE);
 		tabfolderEIndex.setText("指数E");
-		EIndexEnterCP cpE= new EIndexEnterCP(tabFolder, SWT.NONE);
+		cpE= new AdjEIndexEnterCP(tabFolder, SWT.NONE);
 		tabfolderEIndex.setControl(cpE);
 		
 		//工作量常数页面
 		TabItem tbtmem = new TabItem(tabFolder, SWT.NONE);
 		tbtmem.setText("工作量乘数EM");
-		EMEnterCp cpEm = new EMEnterCp(tabFolder, SWT.NONE);
+		cpEm = new AdjEMEnterCp(tabFolder, SWT.NONE);
 		tbtmem.setControl(cpEm);
 		
-		
-
 	}
 
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
+	}
+	
+	public Version getVersion() {
+		return version;
+	}
+
+	public void setVersion(Version version) {
+		this.version = version;
 	}
 }

@@ -90,6 +90,7 @@ public class AddVersionShell extends Shell {
 		btnSelect.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {	
+				if(list_version.getFocusIndex()!=-1)
 				selectVersion(versions.get(list_version.getFocusIndex()));
 			}
 		});

@@ -7,6 +7,6 @@ import com.seu.exception.VersionExistedException;
 
 public interface VersionDao {
 	List<Version> findByParams(String sql,Object...params);
-	Version getByVesionProjID(int id,String version);
+	Version getByVersionProjID(int id,String version);
 	void Save(Version version)throws VersionExistedException;
 }

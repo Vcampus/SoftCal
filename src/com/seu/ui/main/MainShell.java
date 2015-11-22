@@ -1,5 +1,8 @@
 package com.seu.ui.main;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -13,13 +16,17 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+
 import com.seu.bean.Proj;
 import com.seu.bean.Version;
 import com.seu.dao.impl.VersionDaoImpl;
 import com.seu.ui.adjust.CompArgsAdjust;
 import com.seu.ui.cal.CompWorkCal;
 import com.seu.ui.res.CompResShow;
+
 import org.eclipse.swt.widgets.Label;
+
+import sun.applet.Main;
 
 public class MainShell extends Shell {
 	Composite comp_Content;
@@ -70,8 +77,12 @@ public class MainShell extends Shell {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		 
+//		VersionDaoImpl versionDaoImpl = new VersionDaoImpl();
+//		List<Version> versions=new ArrayList<Version>();
+//		versions= versionDaoImpl.findByParams("select * from version_info where proj_id =?", 1);
+//		for(Version i : versions){
+//			
+//		}
 	}
 
 	/**
@@ -240,6 +251,7 @@ public class MainShell extends Shell {
 				compResShow.setVisible(false);
 				compArgsAdjust.setVisible(false);
 				compWorkCal.setVisible(true);
+				MainShell.this.setText("演化成本估算");
 			}
 		});
 		mntmNewItem_cal.setText("演化成本估算");
@@ -252,6 +264,7 @@ public class MainShell extends Shell {
 				compResShow.setVisible(false);
 				compArgsAdjust.setVisible(true);
 				compWorkCal.setVisible(false);
+				MainShell.this.setText("公式校准");
 			}
 		});
 		mntmNewItem_adjust.setText("公式校准");
@@ -265,6 +278,7 @@ public class MainShell extends Shell {
 				compResShow.setVisible(true);
 				compArgsAdjust.setVisible(false);
 				compWorkCal.setVisible(false);
+				MainShell.this.setText("结果展示");
 			}
 		});
 		mntmNewItem_res.setText("结果展示");
@@ -278,30 +292,6 @@ public class MainShell extends Shell {
 	}
 	
 	public void refresh(){
-		if(proj == null){
-			//如果没有任何工程被打开
-			setText("软件成本估算");
-			mntmNewItem_cal.setEnabled(false);
-			mntmNewItem_adjust.setEnabled(false);
-			
-			comp_Blank.setVisible(true);
-			comp_Content.setVisible(false);
-		}
-		if(proj != null){
-			setText(proj.getName());
-			mntmNewItem_cal.setEnabled(true);
-			mntmNewItem_adjust.setEnabled(true);
-			comp_Blank.setVisible(false);
-			comp_Content.setVisible(true);
-			compResShow.setVisible(false);
-			compArgsAdjust.setVisible(false);
-			compWorkCal.setVisible(true);
-			if(version != null){
-				btn_version.setText(version.getVersion());
-			}else {
-				btn_version.setText("select version");
-			}
-		}
 		if(proj == null){
 			//如果没有任何工程被打开
 			setText("软件成本估算");
@@ -328,7 +318,9 @@ public class MainShell extends Shell {
 				btn_version.setText(version.getVersion());
 				//compWorkCal里的数据刷新
 				compWorkCal.setVersion(version);
+				compArgsAdjust.setVersion(version);
 				compWorkCal.refresh();
+				compArgsAdjust.refresh();
 			}else {
 				btn_version.setText("select version");
 			}
