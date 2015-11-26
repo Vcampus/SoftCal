@@ -119,6 +119,17 @@ public class CalSoftwareSizeEnterCp extends Composite implements UiSizeAdapter{
 				
 			} catch (SizeNotFoundException e) {
 				// TODO 自动生成的 catch 块
+				textlblExternalInputFile.setText("");
+				textExternalInputData.setText("");
+				textExternalOutputFile.setText("");
+				textExternalOutputData.setText("");
+				textExternalSearchFile.setText("");
+				textExternalSearchData.setText("");
+				//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+				textlInsideLogicFileData.setText("");
+				textInsideLogicFileMemory.setText("");
+				textExternalInterfaceFileData.setText("");
+				textExternalInterfaceFileMemory.setText("");
 				System.out.println("暂时无版本，请添加");
 			}
 		}
@@ -366,22 +377,23 @@ public class CalSoftwareSizeEnterCp extends Composite implements UiSizeAdapter{
 		lblProgramUnfamili.setLayoutData(new GridData(GridData.FILL_BOTH));
 		lblProgramUnfamili.setText("程序不熟悉性因子");
 		
+		//用于测试，若老师满意，则采用
 		Combo cbSoftKnowing = new Combo(composite_3, SWT.BORDER|SWT.PUSH);
 		cbSoftKnowing.setLayoutData(new GridData(GridData.FILL_BOTH));
-		cbSoftKnowing.add("很低",0);
-		cbSoftKnowing.add("低",1);
-		cbSoftKnowing.add("标称",2);
-		cbSoftKnowing.add("高",3);
-		cbSoftKnowing.add("很高",4);
+		cbSoftKnowing.add("very low(50)",0);
+		cbSoftKnowing.add("low(40)",1);
+		cbSoftKnowing.add("normal(30)",2);
+		cbSoftKnowing.add("high(20)",3);
+		cbSoftKnowing.add("very high(10)",4);
 		
 		Combo cbProgramUnfamili = new Combo(composite_3, SWT.BORDER|SWT.PUSH);
 		cbProgramUnfamili.setLayoutData(new GridData(GridData.FILL_BOTH));
-		cbProgramUnfamili.add("完全不熟悉", 0);
-		cbProgramUnfamili.add("大部分不熟悉", 1);
-		cbProgramUnfamili.add("有点熟悉", 2);
-		cbProgramUnfamili.add("部分熟悉", 3);
-		cbProgramUnfamili.add("大部分熟悉",4);
-		cbProgramUnfamili.add("完全熟悉", 5);
+		cbProgramUnfamili.add("Completely unfamiliar(1.0)", 0);
+		cbProgramUnfamili.add("Mostly unfamiliar(0.8)", 1);
+		cbProgramUnfamili.add("Considerably familiar(0.6)", 2);
+		cbProgramUnfamili.add("Somewhat familiar(0.4)", 3);
+		cbProgramUnfamili.add("Mostly familiar(0.2)",4);
+		cbProgramUnfamili.add("Completely familiar(0.0)", 5);
 		
 		Label lblAdjustScale = new Label(composite, SWT.PUSH);
 		lblAdjustScale.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -409,6 +421,7 @@ public class CalSoftwareSizeEnterCp extends Composite implements UiSizeAdapter{
 		Label lblSizeM = new Label(this, SWT.NONE);
 		FormData fd_lblSizeM = new FormData();
 		fd_lblSizeM.left = new FormAttachment(10,10);
+		fd_lblSizeM.top = new FormAttachment(lblhorizontal1, 10);
 		lblSizeM.setLayoutData(fd_lblSizeM);
 		lblSizeM.setText("SizeM");
 		
@@ -419,10 +432,8 @@ public class CalSoftwareSizeEnterCp extends Composite implements UiSizeAdapter{
 				isTextEditable();
 			}
 		});
-
-		fd_lblSizeM.top = new FormAttachment(textSizeM, 3, SWT.TOP);
 		FormData fd_textSizeM = new FormData();
-		fd_textSizeM.bottom = new FormAttachment(100, -10);
+		fd_textSizeM.top = new FormAttachment(lblhorizontal1, 10);
 		fd_textSizeM.left =new FormAttachment(lblSizeM,30);
 		textSizeM.setLayoutData(fd_textSizeM);
 		
@@ -447,8 +458,8 @@ public class CalSoftwareSizeEnterCp extends Composite implements UiSizeAdapter{
 			}
 		});
 		FormData fd_btn_save = new FormData();
-		fd_btn_save.right = new FormAttachment(composite_3);
-		fd_btn_save.bottom = new FormAttachment(100, -9);
+		fd_btn_save.right = new FormAttachment(composite_3, 0, SWT.RIGHT);
+		fd_btn_save.top = new FormAttachment(lblhorizontal1, 10);
 		btn_save.setLayoutData(fd_btn_save);
 		btn_save.setText("Save");	
 		

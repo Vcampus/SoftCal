@@ -106,7 +106,7 @@ public class EMDaoImpl implements EMDao {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
 			PreparedStatement ppsm = conn.prepareStatement("insert into em_info (proj_id,version_id,CPLX, "
 					+ "TIME,PVOL ,PCON ,APEX ,LTEX ,SITE ,RELY ,DOCU ,STOR ,ACAP ,PCAP ,PLEX ,"
-					+ "TOOL ,SCED,InputEm) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+					+ "TOOL ,SCED,InputEm,type) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			ppsm.setInt(1, em.getProj_id());
 			ppsm.setInt(2, em.getVersion_id());
 			ppsm.setFloat(3,em.getCPLX());
@@ -125,6 +125,7 @@ public class EMDaoImpl implements EMDao {
 			ppsm.setFloat(16,em.getTOOL());
 			ppsm.setFloat(17,em.getSCED());
 			ppsm.setFloat(18,em.getInputEm());
+			ppsm.setInt(19, em.getType());
 			ppsm.execute();
 			ppsm.close();
 		} catch (SQLException e) {
@@ -149,7 +150,7 @@ public class EMDaoImpl implements EMDao {
 
 			PreparedStatement ppsm = conn.prepareStatement("UPDATE em_info SET CPLX=?,TIME=?,PVOL=?,"
 					+ "PCON=?,APEX=?,LTEX=?,SITE=?,RELY=?,DOCU=?,"
-					+ "STOR=?,ACAP=?,PCAP=?,TOOL=?,SCED=?,PLEX=?,InputEm=? WHERE proj_id=? AND version_id=?");
+					+ "STOR=?,ACAP=?,PCAP=?,TOOL=?,SCED=?,PLEX=?,InputEm=? WHERE proj_id=? AND version_id=? AND type=?");
 			ppsm.setFloat(1,em.getCPLX());
 			ppsm.setFloat(2, em.getTIME());
 			ppsm.setFloat(3, em.getPVOL());
@@ -168,6 +169,7 @@ public class EMDaoImpl implements EMDao {
 			ppsm.setFloat(16, em.getInputEm());
 			ppsm.setInt(17, em.getProj_id());
 			ppsm.setInt(18, em.getVersion_id());
+			ppsm.setInt(19, em.getType());
 			System.out.println(ppsm.toString());
 			ppsm.executeUpdate();
 			ppsm.close();

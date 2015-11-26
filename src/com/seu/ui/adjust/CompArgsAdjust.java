@@ -79,7 +79,7 @@ public class CompArgsAdjust extends Composite implements UiAdapter{
 
 		//软件规模页面
 		TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
-		tabItem.setText("软件规模SizeM");
+		tabItem.setText("PMandSizeM");
 		cpSize = new AdjSizeAndPMCp(tabFolder, SWT.NONE);
 		tabItem.setControl(cpSize);
 		

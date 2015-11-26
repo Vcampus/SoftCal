@@ -107,6 +107,7 @@ public class AdjEIndexEnterCP extends Composite implements UiEindexAdapter{
 					textEIndex.setText("");
 				else {
 					textEIndex.setText(eindex.getInputE()+"");
+					System.out.println("sss");
 				}
 				if(isCbEnabled())
 				{
@@ -120,6 +121,12 @@ public class AdjEIndexEnterCP extends Composite implements UiEindexAdapter{
 				
 			} catch (EindexNotFoundException e) {
 				// TODO 自动生成的 catch 块
+				PRECCb.deselectAll();
+				FLEXCb.deselectAll();
+				RESLCb.deselectAll();
+				TEAMCb.deselectAll();
+				PMATCb.deselectAll();
+				textEIndex.setText("");
 				System.out.println("暂时无eindex版本，请添加");
 			}
 		}
@@ -300,48 +307,48 @@ public class AdjEIndexEnterCP extends Composite implements UiEindexAdapter{
 		
 		PRECCb = new Combo(combocomposite, SWT.PUSH);
 		PRECCb.setLayoutData(new GridData(GridData.FILL_BOTH));
-		PRECCb.add("全新的",0);
-		PRECCb.add("绝大部分新",1);
-		PRECCb.add("有一些新",2);
-		PRECCb.add("基本熟悉",3);
-		PRECCb.add("绝大部分熟悉",4);
-		PRECCb.add("完全熟悉",5);
+		PRECCb.add("thoroughly unprecedented",0);
+		PRECCb.add("largely unprecedented",1);
+		PRECCb.add("somewhat unprecedented",2);
+		PRECCb.add("generally familiar",3);
+		PRECCb.add("largely familiar",4);
+		PRECCb.add("thoroughly familiar",5);
 		
 		FLEXCb = new Combo(combocomposite, SWT.PUSH);
 		FLEXCb.setLayoutData( new GridData(GridData.FILL_BOTH));
-		FLEXCb.add("严格", 0);
-		FLEXCb.add("偶尔放宽", 1);
-		FLEXCb.add("放宽", 2);
-		FLEXCb.add("基本一致", 3);
-		FLEXCb.add("部分一致", 4);
-		FLEXCb.add("通用目标", 5);
+		FLEXCb.add("rigorous", 0);
+		FLEXCb.add("occasional relaxation", 1);
+		FLEXCb.add("some relaxation", 2);
+		FLEXCb.add("general conformity", 3);
+		FLEXCb.add("some conformity", 4);
+		FLEXCb.add("general goals", 5);
 		
 		RESLCb = new Combo(combocomposite, SWT.PUSH);
 		RESLCb.setLayoutData(new GridData(GridData.FILL_BOTH));
-		RESLCb.add("很少",0);
-		RESLCb.add("一些",1);
-		RESLCb.add("常常",2);
-		RESLCb.add("通常",3);
-		RESLCb.add("绝大多数",4);
-		RESLCb.add("安全",5);
+		RESLCb.add("little(20%)",0);
+		RESLCb.add("some(40%)",1);
+		RESLCb.add("often(60%)",2);
+		RESLCb.add("generally(75%)",3);
+		RESLCb.add("mostly(90%)",4);
+		RESLCb.add("full(100%)",5);
 		
 		TEAMCb = new Combo(combocomposite, SWT.PUSH);
 		TEAMCb.setLayoutData(new GridData(GridData.FILL_BOTH));
-		TEAMCb.add("交流非常困难", 0);
-		TEAMCb.add("交流有些障碍", 1);
-		TEAMCb.add("基本的交流协作", 2);
-		TEAMCb.add("广泛地协作", 3);
-		TEAMCb.add("高度协作", 4);
-		TEAMCb.add("无缝协作", 5);
+		TEAMCb.add("very difficult interactions", 0);
+		TEAMCb.add("some difficult interactions", 1);
+		TEAMCb.add("basically cooperative interactions", 2);
+		TEAMCb.add("largely cooperative", 3);
+		TEAMCb.add("highly cooperative", 4);
+		TEAMCb.add("seamless interactions", 5);
 		
 		PMATCb = new Combo(combocomposite, SWT.PUSH);
 		PMATCb.setLayoutData(new GridData(GridData.FILL_BOTH));
-		PMATCb.add("SW-CMM1级较低部分", 0);
-		PMATCb.add("SW-CMM1级较高部分", 0);
-		PMATCb.add("SW-CMM2级", 0);
-		PMATCb.add("SW-CMM3级", 0);
-		PMATCb.add("SW-CMM4级", 0);
-		PMATCb.add("SW-CMM5级", 0);
+		PMATCb.add("SW-CMM Level 1 Lower", 0);
+		PMATCb.add("SW-CMM Level 1 Upper", 1);
+		PMATCb.add("SW-CMM Level 2", 2);
+		PMATCb.add("SW-CMM Level 3", 3);
+		PMATCb.add("SW-CMM Level 4", 4);
+		PMATCb.add("SW-CMM Level 5", 5);
 		
 		
 		Label lblEnterE = new Label(this, SWT.NONE);
@@ -364,6 +371,7 @@ public class AdjEIndexEnterCP extends Composite implements UiEindexAdapter{
 		Label lblEIndex = new Label(this, SWT.NONE);
 		FormData fd_lblEIndex = new FormData();
 		fd_lblEIndex.left = new FormAttachment(10,10);
+		fd_lblEIndex.top = new FormAttachment(lblhorizontal1, 10);
 		lblEIndex.setLayoutData(fd_lblEIndex);
 		lblEIndex.setText("指数E");
 		
@@ -373,9 +381,8 @@ public class AdjEIndexEnterCP extends Composite implements UiEindexAdapter{
 				isCbEnabled();
 			}
 		});
-		fd_lblEIndex.top = new FormAttachment(textEIndex, 3, SWT.TOP);
 		FormData fd_textEIndex = new FormData();
-		fd_textEIndex.bottom = new FormAttachment(100, -10);
+		fd_textEIndex.top = new FormAttachment(lblhorizontal1, 10);
 		fd_textEIndex.left =new FormAttachment(lblEIndex,30);
 		textEIndex.setLayoutData(fd_textEIndex);
 		
@@ -437,9 +444,23 @@ public class AdjEIndexEnterCP extends Composite implements UiEindexAdapter{
 			}
 		});
 		FormData fd_btn_save = new FormData();
-		fd_btn_save.bottom = new FormAttachment(lblEIndex, 0, SWT.BOTTOM);
-		fd_btn_save.right = new FormAttachment(100, -88);
+		fd_btn_save.top = new FormAttachment(lblhorizontal1, 10);
+		fd_btn_save.right = new FormAttachment(90,-10);
 		btn_save.setLayoutData(fd_btn_save);
 		btn_save.setText("Save");
+		
+		//该按钮用来载入经验模型估算的数据
+		Button btn_load = new Button(this, SWT.NONE);
+		btn_load.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+			}
+		});
+		
+		FormData btn_load_fd = new FormData();
+		btn_load_fd.top = new FormAttachment(lblhorizontal1, 10);
+		btn_load_fd.right = new FormAttachment(btn_save, -29);
+		btn_load.setLayoutData(btn_load_fd);
+		btn_load.setText("Load");
 	}
 }

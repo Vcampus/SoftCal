@@ -3,49 +3,63 @@ package com.seu.ui.main;
 import java.sql.Savepoint;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 
 import com.seu.bean.Proj;
 import com.seu.dao.impl.ProjDaoImpl;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 
-public class NewProjShell extends Shell {
+public class NewProCp extends Composite {
 
 	/**
 	 * Create the shell.
 	 * @param display
 	 */
-	MainShell father;
 	private Text text_name;
 	private Text text_dep;
 	private ProjDaoImpl projDaoImpl;
+	private Label lblhorizontal;
 	
-	public NewProjShell(Display display,MainShell father) {
-		super(display, SWT.SHELL_TRIM);
+	public NewProCp(Composite parent, int style) {
+		super(parent,style);
 		projDaoImpl = new ProjDaoImpl();
-		this.father = father;
 		initLayout();
-		createContents();
+
 	}
 	
 	private void initLayout(){
 		setLayout(new FormLayout());
+		
+		Label lblNewProj = new Label(this, SWT.NONE);
+		FormData fd_lblNewProj = new FormData();
+		fd_lblNewProj.top = new FormAttachment(2, 1);
+		fd_lblNewProj.left = new FormAttachment(0,6);
+		fd_lblNewProj.bottom = new FormAttachment(10, -1);
+		lblNewProj.setLayoutData(fd_lblNewProj);
+		lblNewProj.setText("项目创建");
+		
+		lblhorizontal = new Label(this, SWT.SEPARATOR | SWT.HORIZONTAL);
+		FormData lblhorizontal_fd = new FormData();
+		lblhorizontal_fd.bottom = new FormAttachment(10,-1);
+		lblhorizontal_fd.top = new FormAttachment(2,1);
+		lblhorizontal_fd.left = new FormAttachment(lblNewProj,1);
+		lblhorizontal_fd.right = new FormAttachment(95, -5);
+		lblhorizontal.setLayoutData(lblhorizontal_fd);
+		
 		Label LabelProjName = new Label(this, SWT.NONE);
 		LabelProjName.setText("ProjectName:");
 		FormData LabelProjName_fd = new FormData();
-		LabelProjName_fd.top = new FormAttachment( 0, 10);
+		LabelProjName_fd.top = new FormAttachment( lblNewProj, 5);
 		LabelProjName_fd.left = new FormAttachment(0, 10);
-		LabelProjName_fd.bottom = new FormAttachment(10,-5);
+		LabelProjName_fd.bottom = new FormAttachment(20,-5);
 		LabelProjName_fd.right = new FormAttachment(100, -10);
 		LabelProjName.setLayoutData(LabelProjName_fd);
 		
@@ -53,7 +67,7 @@ public class NewProjShell extends Shell {
 		FormData text_name_fd = new FormData();
 		text_name_fd.top = new FormAttachment( LabelProjName, 5);
 		text_name_fd.left = new FormAttachment(0, 10);
-		text_name_fd.bottom = new FormAttachment(45,-5);
+		text_name_fd.bottom = new FormAttachment(35,-5);
 		text_name_fd.right = new FormAttachment(100, -10);
 		text_name.setLayoutData(text_name_fd);
 		
@@ -62,7 +76,7 @@ public class NewProjShell extends Shell {
 		FormData LableProjDep_fd = new FormData();
 		LableProjDep_fd.top = new FormAttachment( text_name, 10);
 		LableProjDep_fd.left = new FormAttachment(0, 10);
-		LableProjDep_fd.bottom = new FormAttachment(55,-5);
+		LableProjDep_fd.bottom = new FormAttachment(45,-5);
 		LableProjDep_fd.right = new FormAttachment(100, -10);
 		LableProjDep.setLayoutData(LableProjDep_fd);
 		
@@ -71,7 +85,7 @@ public class NewProjShell extends Shell {
 		FormData text_dep_fd = new FormData();
 		text_dep_fd.top = new FormAttachment( LableProjDep, 2);
 		text_dep_fd.left = new FormAttachment(0, 10);
-		text_dep_fd.bottom = new FormAttachment(90,-5);
+		text_dep_fd.bottom = new FormAttachment(60,-5);
 		text_dep_fd.right = new FormAttachment(100, -10);
 		text_dep.setLayoutData(text_dep_fd);
 		
@@ -79,51 +93,29 @@ public class NewProjShell extends Shell {
 		btn_ok.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent arg0) {
-				Save();
+				Save();	
+				text_dep.setText("");
+				text_name.setText("");
 			}
 		});
-		btn_ok.setText("OK");
+		btn_ok.setText("Save");
 		FormData btn_ok_fd = new FormData();
-		btn_ok_fd.top = new FormAttachment( text_dep, 5);
-		btn_ok_fd.left = new FormAttachment(70, 2);
-		btn_ok_fd.bottom = new FormAttachment(100,-5);
-		btn_ok_fd.right = new FormAttachment(85, -2);
+		btn_ok_fd.top = new FormAttachment(65, 5);
+		btn_ok_fd.left = new FormAttachment(85, 5);
+		btn_ok_fd.bottom = new FormAttachment(75,-5);
+		btn_ok_fd.right = new FormAttachment(100, -15);
 		btn_ok.setLayoutData(btn_ok_fd);
-		
-		Button btn_cancle = new Button(this, SWT.NONE);
-		btn_cancle.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				close();
-			}
-		});
-		btn_cancle.setText("Cancle");
-		FormData btn_cancle_fd = new FormData();
-		btn_cancle_fd.top = new FormAttachment( text_dep, 5);
-		btn_cancle_fd.left = new FormAttachment(85, 2);
-		btn_cancle_fd.bottom = new FormAttachment(100,-5);
-		btn_cancle_fd.right = new FormAttachment(100, -2);
-		btn_cancle.setLayoutData(btn_cancle_fd);
 		
 	}
 
 	/**
 	 * Create contents of the shell.
 	 */
-	protected void createContents() {
-		setText("New Project");
-		setSize(541, 377);
-	}
 	
 	private void Save(){
 		Proj proj = new Proj(text_name.getText(),text_dep.getText());
 		projDaoImpl.Save(proj);
-		father.setProj(proj);
-		father.refresh();
-		close();
 	}
-	
-
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components

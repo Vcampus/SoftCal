@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import com.mysql.jdbc.LoadBalancedMySQLConnection;
 import com.seu.adapter.UiAdapter;
 import com.seu.adapter.UiSizeAdapter;
 import com.seu.bean.PM;
@@ -33,6 +34,9 @@ import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.ModifyEvent;
 
+
+import sun.text.resources.FormatData;
+
 public class AdjSizeAndPMCp extends Composite implements UiSizeAdapter{
 	private Label lblhorizontal;
 	private Label lblhorizontal1;
@@ -41,8 +45,11 @@ public class AdjSizeAndPMCp extends Composite implements UiSizeAdapter{
 	Version version;
 	Size size;
 	PM pm;
-	private Text textStartTIme;
-	private Text textEndTime;
+	private Text textStartYear;
+	private Text textEndYear;
+	private Text textStartMonth;
+	private Text textEndMonth;
+	private Text textPMvalue;
 	
 	public Version getVersion() {
 		return version;
@@ -86,6 +93,8 @@ public class AdjSizeAndPMCp extends Composite implements UiSizeAdapter{
 				
 				
 			} catch (SizeNotFoundException e) {
+				textSizeM.setText("");
+				textPersonAmount.setText("");
 				// TODO 自动生成的 catch 块
 				System.out.println("暂时无size版本，请添加");
 			}catch (PmNotFoundException e) {
@@ -176,34 +185,79 @@ public class AdjSizeAndPMCp extends Composite implements UiSizeAdapter{
 		lblStartTime.setLayoutData(lblStartTime1_fd);
 		lblStartTime.setText("开始时间");
 		
-		textStartTIme = new Text(this, SWT.BORDER);
+		textStartYear = new Text(this, SWT.BORDER);
 		FormData textStartTIme_fd = new FormData();
 		textStartTIme_fd.top = new FormAttachment(15, 1);
-		textStartTIme_fd.bottom  =new FormAttachment(22,-1);
+		textStartTIme_fd.bottom  =new FormAttachment(21,-1);
 		textStartTIme_fd.left = new FormAttachment(lblStartTime, 30);
-		textStartTIme.setLayoutData(textStartTIme_fd);
+		textStartYear.setLayoutData(textStartTIme_fd);
+		
+		Label lblstartyear =new Label(this, SWT.NONE);
+		FormData lblstartyear_fd =new FormData();
+		lblstartyear_fd.top = new FormAttachment(15, 1);
+		lblstartyear_fd.bottom  =new FormAttachment(21,-1);
+		lblstartyear_fd.left = new FormAttachment(textStartYear,2);
+		lblstartyear.setLayoutData(lblstartyear_fd);
+		lblstartyear.setText("year");
+		
+	    textStartMonth= new Text(this, SWT.BORDER);
+		FormData textStartMonth_fd = new FormData();
+		textStartMonth_fd.top = new FormAttachment(15, 1);
+		textStartMonth_fd.bottom  =new FormAttachment(21,-1);
+		textStartMonth_fd.left = new FormAttachment(lblstartyear, 10);
+		textStartMonth.setLayoutData(textStartMonth_fd);
+		
+		Label lblstartMonth=new Label(this, SWT.NONE);
+		FormData lblstartMonth_fd =new FormData();
+		lblstartMonth_fd.top = new FormAttachment(15, 1);
+		lblstartMonth_fd.bottom  =new FormAttachment(21,-1);
+		lblstartMonth_fd.left = new FormAttachment(textStartMonth,2);
+		lblstartMonth.setLayoutData(lblstartMonth_fd);
+		lblstartMonth.setText("month");
 		
 		Label lblEndTime = new Label(this, SWT.NONE);
 		FormData fd_lblEndTime = new FormData();
-		fd_lblEndTime.top =new FormAttachment(15,1);
-		fd_lblEndTime.bottom = new FormAttachment(22, -1);
-		fd_lblEndTime.left = new FormAttachment(50, 1);
+		fd_lblEndTime.top =new FormAttachment(30,1);
+		fd_lblEndTime.bottom = new FormAttachment(37, -1);
+		fd_lblEndTime.left = new FormAttachment(10, 1);
 		lblEndTime.setLayoutData(fd_lblEndTime);
 		lblEndTime.setText("结束时间");
 		
-		textEndTime = new Text(this, SWT.BORDER);
-		FormData fd_textEndTime = new FormData();
-		fd_lblEndTime.top =new FormAttachment(15,1);
-		fd_textEndTime.bottom = new FormAttachment(22,-1);
-		fd_textEndTime.left = new FormAttachment(lblEndTime, 30);
-		textEndTime.setLayoutData(fd_textEndTime);
+		textEndYear = new Text(this, SWT.BORDER);
+		FormData textEndYear_fd = new FormData();
+		fd_lblEndTime.top =new FormAttachment(30,1);
+		textEndYear_fd.bottom = new FormAttachment(36,-1);
+		textEndYear_fd.left = new FormAttachment(lblEndTime, 30);
+		textEndYear.setLayoutData(textEndYear_fd);
+		
+		Label lblEndYear =new Label(this, SWT.NONE);
+		FormData lblEndYear_fd =new FormData();
+		lblEndYear_fd.top = new FormAttachment(30, 1);
+		lblEndYear_fd.bottom  =new FormAttachment(36,-1);
+		lblEndYear_fd.left = new FormAttachment(textEndYear,2);
+		lblEndYear.setLayoutData(lblEndYear_fd);
+		lblEndYear.setText("year");
+		
+	    textEndMonth= new Text(this, SWT.BORDER);
+		FormData  textEndMonth_fd = new FormData();
+		 textEndMonth_fd.top = new FormAttachment(30, 1);
+		 textEndMonth_fd.bottom  =new FormAttachment(36,-1);
+		 textEndMonth_fd.left = new FormAttachment(lblEndYear, 10);
+		textEndMonth.setLayoutData( textEndMonth_fd);
+		
+		Label lblEndMonth=new Label(this, SWT.NONE);
+		FormData lblEndMonth_fd =new FormData();
+		lblEndMonth_fd.top = new FormAttachment(30, 1);
+		lblEndMonth_fd.bottom  =new FormAttachment(36,-1);
+		lblEndMonth_fd.left = new FormAttachment(textEndMonth,2);
+		lblEndMonth.setLayoutData(lblEndMonth_fd);
+		lblEndMonth.setText("month");
 	
 		Label lblPersonAmount = new Label(this, SWT.NONE);
 		FormData fd_lblPersonAmount = new FormData();
 		fd_lblPersonAmount.left = new FormAttachment(10,1);
-		fd_lblPersonAmount.top =new FormAttachment(36,1);
-		fd_lblPersonAmount.bottom =new FormAttachment(42,-1);
-		fd_lblPersonAmount.right =new FormAttachment(20, -8);
+		fd_lblPersonAmount.top =new FormAttachment(45,1);
+		fd_lblPersonAmount.bottom =new FormAttachment(52,-1);
 		lblPersonAmount.setLayoutData(fd_lblPersonAmount);
 		lblPersonAmount.setText("开发人数");
 		
@@ -213,35 +267,34 @@ public class AdjSizeAndPMCp extends Composite implements UiSizeAdapter{
 				Boolean editable=true;
 			}
 		});
-
 		FormData fd_textPersonAmount = new FormData();
-		fd_textPersonAmount.right = new FormAttachment(textStartTIme, 73);
-		fd_textPersonAmount.left = new FormAttachment(textStartTIme, 0, SWT.LEFT);
-		fd_textPersonAmount.top =new FormAttachment(36,1);
-		fd_textPersonAmount.bottom =new FormAttachment(42,1);
+		fd_textPersonAmount.right = new FormAttachment(textStartYear, 73);
+		fd_textPersonAmount.left = new FormAttachment(textStartYear, 0, SWT.LEFT);
+		fd_textPersonAmount.top =new FormAttachment(45,1);
+		fd_textPersonAmount.bottom =new FormAttachment(51,1);
 		textPersonAmount.setLayoutData(fd_textPersonAmount);
 		
 		
 		Label lblEnterSizeM = new Label(this, SWT.NONE);
 		FormData fd_lblEnterSizeM = new FormData();
-		fd_lblEnterSizeM.top = new FormAttachment(50, 1);
+		fd_lblEnterSizeM.top = new FormAttachment(58, 1);
 		fd_lblEnterSizeM.left = new FormAttachment(0,6);
-		fd_lblEnterSizeM.bottom = new FormAttachment(56, -1);
+		fd_lblEnterSizeM.bottom = new FormAttachment(64, -1);
 		lblEnterSizeM.setLayoutData(fd_lblEnterSizeM);
 		lblEnterSizeM.setText("SizeM输入");
 		
 		lblhorizontal1 = new Label(this, SWT.SEPARATOR | SWT.HORIZONTAL);
 		FormData fd_lblStartTime = new FormData();
-		fd_lblStartTime.bottom = new FormAttachment(54,-1);
-		fd_lblStartTime.top = new FormAttachment(51,1);
+		fd_lblStartTime.bottom = new FormAttachment(62,-1);
+		fd_lblStartTime.top = new FormAttachment(59,1);
 		fd_lblStartTime.left = new FormAttachment(lblEnterSizeM,1);
 		fd_lblStartTime.right = new FormAttachment(95, -5);
 		lblhorizontal1.setLayoutData(fd_lblStartTime);
 		
 		Label lblSizeM = new Label(this, SWT.NONE);
 		FormData fd_lblSizeM = new FormData();
-		fd_lblSizeM.left = new FormAttachment(0, 58);
-		fd_lblSizeM.top = new FormAttachment(lblEnterSizeM, 30);
+		fd_lblSizeM.left = new FormAttachment(10,1);
+		fd_lblSizeM.top = new FormAttachment(lblEnterSizeM, 15);
 		lblSizeM.setLayoutData(fd_lblSizeM);
 		lblSizeM.setText("SizeM");
 		
@@ -253,7 +306,8 @@ public class AdjSizeAndPMCp extends Composite implements UiSizeAdapter{
 		});
 		FormData fd_textSizeM = new FormData();
 		fd_textSizeM.left = new FormAttachment(lblSizeM, 50);
-		fd_textSizeM.bottom = new FormAttachment(lblSizeM, 0, SWT.BOTTOM);
+		fd_textSizeM.right = new FormAttachment(textStartYear, 73);
+		fd_textSizeM.top = new FormAttachment(lblEnterSizeM, 15);
 		textSizeM.setLayoutData(fd_textSizeM);
 		
 		Button btn_save = new Button(this, SWT.NONE);
@@ -295,6 +349,19 @@ public class AdjSizeAndPMCp extends Composite implements UiSizeAdapter{
 		fd_btnLoad.left = new FormAttachment(0, 66);
 		btnLoad.setLayoutData(fd_btnLoad);
 		btnLoad.setText("load");
+		
+		Label lblPMresult = new Label(this, SWT.NONE);
+		FormData fd_lblPMresult = new FormData();
+		fd_lblPMresult.top = new FormAttachment(lblPersonAmount, 0, SWT.TOP);
+		fd_lblPMresult.left = new FormAttachment(textPersonAmount, 120);
+		lblPMresult.setLayoutData(fd_lblPMresult);
+		lblPMresult.setText("Pm计算结果：");
+		
+		textPMvalue = new Text(this, SWT.BORDER);
+		FormData fd_textPMvalue = new FormData();
+		fd_textPMvalue.bottom = new FormAttachment(lblhorizontal1, -35);
+		fd_textPMvalue.left = new FormAttachment(lblPMresult, 9);
+		textPMvalue.setLayoutData(fd_textPMvalue);
 		
 		
 
