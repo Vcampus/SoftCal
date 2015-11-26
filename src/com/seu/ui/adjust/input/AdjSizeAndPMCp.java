@@ -14,12 +14,15 @@ import org.eclipse.swt.widgets.Text;
 import com.mysql.jdbc.LoadBalancedMySQLConnection;
 import com.seu.adapter.UiAdapter;
 import com.seu.adapter.UiSizeAdapter;
+import com.seu.bean.EM;
 import com.seu.bean.PM;
 import com.seu.bean.Size;
 import com.seu.bean.Version;
 import com.seu.dao.PMDao;
+import com.seu.dao.impl.EMDaoImpl;
 import com.seu.dao.impl.PMDaoImpl;
 import com.seu.dao.impl.SizeDaoImpl;
+import com.seu.exception.EmNotFoundException;
 import com.seu.exception.InvalidInputException;
 import com.seu.exception.PmNotFoundException;
 import com.seu.exception.SizeNotFoundException;
@@ -33,6 +36,9 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.ModifyEvent;
+
+
+
 
 
 import sun.text.resources.FormatData;
@@ -343,6 +349,22 @@ public class AdjSizeAndPMCp extends Composite implements UiSizeAdapter{
 		btn_save.setText("Save");	
 		
 		Button btnLoad = new Button(this, SWT.NONE);
+		btnLoad.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				try {
+					loadOldData();
+				} catch (VersionNotSelectedException e) {
+					// TODO 自动生成的 catch 块
+					System.out.println("没有选择对应的版本");
+					e.printStackTrace();
+				} catch (SizeNotFoundException e) {
+					// TODO 自动生成的 catch 块
+					System.out.println("暂时无此版本的估算结果");
+					e.printStackTrace();
+				}
+			}
+		});
 		FormData fd_btnLoad = new FormData();
 		fd_btnLoad.bottom = new FormAttachment(100, -30);
 		fd_btnLoad.right = new FormAttachment(0, 131);
@@ -365,5 +387,21 @@ public class AdjSizeAndPMCp extends Composite implements UiSizeAdapter{
 		
 		
 
+	}
+	
+	public void loadOldData()throws VersionNotSelectedException,SizeNotFoundException{
+		if(version == null)
+			throw new VersionNotSelectedException();
+		SizeDaoImpl sizeDaoImpl = new SizeDaoImpl();
+		try {
+			Size oldSize = sizeDaoImpl.getByProj_idAndVersion_idAndType(version.getProj_id(), version.getId(), 0);
+			if(oldSize.getInputSize()==0.0)
+				System.out.println("此处应用计算类来得到Size的值");
+			textSizeM.setText(oldSize.getInputSize()+"");
+		} catch (SizeNotFoundException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+			throw new SizeNotFoundException();
+		}
 	}
 }

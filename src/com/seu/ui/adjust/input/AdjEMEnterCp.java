@@ -15,11 +15,14 @@ import org.eclipse.swt.widgets.Text;
 
 import com.seu.adapter.UiAdapter;
 import com.seu.adapter.UiEmAdapter;
+import com.seu.bean.EIndex;
 import com.seu.bean.EM;
 import com.seu.bean.Size;
 import com.seu.bean.Version;
+import com.seu.dao.impl.EIndexDaoImpl;
 import com.seu.dao.impl.EMDaoImpl;
 import com.seu.dao.impl.SizeDaoImpl;
+import com.seu.exception.EindexNotFoundException;
 import com.seu.exception.EmMissingParamException;
 import com.seu.exception.EmNotFoundException;
 import com.seu.exception.InvalidInputException;
@@ -657,6 +660,17 @@ public class AdjEMEnterCp extends Composite implements UiEmAdapter{
 		btn_load.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				try {
+					loadOldData();
+				} catch (VersionNotSelectedException e) {
+					// TODO 自动生成的 catch 块
+					System.out.println("没有选择对应的版本");
+					e.printStackTrace();
+				} catch (EmNotFoundException e) {
+					// TODO 自动生成的 catch 块
+					System.out.println("暂时无此版本的估算结果");
+					e.printStackTrace();
+				}
 			}
 		});
 		
@@ -846,5 +860,21 @@ public class AdjEMEnterCp extends Composite implements UiEmAdapter{
 				+ sReturn +"are used to describe each module in a"
 				+ sReturn +"multiple module project.");
 		
+	}
+	
+	public void loadOldData()throws VersionNotSelectedException,EmNotFoundException{
+		if(version == null)
+			throw new VersionNotSelectedException();
+		EMDaoImpl emDaoImpl = new EMDaoImpl();
+		try {
+			EM oldEM = emDaoImpl.getByProj_idAndVersion_idAndType(version.getProj_id(), version.getId(), 0);
+			if(oldEM.getInputEm()==0.0)
+				System.out.println("此处应用计算类来得到em的值");
+			textEM.setText(oldEM.getInputEm()+"");
+		} catch (EmNotFoundException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+			throw new EmNotFoundException();
+		}
 	}
 }

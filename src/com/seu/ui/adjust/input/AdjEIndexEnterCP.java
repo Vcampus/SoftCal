@@ -454,6 +454,17 @@ public class AdjEIndexEnterCP extends Composite implements UiEindexAdapter{
 		btn_load.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+					try {
+						loadOldData();
+					} catch (VersionNotSelectedException e) {
+						// TODO 自动生成的 catch 块
+						System.out.println("没有选择对应的版本");
+						e.printStackTrace();
+					} catch (EindexNotFoundException e) {
+						// TODO 自动生成的 catch 块
+						System.out.println("暂时无此版本的估算结果");
+						e.printStackTrace();
+					}
 			}
 		});
 		
@@ -462,5 +473,21 @@ public class AdjEIndexEnterCP extends Composite implements UiEindexAdapter{
 		btn_load_fd.right = new FormAttachment(btn_save, -29);
 		btn_load.setLayoutData(btn_load_fd);
 		btn_load.setText("Load");
+	}
+	
+	public void loadOldData()throws VersionNotSelectedException,EindexNotFoundException{
+		if(version == null)
+			throw new VersionNotSelectedException();
+		EIndexDaoImpl eIndexDaoImpl = new EIndexDaoImpl();
+		try {
+			EIndex oldEIndex = eIndexDaoImpl.getByProj_idAndVersion_idAndType(version.getProj_id(), version.getId(), 0);
+			if(oldEIndex.getInputE()==0.0)
+				System.out.println("此处应用计算类来得到eindex的值");
+			textEIndex.setText(oldEIndex.getInputE()+"");
+		} catch (EindexNotFoundException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+			throw new EindexNotFoundException();
+		}
 	}
 }
