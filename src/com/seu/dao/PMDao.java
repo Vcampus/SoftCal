@@ -13,4 +13,5 @@ public interface PMDao {
 	void updateReal(PM pm);
 	void updateAdjA(PM pm);
 	void updateAdjAB(PM pm);
+	void updateDate(PM pm);
 }

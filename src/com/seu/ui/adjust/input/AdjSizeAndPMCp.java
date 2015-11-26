@@ -138,21 +138,49 @@ public class AdjSizeAndPMCp extends Composite implements UiSizeAdapter{
 				sizeDaoImpl.Save(size);
 			} 
 			//计算pm的公式
-			float realpm=0;
+			float realpm;
+			int numPeople;
+			int startYear;
+			int startMonth;
+			int endYear; 
+			int endMonth;
+			try{
+				numPeople = Integer.parseInt(textPersonAmount.getText());
+				startYear = Integer.parseInt(textStartYear.getText());
+				startMonth = Integer.parseInt(textStartMonth.getText());
+				endYear = Integer.parseInt(textEndYear.getText());
+				endMonth = Integer.parseInt(textEndMonth.getText());
+				realpm = (float)((endYear-startYear)*12 + endMonth - startMonth)/(float)numPeople;
+				textPMvalue.setText(realpm+"");
+			}catch(NumberFormatException e){
+				System.out.println("日期输入格式不正确");
+				throw new InvalidInputException();
+			}
+			
 			
 			try {
 				pm = pmDaoImpl.getByProj_idAndVersion_id(version.getProj_id(), version.getId());
+				pm.setStartYear(startYear);   
+				pm.setEndYear(endYear);     
+				pm.setStartMonth(startMonth);  
+				pm.setEndMonth(endMonth); 
 				pm.setPM_real(realpm);
+				pmDaoImpl.updateDate(pm);
 				pmDaoImpl.updateReal(pm);
 			} catch (PmNotFoundException e) {
 				// TODO: handle exception
 				pm = new PM();
 				pm.setProj_id(version.getProj_id());
 				pm.setVersion_id(version.getId());
+				pm.setStartYear(startYear);   
+				pm.setEndYear(endYear);     
+				pm.setStartMonth(startMonth);  
+				pm.setEndMonth(endMonth); 
 				pm.setPM_real(realpm);
 				pmDaoImpl.Save(pm);
-				pm.setPM_real(realpm);
+				pmDaoImpl.updateDate(pm);
 				pmDaoImpl.updateReal(pm);
+				
 			}
 		} catch (NumberFormatException e) {
 			// TODO: handle exception

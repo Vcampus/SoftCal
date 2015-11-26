@@ -38,8 +38,9 @@ public class PMDaoImpl implements PMDao{
 				int version_id=rs.getInt("version_id");
 				float pM_exp=rs.getFloat("PM_exp");
 				float pM_real=rs.getFloat("PM_real");
-				float pM_adj =rs.getFloat("PM_adj");
-				PM newpm =new PM(id,proj_id,version_id,pM_exp,pM_real,pM_adj);
+				float pM_adjA =rs.getFloat("PM_adjA");
+				float pM_adjAB =rs.getFloat("PM_adjAB");
+				PM newpm =new PM(id,proj_id,version_id,pM_exp,pM_real,pM_adjA,pM_adjAB);
 				list.add(newpm);
 			}
 			ppsm.close();
@@ -75,7 +76,7 @@ public class PMDaoImpl implements PMDao{
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
-			PreparedStatement ppsm = conn.prepareStatement("insert into version_info (proj_id,version_id) values (?,?)");
+			PreparedStatement ppsm = conn.prepareStatement("insert into pm_info (proj_id,version_id) values (?,?)");
 			ppsm.setInt(1, pm.getProj_id());
 			ppsm.setInt(2, pm.getVersion_id()); 
 			ppsm.execute();
@@ -101,8 +102,8 @@ public class PMDaoImpl implements PMDao{
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
 			PreparedStatement ppsm = conn.prepareStatement("UPDATE pm_info SET  PM_exp=? WHERE proj_id=? AND version_id=?");
 			ppsm.setFloat(1, pm.getPM_exp());
-			ppsm.setFloat(2, pm.getProj_id());
-			ppsm.setFloat(3, pm.getVersion_id());
+			ppsm.setInt(2, pm.getProj_id());
+			ppsm.setInt(3, pm.getVersion_id());
 			System.out.println(ppsm.toString());
 			ppsm.executeUpdate();
 			ppsm.close();
@@ -127,8 +128,8 @@ public class PMDaoImpl implements PMDao{
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
 			PreparedStatement ppsm = conn.prepareStatement("UPDATE pm_info SET  PM_real=? WHERE proj_id=? AND version_id=?");
 			ppsm.setFloat(1, pm.getPM_real());
-			ppsm.setFloat(2, pm.getProj_id());
-			ppsm.setFloat(3, pm.getVersion_id());
+			ppsm.setInt(2, pm.getProj_id());
+			ppsm.setInt(3, pm.getVersion_id());
 			System.out.println(ppsm.toString());
 			ppsm.executeUpdate();
 			ppsm.close();
@@ -153,8 +154,8 @@ public class PMDaoImpl implements PMDao{
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
 			PreparedStatement ppsm = conn.prepareStatement("UPDATE pm_info SET  PM_adjA=? WHERE proj_id=? AND version_id=?");
 			ppsm.setFloat(1, pm.getPM_adjA());
-			ppsm.setFloat(2, pm.getProj_id());
-			ppsm.setFloat(3, pm.getVersion_id());
+			ppsm.setInt(2, pm.getProj_id());
+			ppsm.setInt(3, pm.getVersion_id());
 			System.out.println(ppsm.toString());
 			ppsm.executeUpdate();
 			ppsm.close();
@@ -179,8 +180,8 @@ public class PMDaoImpl implements PMDao{
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
 			PreparedStatement ppsm = conn.prepareStatement("UPDATE pm_info SET  PM_adjAB=? WHERE proj_id=? AND version_id=?");
 			ppsm.setFloat(1, pm.getPM_adjAB());
-			ppsm.setFloat(2, pm.getProj_id());
-			ppsm.setFloat(3, pm.getVersion_id());
+			ppsm.setInt(2, pm.getProj_id());
+			ppsm.setInt(3, pm.getVersion_id());
 			System.out.println(ppsm.toString());
 			ppsm.executeUpdate();
 			ppsm.close();
@@ -196,6 +197,37 @@ public class PMDaoImpl implements PMDao{
 			}
 		}
 	}
+
+	@Override
+	public void updateDate(PM pm) {
+		// TODO 自动生成的方法存根
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/softcal","root","");
+			PreparedStatement ppsm = conn.prepareStatement("UPDATE pm_info SET  startYear=?,endYear=?,startMonth=?,endMonth=? WHERE proj_id=? AND version_id=?");
+			ppsm.setInt(1, pm.getStartYear());
+			ppsm.setInt(2, pm.getEndYear());
+			ppsm.setInt(3, pm.getStartMonth());
+			ppsm.setInt(4, pm.getEndMonth());
+			ppsm.setInt(5, pm.getProj_id());
+			ppsm.setInt(6, pm.getVersion_id());
+			System.out.println(ppsm.toString());
+			ppsm.executeUpdate();
+			ppsm.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
 
 
 }

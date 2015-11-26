@@ -8,28 +8,35 @@ public class PM {
 	private float PM_real;
 	private float PM_adjA;
 	private float PM_adjAB;
+	private int startYear;
+	private int endYear;
+	private int startMonth;
+	private int endMonth;
 	
+
 	public PM() {
 		super();
 		// TODO 自动生成的构造函数存根
 	}
 
-	public PM(int proj_id, int version_id, float pM_exp, float pM_real, float pM_adj) {
+	public PM(int proj_id, int version_id, float pM_exp, float pM_real, float pM_adjA,float pM_adjAB) {
 		super();
 		this.proj_id = proj_id;
 		this.version_id = version_id;
 		PM_exp = pM_exp;
 		PM_real = pM_real;
-		PM_adjA = pM_adj;
+		PM_adjA = pM_adjA;
+		PM_adjAB = pM_adjAB;
 	}
-	public PM(int id, int proj_id, int version_id, float pM_exp, float pM_real, float pM_adj) {
+	public PM(int id, int proj_id, int version_id, float pM_exp, float pM_real, float pM_adjA,float pM_adjAB) {
 		super();
 		this.id = id;
 		this.proj_id = proj_id;
 		this.version_id = version_id;
 		PM_exp = pM_exp;
 		PM_real = pM_real;
-		PM_adjA = pM_adj;
+		PM_adjA = pM_adjA;
+		PM_adjAB = pM_adjAB;
 	}
 	public int getId() {
 		return id;
@@ -75,6 +82,40 @@ public class PM {
 	public void setPM_adjAB(float pM_adjAB) {
 		PM_adjAB = pM_adjAB;
 	}
+	
+	public int getStartYear() {
+		return startYear;
+	}
+
+	public int getEndYear() {
+		return endYear;
+	}
+
+	public void setEndYear(int endYear) {
+		this.endYear = endYear;
+	}
+
+	public int getStartMonth() {
+		return startMonth;
+	}
+
+	public void setStartMonth(int startMonth) {
+		this.startMonth = startMonth;
+	}
+
+	public int getEndMonth() {
+		return endMonth;
+	}
+
+	public void setEndMonth(int endMonth) {
+		this.endMonth = endMonth;
+	}
+
+	public void setStartYear(int startYear) {
+		this.startYear = startYear;
+	}
+
+	
 	
 	
 }
